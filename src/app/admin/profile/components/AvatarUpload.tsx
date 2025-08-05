@@ -44,52 +44,37 @@ export default function AvatarUpload({
         throw new Error('Sadece resim dosyaları yüklenebilir')
       }
 
-      // Dosya adını unique yap
-      const fileExt = file.name.split('.').pop()
-      const fileName = `avatar-${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`
-      const filePath = `avatars/${fileName}`
+      console.log('Uploading avatar:', file.name)
 
-      console.log('Uploading avatar:', fileName)
+      // FormData oluştur
+      const formData = new FormData()
+      formData.append('file', file)
 
-      // Önce bucket kontrolü
-      const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets()
+      // Session token'ı al
+      const { data: { session } } = await supabase.auth.getSession()
       
-      if (bucketsError) {
-        console.error('Buckets list error:', bucketsError)
-        throw new Error('Storage erişiminde hata: ' + bucketsError.message)
+      if (!session?.access_token) {
+        throw new Error('Oturum bulunamadı')
       }
 
-      const imagesBucket = buckets?.find((bucket: { name: string }) => bucket.name === 'images')
-      if (!imagesBucket) {
-        throw new Error('Storage bucket "images" bulunamadı. Lütfen Supabase Dashboard\'da "images" adında public bucket oluşturun.')
+      // API route'a yükle (avatar türü için)
+      const response = await fetch('/api/admin/upload?type=avatar', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`
+        },
+        body: formData
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Avatar yüklenirken hata oluştu')
       }
 
-      // Eski avatarı sil (eğer varsa)
-      if (value && value.includes('avatars/')) {
-        const oldPath = value.split('/').slice(-2).join('/')
-        await supabase.storage.from('images').remove([oldPath])
-      }
-
-      // Yeni avatarı yükle
-      const { data, error: uploadError } = await supabase.storage
-        .from('images')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: true
-        })
-
-      if (uploadError) {
-        console.error('Avatar upload error:', uploadError)
-        throw new Error(uploadError.message || 'Avatar yüklenirken hata oluştu')
-      }
-
-      // Public URL al
-      const { data: { publicUrl } } = supabase.storage
-        .from('images')
-        .getPublicUrl(data.path)
-
-      console.log('Avatar uploaded successfully:', publicUrl)
-      onChange(publicUrl)
+      const { url } = await response.json()
+      
+      console.log('Avatar uploaded successfully:', url)
+      onChange(url)
 
     } catch (err) {
       console.error('Avatar upload error:', err)

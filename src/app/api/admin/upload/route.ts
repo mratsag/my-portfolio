@@ -52,7 +52,17 @@ export async function POST(request: NextRequest) {
     // Dosya adını unique yap
     const fileExt = file.name.split('.').pop()
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`
-    const filePath = `projects/${fileName}`
+    
+    // URL'den hangi tür yükleme olduğunu anla
+    const url = new URL(request.url)
+    const type = url.searchParams.get('type') || 'project'
+    
+    let filePath
+    if (type === 'avatar') {
+      filePath = `avatars/${fileName}`
+    } else {
+      filePath = `projects/${fileName}`
+    }
 
     // Dosyayı buffer'a çevir
     const bytes = await file.arrayBuffer()

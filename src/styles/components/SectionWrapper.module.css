@@ -1,0 +1,154 @@
+.section {
+  padding: 4rem 0;
+}
+
+@media (min-width: 640px) {
+  .section {
+    padding: 5rem 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding: 6rem 0;
+  }
+}
+
+/* Spacing variants */
+.sectionTight {
+  padding: 2rem 0;
+}
+
+@media (min-width: 640px) {
+  .sectionTight {
+    padding: 3rem 0;
+  }
+}
+
+.sectionLoose {
+  padding: 6rem 0;
+}
+
+@media (min-width: 640px) {
+  .sectionLoose {
+    padding: 8rem 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sectionLoose {
+    padding: 10rem 0;
+  }
+}
+
+/* Background variants */
+.sectionLight {
+  background: #f9fafb;
+}
+
+.dark .sectionLight {
+  background: #1f2937;
+}
+
+.sectionDark {
+  background: #111827;
+}
+
+.dark .sectionDark {
+  background: #030712;
+}
+
+.sectionGradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.sectionGradientAlt {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+/* Full height variants */
+.sectionFullHeight {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.sectionFullHeightCenter {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Container integration */
+.container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 2rem;
+  }
+}
+
+/* Animation variants */
+.sectionFadeIn {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sectionSlideIn {
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: slideInLeft 0.6s ease forwards;
+}
+
+@keyframes slideInLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive text alignment */
+.textCenter {
+  text-align: center;
+}
+
+.textLeft {
+  text-align: left;
+}
+
+.textRight {
+  text-align: right;
+}
+
+@media (min-width: 768px) {
+  .textCenterMd {
+    text-align: center;
+  }
+  
+  .textLeftMd {
+    text-align: left;
+  }
+  
+  .textRightMd {
+    text-align: right;
+  }
+} 
