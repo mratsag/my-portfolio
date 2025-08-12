@@ -108,7 +108,12 @@ export default function EditBlogPage() {
       </div>
 
       {/* Blog Form */}
-      <BlogForm blog={blog} onSuccess={handleSuccess} />
+      <BlogForm 
+        blog={blog} 
+        isOpen={true}
+        onClose={() => router.push('/admin/blog')}
+        onSuccess={handleSuccess} 
+      />
     </div>
   )
 }

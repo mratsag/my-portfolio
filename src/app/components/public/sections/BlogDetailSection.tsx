@@ -49,10 +49,10 @@ export default function BlogDetailSection({ blog, profile }: BlogDetailSectionPr
       <section className={styles.hero}>
         <div className={styles.container}>
           <div className={styles.heroContent}>
-            <Link href="/blog" className={styles.backLink}>
-              <ArrowLeft className={styles.backIcon} />
-              Blog'a Dön
-            </Link>
+                          <Link href="/blog" className={styles.backLink}>
+                <ArrowLeft className={styles.backIcon} />
+                Blog&apos;a Dön
+              </Link>
             
             <div className={styles.meta}>
               <div className={styles.metaItem}>

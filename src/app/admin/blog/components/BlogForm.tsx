@@ -24,7 +24,7 @@ const blogSchema = z.object({
   content: z.string().min(1, 'İçerik gereklidir'),
   author: z.string().max(100, 'Yazar adı en fazla 100 karakter olabilir').optional(),
   tags: z.array(z.string()).max(10, 'En fazla 10 etiket ekleyebilirsiniz').optional(),
-  published: z.boolean().default(false)
+  published: z.boolean()
 })
 
 type BlogFormData = z.infer<typeof blogSchema>

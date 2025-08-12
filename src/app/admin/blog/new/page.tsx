@@ -68,7 +68,11 @@ export default function NewBlogPage() {
       )}
 
       {/* Blog Form */}
-      <BlogForm onSuccess={handleSuccess} />
+      <BlogForm 
+        isOpen={true}
+        onClose={() => router.push('/admin/blog')}
+        onSuccess={handleSuccess} 
+      />
     </div>
   )
 }

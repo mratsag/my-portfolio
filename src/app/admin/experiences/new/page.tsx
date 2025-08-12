@@ -19,7 +19,7 @@ const experienceSchema = z.object({
   location: z.string().min(1, 'Konum gereklidir').max(100, 'Konum en fazla 100 karakter olabilir'),
   start_date: z.string().min(1, 'Başlangıç tarihi gereklidir'),
   end_date: z.string().optional(),
-  current: z.boolean().default(false),
+  current: z.boolean(),
   description: z.string().max(2000, 'Açıklama en fazla 2000 karakter olabilir').optional()
 })
 

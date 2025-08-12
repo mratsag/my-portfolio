@@ -108,7 +108,12 @@ export default function EditExperiencePage() {
       </div>
 
       {/* Experience Form */}
-      <ExperienceForm experience={experience} onSuccess={handleSuccess} />
+      <ExperienceForm 
+        experience={experience} 
+        isOpen={true}
+        onClose={() => router.push('/admin/experiences')}
+        onSuccess={handleSuccess} 
+      />
     </div>
   )
 }

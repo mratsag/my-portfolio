@@ -7,7 +7,21 @@ import Link from 'next/link'
 import styles from '@/styles/public/ProjectsSection.module.css'
 
 interface ProjectsSectionProps {
-  projects?: any[]
+  projects?: Array<{
+    id: string
+    title: string
+    description?: string
+    content?: string
+    image_url?: string
+    demo_url?: string
+    github_url?: string
+    live_url?: string
+    technologies?: string[]
+    category?: string[]
+    featured?: boolean
+    status?: string
+    created_at?: string
+  }>
 }
 
 export default function ProjectsSection({ projects }: ProjectsSectionProps) {
@@ -176,7 +190,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
 
                     <div className={styles.projectMeta}>
                       <span className={styles.projectDate}>
-                        {new Date(project.created_at).toLocaleDateString('tr-TR')}
+                        {project.created_at ? new Date(project.created_at).toLocaleDateString('tr-TR') : 'Tarih yok'}
                       </span>
                       {project.status && (
                         <span className={`${styles.projectStatus} ${styles[project.status]}`}>

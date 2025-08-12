@@ -38,9 +38,9 @@ export default async function AboutPage() {
 
   // Sonuçları işle
   const profile = profileResult.status === 'fulfilled' ? profileResult.value.data : null
-  const experiences = experiencesResult.status === 'fulfilled' ? experiencesResult.value.data : []
-  const skills = skillsResult.status === 'fulfilled' ? skillsResult.value.data : []
-  const education = educationResult.status === 'fulfilled' ? educationResult.value.data : []
+  const experiences = experiencesResult.status === 'fulfilled' ? experiencesResult.value.data : undefined
+  const skills = skillsResult.status === 'fulfilled' ? skillsResult.value.data : undefined
+  const education = educationResult.status === 'fulfilled' ? educationResult.value.data : undefined
 
   return (
     <PublicLayout>

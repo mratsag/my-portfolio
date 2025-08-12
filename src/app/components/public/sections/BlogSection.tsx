@@ -7,7 +7,19 @@ import Link from 'next/link'
 import styles from '@/styles/public/BlogSection.module.css'
 
 interface BlogSectionProps {
-  blogs?: any[]
+  blogs?: Array<{
+    id: string
+    title: string
+    excerpt?: string
+    content?: string
+    image_url?: string
+    category?: string[]
+    author?: string
+    published_at?: string
+    slug?: string
+    featured?: boolean
+    created_at?: string
+  }>
 }
 
 export default function BlogSection({ blogs }: BlogSectionProps) {
@@ -122,7 +134,7 @@ export default function BlogSection({ blogs }: BlogSectionProps) {
                     <div className={styles.blogMeta}>
                       <div className={styles.blogDate}>
                         <Calendar className={styles.metaIcon} />
-                        <span>{new Date(blog.created_at).toLocaleDateString('tr-TR')}</span>
+                        <span>{blog.created_at ? new Date(blog.created_at).toLocaleDateString('tr-TR') : 'Tarih yok'}</span>
                       </div>
                       {blog.author && (
                         <div className={styles.blogAuthor}>

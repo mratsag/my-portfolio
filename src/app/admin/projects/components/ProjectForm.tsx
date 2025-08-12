@@ -16,7 +16,7 @@ import {
   DocumentTextIcon
 } from '@heroicons/react/24/outline'
 import ImageUpload from './ImageUpload'
-import RichTextEditor from '../blog/components/RichTextEditor'
+import RichTextEditor from '../../blog/components/RichTextEditor'
 import { Project } from '@/lib/types'
 
 const projectSchema = z.object({

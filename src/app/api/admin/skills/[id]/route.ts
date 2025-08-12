@@ -1,6 +1,5 @@
 // src/app/api/admin/skills/[id]/route.ts
-import { createSupabaseServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
+import { createSupabaseServerClient } from '@/lib/supabase-server'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
@@ -8,30 +7,11 @@ export const dynamic = 'force-dynamic'
 // GET - Tek yetenek getir
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const cookieStore = await cookies()
-    const supabase = createSupabaseServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll()
-          },
-          setAll(cookiesToSet) {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) =>
-                cookieStore.set(name, value, options)
-              )
-            } catch {
-              // Server Component'ten çağrıldıysa ignore
-            }
-          },
-        },
-      }
-    )
+    const { id } = await params
+    const supabase = createSupabaseServerClient()
     
     // Auth check
     const { data: { session } } = await supabase.auth.getSession()
@@ -42,7 +22,7 @@ export async function GET(
     const { data: skill, error } = await supabase
       .from('skills')
       .select('*')
-      .eq('id', params.id)
+      .eq('id', id)
       .eq('user_id', session.user.id)
       .single()
 
@@ -65,30 +45,11 @@ export async function GET(
 // PUT - Yetenek güncelle
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const cookieStore = await cookies()
-    const supabase = createSupabaseServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll()
-          },
-          setAll(cookiesToSet) {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) =>
-                cookieStore.set(name, value, options)
-              )
-            } catch {
-              // Server Component'ten çağrıldıysa ignore
-            }
-          },
-        },
-      }
-    )
+    const { id } = await params
+    const supabase = createSupabaseServerClient()
     
     // Auth check
     const { data: { session } } = await supabase.auth.getSession()
@@ -118,7 +79,7 @@ export async function PUT(
     const { data: currentSkill, error: fetchError } = await supabase
       .from('skills')
       .select('*')
-      .eq('id', params.id)
+      .eq('id', id)
       .eq('user_id', session.user.id)
       .single()
 
@@ -133,7 +94,7 @@ export async function PUT(
       .eq('name', name.trim())
       .eq('category', category.trim())
       .eq('user_id', session.user.id)
-      .neq('id', params.id)
+      .neq('id', id)
       .single()
 
     if (existingSkill) {
@@ -153,7 +114,7 @@ export async function PUT(
     const { data: skill, error } = await supabase
       .from('skills')
       .update(updateData)
-      .eq('id', params.id)
+      .eq('id', id)
       .eq('user_id', session.user.id)
       .select()
       .single()
@@ -174,30 +135,11 @@ export async function PUT(
 // DELETE - Yetenek sil
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const cookieStore = await cookies()
-    const supabase = createSupabaseServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll()
-          },
-          setAll(cookiesToSet) {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) =>
-                cookieStore.set(name, value, options)
-              )
-            } catch {
-              // Server Component'ten çağrıldıysa ignore
-            }
-          },
-        },
-      }
-    )
+    const { id } = await params
+    const supabase = createSupabaseServerClient()
     
     // Auth check
     const { data: { session } } = await supabase.auth.getSession()
@@ -209,7 +151,7 @@ export async function DELETE(
     const { data: skill, error: fetchError } = await supabase
       .from('skills')
       .select('id, name, category, order_index')
-      .eq('id', params.id)
+      .eq('id', id)
       .eq('user_id', session.user.id)
       .single()
 
@@ -221,7 +163,7 @@ export async function DELETE(
     const { error } = await supabase
       .from('skills')
       .delete()
-      .eq('id', params.id)
+      .eq('id', id)
       .eq('user_id', session.user.id)
 
     if (error) {
@@ -250,7 +192,7 @@ export async function DELETE(
     return NextResponse.json({
       message: 'Yetenek başarıyla silindi',
       deletedSkill: {
-        id: params.id,
+        id: id,
         name: skill.name,
         category: skill.category
       }

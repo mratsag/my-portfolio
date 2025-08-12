@@ -99,7 +99,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
         contentEditable
         onInput={handleInput}
         onBlur={handleInput}
-        placeholder={placeholder}
+        data-placeholder={placeholder}
         suppressContentEditableWarning
       />
     </div>

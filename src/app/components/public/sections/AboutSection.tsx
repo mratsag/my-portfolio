@@ -17,9 +17,32 @@ interface AboutSectionProps {
     linkedin?: string
     website?: string
   }
-  experiences?: any[]
-  skills?: any[]
-  education?: any[]
+  experiences?: Array<{
+    id: string
+    title: string
+    company: string
+    location?: string
+    start_date: string
+    end_date?: string
+    description?: string
+    technologies?: string[]
+  }> | null
+  skills?: Array<{
+    id: string
+    name: string
+    level: string
+    category?: string
+  }> | null
+  education?: Array<{
+    id: string
+    institution: string
+    school?: string
+    degree: string
+    field: string
+    start_date: string
+    end_date?: string
+    description?: string
+  }> | null
 }
 
 export default function AboutSection({ profile, experiences, skills, education }: AboutSectionProps) {
