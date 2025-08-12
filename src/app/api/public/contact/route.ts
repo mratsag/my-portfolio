@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     // Validation
     if (!name || !email || !subject || !message) {
       return NextResponse.json(
-        { error: 'All fields are required' },
+        { error: 'Tüm alanlar gereklidir' },
         { status: 400 }
       )
     }
@@ -18,25 +18,49 @@ export async function POST(request: Request) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
       return NextResponse.json(
-        { error: 'Invalid email format' },
+        { error: 'Geçersiz e-posta formatı' },
         { status: 400 }
       )
     }
 
     const supabase = createSupabaseServerClient()
 
-    // For now, just return success without saving to database
-    // TODO: Create messages table in Supabase
-    console.log('Contact form submission:', { name, email, subject, message })
+    // Mesajı veritabanına kaydet
+    const { data, error } = await supabase
+      .from('messages')
+      .insert([
+        {
+          name: name.trim(),
+          email: email.trim(),
+          subject: subject.trim(),
+          message: message.trim(),
+          read: false
+        }
+      ])
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Database error:', error)
+      return NextResponse.json(
+        { error: 'Mesaj kaydedilirken hata oluştu' },
+        { status: 500 }
+      )
+    }
+
+    console.log('Contact form submission saved:', { name, email, subject, message })
 
     return NextResponse.json(
-      { message: 'Message sent successfully' },
+      { 
+        message: 'Mesajınız başarıyla gönderildi! En kısa sürede size dönüş yapacağım.',
+        id: data.id
+      },
       { status: 201 }
     )
   } catch (error) {
     console.error('Error in contact API:', error)
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Sunucu hatası' },
       { status: 500 }
     )
   }

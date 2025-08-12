@@ -1,7 +1,6 @@
 // src/app/api/admin/skills/route.ts
 
-import { createSupabaseServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
+import { createSupabaseServerClient } from '@/lib/supabase-server'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
@@ -9,27 +8,7 @@ export const dynamic = 'force-dynamic'
 // GET - Tüm yetenekleri getir
 export async function GET(request: NextRequest) {
   try {
-    const cookieStore = await cookies()
-    const supabase = createSupabaseServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll()
-          },
-          setAll(cookiesToSet) {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) =>
-                cookieStore.set(name, value, options)
-              )
-            } catch {
-              // Server Component'ten çağrıldıysa ignore
-            }
-          },
-        },
-      }
-    )
+    const supabase = createSupabaseServerClient()
     
     // Auth check
     const { data: { session } } = await supabase.auth.getSession()
@@ -111,27 +90,7 @@ export async function GET(request: NextRequest) {
 // POST - Yeni yetenek oluştur
 export async function POST(request: NextRequest) {
   try {
-    const cookieStore = await cookies()
-    const supabase = createSupabaseServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll()
-          },
-          setAll(cookiesToSet) {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) =>
-                cookieStore.set(name, value, options)
-              )
-            } catch {
-              // Server Component'ten çağrıldıysa ignore
-            }
-          },
-        },
-      }
-    )
+    const supabase = createSupabaseServerClient()
     
     // Auth check
     const { data: { session } } = await supabase.auth.getSession()
@@ -215,27 +174,7 @@ export async function POST(request: NextRequest) {
 // PUT - Toplu sıralama güncelleme
 export async function PUT(request: NextRequest) {
   try {
-    const cookieStore = await cookies()
-    const supabase = createSupabaseServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll()
-          },
-          setAll(cookiesToSet) {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) =>
-                cookieStore.set(name, value, options)
-              )
-            } catch {
-              // Server Component'ten çağrıldıysa ignore
-            }
-          },
-        },
-      }
-    )
+    const supabase = createSupabaseServerClient()
     
     // Auth check
     const { data: { session } } = await supabase.auth.getSession()

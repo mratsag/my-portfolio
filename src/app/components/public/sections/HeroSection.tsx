@@ -38,9 +38,14 @@ export default function HeroSection({ profile }: HeroSectionProps) {
   // Profil fotoğrafı URL'sine timestamp ekleyerek cache'i bypass et
   const getAvatarUrl = (url?: string) => {
     if (!url) return undefined
-    const timestamp = Date.now()
+    // URL'de zaten timestamp varsa kullan, yoksa ekle
+    if (url.includes('?t=')) {
+      return url
+    }
     const separator = url.includes('?') ? '&' : '?'
-    return `${url}${separator}t=${timestamp}`
+    const finalUrl = `${url}${separator}t=${Date.now()}`
+    console.log('Avatar URL with cache bypass:', finalUrl)
+    return finalUrl
   }
 
   if (!mounted) {
@@ -129,6 +134,10 @@ export default function HeroSection({ profile }: HeroSectionProps) {
                   src={getAvatarUrl(profile.avatar_url)}
                   alt={profile.full_name || 'Murat Sağ'}
                   className={styles.avatar}
+                  onError={(e) => {
+                    console.error('Avatar load error:', e);
+                    console.log('Failed URL:', profile.avatar_url);
+                  }}
                 />
               ) : (
                 <div className={styles.avatarPlaceholder}>

@@ -64,6 +64,8 @@ export default function ContactSection({ profile }: ContactSectionProps) {
       } else {
         setSubmitStatus('error')
         console.error('Contact form error:', data.error)
+        // Hata mesajını kullanıcıya göster
+        alert(data.error || 'Mesaj gönderilirken bir hata oluştu')
       }
     } catch (error) {
       setSubmitStatus('error')

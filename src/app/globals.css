@@ -17,13 +17,7 @@ body {
   background-color: #f8fafc;
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #0f172a;
-    color: #e2e8f0;
-  }
-}
+/* Theme support will be handled by next-themes */
 
 /* Modern utility classes */
 .container {
@@ -427,55 +421,7 @@ button {
   }
 }
 
-/* Dark mode overrides */
-@media (prefers-color-scheme: dark) {
-  input {
-    background-color: #1f2937;
-    border-color: #4b5563;
-    color: #e2e8f0;
-  }
-  
-  input:focus {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-  }
-  
-  .bg-white {
-    background-color: #1f2937;
-  }
-  
-  .text-gray-600 {
-    color: #9ca3af;
-  }
-  
-  .text-gray-700 {
-    color: #d1d5db;
-  }
-  
-  .text-gray-800 {
-    color: #e5e7eb;
-  }
-  
-  .text-gray-900 {
-    color: #f9fafb;
-  }
-  
-  .border-gray-200 {
-    border-color: #374151;
-  }
-  
-  .border-gray-300 {
-    border-color: #4b5563;
-  }
-  
-  .bg-gray-50 {
-    background-color: #111827;
-  }
-  
-  .bg-gray-100 {
-    background-color: #1f2937;
-  }
-}
+/* Dark mode overrides - these will be handled by Tailwind's dark: classes */
 
 /* Admin Layout Styles */
 .admin-sidebar {
@@ -6918,3 +6864,5 @@ button {
 .dark .skills-empty-text {
   color: #9ca3af;
 } 
+
+

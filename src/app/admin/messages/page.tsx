@@ -88,13 +88,21 @@ export default function MessagesPage() {
 
   const handleToggleRead = async (messageId: string, read: boolean) => {
     try {
+      console.log('Toggling message read status:', { messageId, read })
+      
       const response = await fetch(`/api/admin/messages/${messageId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ read })
       })
 
-      if (!response.ok) throw new Error('Failed to update message')
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to update message')
+      }
+
+      const result = await response.json()
+      console.log('Message update result:', result)
 
       setMessages(prev => prev.map(m => 
         m.id === messageId ? { ...m, read } : m
@@ -120,11 +128,19 @@ export default function MessagesPage() {
 
     setDeleteLoading(messageId)
     try {
+      console.log('Deleting message:', messageId)
+      
       const response = await fetch(`/api/admin/messages/${messageId}`, {
         method: 'DELETE'
       })
 
-      if (!response.ok) throw new Error('Failed to delete message')
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to delete message')
+      }
+
+      const result = await response.json()
+      console.log('Message delete result:', result)
 
       setMessages(prev => prev.filter(m => m.id !== messageId))
       setSelectedMessages(prev => prev.filter(id => id !== messageId))

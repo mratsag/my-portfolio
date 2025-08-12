@@ -44,9 +44,9 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 50px;
   padding: 0.5rem 1rem;
   margin-bottom: 1.5rem;
@@ -114,6 +114,7 @@
 .primaryButton:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  background: #f8fafc;
 }
 
 .secondaryButton {
@@ -164,7 +165,7 @@
 }
 
 .socialLink:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.25);
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }

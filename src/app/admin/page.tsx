@@ -45,9 +45,7 @@ export default async function AdminDashboard() {
     .select('id, created_at')
     .ilike('created_at', `${todayString}%`)
 
-  // Debug için
-  console.log('Bugünkü mesaj sayısı:', todayMessages?.length || 0)
-  console.log('Bugünün tarihi:', todayString)
+      // Debug bilgileri kaldırıldı
 
   // Okunmamış mesajları al
   const { data: unreadMessages } = await supabase

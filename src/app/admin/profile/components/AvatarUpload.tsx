@@ -74,6 +74,8 @@ export default function AvatarUpload({
       const { url } = await response.json()
       
       console.log('Avatar uploaded successfully:', url)
+      console.log('Avatar URL type:', typeof url)
+      console.log('Avatar URL length:', url?.length)
       onChange(url)
 
     } catch (err) {
@@ -122,9 +124,13 @@ export default function AvatarUpload({
         <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
           {value ? (
             <img
-              src={value}
+              src={`${value}?t=${Date.now()}`}
               alt="Avatar"
               className="w-full h-full object-cover"
+              onError={(e) => {
+                console.error('AvatarUpload load error:', e);
+                console.log('Failed AvatarUpload URL:', value);
+              }}
             />
           ) : (
             <div className="text-gray-400 dark:text-gray-500">

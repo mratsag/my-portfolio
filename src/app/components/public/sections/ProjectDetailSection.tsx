@@ -121,7 +121,7 @@ export default function ProjectDetailSection({ project, profile }: ProjectDetail
                 <div className={styles.projectContent}>
                   <h2 className={styles.sectionTitle}>Proje Detayları</h2>
                   <div 
-                    className={styles.content}
+                    className={`${styles.content} prose prose-lg max-w-none dark:prose-invert prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-strong:text-gray-900 dark:prose-strong:text-white prose-a:text-indigo-600 dark:prose-a:text-indigo-400 prose-blockquote:border-l-indigo-500 prose-blockquote:bg-indigo-50 dark:prose-blockquote:bg-indigo-900/20 prose-ul:text-gray-700 dark:prose-ul:text-gray-300 prose-ol:text-gray-700 dark:prose-ol:text-gray-300`}
                     dangerouslySetInnerHTML={{ __html: project.content }}
                   />
                 </div>

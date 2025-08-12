@@ -12,15 +12,17 @@ import {
   CodeBracketIcon,
   EyeIcon,
   XMarkIcon,
-  PlusIcon
+  PlusIcon,
+  DocumentTextIcon
 } from '@heroicons/react/24/outline'
 import ImageUpload from './ImageUpload'
+import RichTextEditor from '../blog/components/RichTextEditor'
 import { Project } from '@/lib/types'
 
 const projectSchema = z.object({
   title: z.string().min(1, 'Başlık gereklidir').max(100, 'Başlık en fazla 100 karakter olabilir'),
   description: z.string().min(1, 'Açıklama gereklidir').max(1000, 'Açıklama en fazla 1000 karakter olabilir'),
-  content: z.string().optional(),
+  content: z.string().min(1, 'Proje detayları gereklidir'),
   demo_url: z.string().url('Geçerli bir URL giriniz').optional().or(z.literal('')),
   github_url: z.string().url('Geçerli bir URL giriniz').optional().or(z.literal('')),
   technologies: z.array(z.string()),
@@ -49,6 +51,7 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
   const [imageUrl, setImageUrl] = useState(project?.image_url || '')
   const [newTechnology, setNewTechnology] = useState('')
   const [showTechSuggestions, setShowTechSuggestions] = useState(false)
+  const [showPreview, setShowPreview] = useState(false)
   const router = useRouter()
 
   const {
@@ -74,6 +77,7 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
   const watchedTechnologies = watch('technologies')
   const watchedTitle = watch('title')
   const watchedDescription = watch('description')
+  const watchedContent = watch('content')
 
   // image_url is handled separately from the form
 
@@ -102,8 +106,6 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
         throw new Error(error.error || 'Bir hata oluştu')
       }
 
-      const result = await response.json()
-      
       if (onSuccess) {
         onSuccess()
       } else {
@@ -119,17 +121,15 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
   }
 
   const addTechnology = (tech: string) => {
-    const currentTech = watchedTechnologies || []
-    if (!currentTech.includes(tech)) {
-      setValue('technologies', [...currentTech, tech])
+    if (tech && !watchedTechnologies.includes(tech)) {
+      setValue('technologies', [...watchedTechnologies, tech])
+      setNewTechnology('')
+      setShowTechSuggestions(false)
     }
-    setNewTechnology('')
-    setShowTechSuggestions(false)
   }
 
   const removeTechnology = (tech: string) => {
-    const currentTech = watchedTechnologies || []
-    setValue('technologies', currentTech.filter(t => t !== tech))
+    setValue('technologies', watchedTechnologies.filter(t => t !== tech))
   }
 
   const handleNewTechnologySubmit = () => {
@@ -138,64 +138,62 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
     }
   }
 
-  const filteredSuggestions = commonTechnologies.filter(tech =>
-    tech.toLowerCase().includes(newTechnology.toLowerCase()) &&
-    !watchedTechnologies?.includes(tech)
+  const filteredSuggestions = commonTechnologies.filter(
+    tech => tech.toLowerCase().includes(newTechnology.toLowerCase()) && 
+    !watchedTechnologies.includes(tech)
   )
 
   return (
-    <div className="project-form-container">
-      <div className="project-form-card">
-        <div className="project-form-header">
-          <h2 className="project-form-title">
-            {project ? 'Proje Düzenle' : 'Yeni Proje'}
+    <div className="max-w-4xl mx-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            {project ? 'Projeyi Düzenle' : 'Yeni Proje Ekle'}
           </h2>
-          <p className="project-form-subtitle">
-            {project ? 'Mevcut projeyi düzenleyin' : 'Portfolio\'nüze yeni bir proje ekleyin'}
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+            Proje bilgilerini ve detaylarını güncelleyin
           </p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="project-form">
-          {/* Basic Info */}
-          <div className="form-section">
-            <div className="form-field full-width">
-              <label className="form-label">
+        <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-8">
+          {/* Basic Information */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <DocumentTextIcon className="icon-sm" />
                 Proje Başlığı *
               </label>
               <input
                 {...register('title')}
-                className="form-input"
-                placeholder="Örn: E-ticaret Web Sitesi"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                placeholder="Örn: E-Ticaret Web Sitesi"
               />
               {errors.title && (
-                <p className="form-error">{errors.title.message}</p>
+                <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
               )}
             </div>
 
-            <div className="form-field full-width">
-              <label className="form-label">
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <DocumentTextIcon className="icon-sm" />
                 Kısa Açıklama *
               </label>
               <textarea
                 {...register('description')}
                 rows={3}
-                className="form-textarea"
-                placeholder="Projenizin kısa bir açıklamasını yazın..."
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                placeholder="Projenin kısa açıklaması..."
               />
-              <div className="form-field-footer">
-                <span className="char-counter">
-                  {watchedDescription?.length || 0}/1000 karakter
-                </span>
-                {errors.description && (
-                  <p className="form-error">{errors.description.message}</p>
-                )}
-              </div>
+              {errors.description && (
+                <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>
+              )}
             </div>
           </div>
 
-          {/* Image Upload */}
-          <div className="form-field">
-            <label className="form-label">
+          {/* Project Image */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <PhotoIcon className="icon-sm" />
               Proje Görseli
             </label>
             <ImageUpload
@@ -205,37 +203,79 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
             />
           </div>
 
+          {/* Rich Text Content */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <DocumentTextIcon className="icon-sm" />
+                Proje Detayları *
+              </label>
+              <button
+                type="button"
+                onClick={() => setShowPreview(!showPreview)}
+                className="flex items-center text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
+              >
+                {showPreview ? (
+                  <>
+                    <DocumentTextIcon className="w-4 h-4 mr-1" />
+                    Düzenle
+                  </>
+                ) : (
+                  <>
+                    <EyeIcon className="w-4 h-4 mr-1" />
+                    Önizle
+                  </>
+                )}
+              </button>
+            </div>
+
+            {showPreview ? (
+              <div className="prose prose-sm max-w-none dark:prose-invert bg-gray-50 dark:bg-gray-900 p-4 rounded-md border">
+                <div dangerouslySetInnerHTML={{ __html: watchedContent }} />
+              </div>
+            ) : (
+              <RichTextEditor
+                value={watchedContent}
+                onChange={(value) => setValue('content', value)}
+                placeholder="Proje detaylarını yazın... Teknolojiler, özellikler, zorluklar ve çözümler hakkında detaylı bilgi verin."
+              />
+            )}
+            {errors.content && (
+              <p className="text-red-500 text-sm mt-1">{errors.content.message}</p>
+            )}
+          </div>
+
           {/* URLs */}
-          <div className="form-section">
-            <div className="form-field">
-              <label className="form-label">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 <LinkIcon className="icon-sm" />
                 Demo URL
               </label>
               <input
                 {...register('demo_url')}
                 type="url"
-                className="form-input"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 placeholder="https://example.com"
               />
               {errors.demo_url && (
-                <p className="form-error">{errors.demo_url.message}</p>
+                <p className="text-red-500 text-sm mt-1">{errors.demo_url.message}</p>
               )}
             </div>
 
-            <div className="form-field">
-              <label className="form-label">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 <CodeBracketIcon className="icon-sm" />
                 GitHub URL
               </label>
               <input
                 {...register('github_url')}
                 type="url"
-                className="form-input"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 placeholder="https://github.com/username/repo"
               />
               {errors.github_url && (
-                <p className="form-error">{errors.github_url.message}</p>
+                <p className="text-red-500 text-sm mt-1">{errors.github_url.message}</p>
               )}
             </div>
           </div>
@@ -298,7 +338,7 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                       key={tech}
                       type="button"
                       onClick={() => addTechnology(tech)}
-                      className="w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white"
                     >
                       {tech}
                     </button>
@@ -308,69 +348,83 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
             </div>
           </div>
 
-          {/* Content */}
-          <div className="form-field full-width">
-            <label className="form-label">
-              Detaylı Açıklama
-            </label>
-            <textarea
-              {...register('content')}
-              rows={8}
-              className="form-textarea"
-              placeholder="Projeniz hakkında detaylı bilgi verin. Markdown formatını kullanabilirsiniz..."
-            />
-          </div>
+          {/* Settings */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <label className="flex items-center">
+                <input
+                  {...register('featured')}
+                  type="checkbox"
+                  className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                  Öne çıkan proje olarak göster
+                </span>
+              </label>
+            </div>
 
-          {/* Options */}
-          <div className="form-section">
-            <div className="form-field">
-              <label className="form-label">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Durum
               </label>
               <select
                 {...register('status')}
-                className="form-input"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               >
                 <option value="draft">Taslak</option>
-                <option value="published">Yayında</option>
+                <option value="published">Yayınla</option>
               </select>
-            </div>
-
-            <div className="form-field">
-              <label className="form-label checkbox-label">
-                <input
-                  {...register('featured')}
-                  type="checkbox"
-                  className="form-checkbox"
-                />
-                <span>Öne çıkarılsın</span>
-              </label>
             </div>
           </div>
 
           {/* Actions */}
-          <div className="form-actions">
+          <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200 dark:border-gray-700">
             <button
               type="button"
               onClick={() => router.back()}
-              className="btn-secondary"
+              className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               İptal
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary"
+              className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
-                <div className="btn-loading">
-                  <div className="btn-spinner"></div>
+                <div className="flex items-center">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                   Kaydediliyor...
                 </div>
               ) : (
-                project ? 'Güncelle' : 'Kaydet'
+                project ? 'Güncelle' : 'Oluştur'
               )}
             </button>
+          </div>
+
+          {/* Help Text */}
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md p-4">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-4 w-4 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200">
+                  💡 Proje Detayları İpuçları
+                </h3>
+                <div className="mt-2 text-sm text-blue-700 dark:text-blue-300">
+                  <ul className="list-disc list-inside space-y-1">
+                    <li>Projenin amacını ve çözdüğü problemi açıklayın</li>
+                    <li>Kullanılan teknolojileri ve neden seçildiğini belirtin</li>
+                    <li>Karşılaştığınız zorlukları ve çözümlerinizi paylaşın</li>
+                    <li>Projenin özelliklerini ve kullanıcı deneyimini anlatın</li>
+                    <li>Gelecek planları ve geliştirme fikirlerini ekleyin</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </form>
       </div>

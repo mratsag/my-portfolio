@@ -80,6 +80,10 @@ export default function ProfileForm({ initialData, onSuccess }: ProfileFormProps
   }, [initialData, setValue])
 
   const onSubmit = async (data: ProfileFormData) => {
+    console.log('Form submit başladı');
+    console.log('Form data:', data);
+    console.log('Avatar URL:', avatarUrl);
+    
     setLoading(true)
     setSuccess(false)
     
@@ -102,6 +106,12 @@ export default function ProfileForm({ initialData, onSuccess }: ProfileFormProps
 
       const result = await response.json()
       setSuccess(true)
+      
+      // Avatar URL'ini güncelle
+      if (result.profile?.avatar_url) {
+        setAvatarUrl(result.profile.avatar_url)
+        console.log('Avatar URL updated:', result.profile.avatar_url)
+      }
       
       if (onSuccess) {
         onSuccess()
@@ -354,6 +364,12 @@ export default function ProfileForm({ initialData, onSuccess }: ProfileFormProps
             <button
               type="submit"
               disabled={loading || !isDirty}
+              onClick={() => {
+                console.log('Kaydet butonuna tıklandı');
+                console.log('Loading:', loading);
+                console.log('IsDirty:', isDirty);
+                console.log('Form errors:', errors);
+              }}
               className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
