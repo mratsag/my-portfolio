@@ -86,10 +86,8 @@ export default function MessagesPage() {
     fetchMessages()
   }, [currentPage, search, filter, sortBy, sortOrder])
 
-  const handleToggleRead = async (messageId: string, read: boolean) => {
+    const handleToggleRead = async (messageId: string, read: boolean) => {
     try {
-      console.log('Toggling message read status:', { messageId, read })
-      
       const response = await fetch(`/api/admin/messages/${messageId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -100,9 +98,6 @@ export default function MessagesPage() {
         const errorData = await response.json()
         throw new Error(errorData.error || 'Failed to update message')
       }
-
-      const result = await response.json()
-      console.log('Message update result:', result)
 
       setMessages(prev => prev.map(m => 
         m.id === messageId ? { ...m, read } : m
@@ -128,8 +123,6 @@ export default function MessagesPage() {
 
     setDeleteLoading(messageId)
     try {
-      console.log('Deleting message:', messageId)
-      
       const response = await fetch(`/api/admin/messages/${messageId}`, {
         method: 'DELETE'
       })
@@ -138,9 +131,6 @@ export default function MessagesPage() {
         const errorData = await response.json()
         throw new Error(errorData.error || 'Failed to delete message')
       }
-
-      const result = await response.json()
-      console.log('Message delete result:', result)
 
       setMessages(prev => prev.filter(m => m.id !== messageId))
       setSelectedMessages(prev => prev.filter(id => id !== messageId))

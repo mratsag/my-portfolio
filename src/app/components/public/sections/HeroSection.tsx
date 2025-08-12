@@ -44,7 +44,6 @@ export default function HeroSection({ profile }: HeroSectionProps) {
     }
     const separator = url.includes('?') ? '&' : '?'
     const finalUrl = `${url}${separator}t=${Date.now()}`
-    console.log('Avatar URL with cache bypass:', finalUrl)
     return finalUrl
   }
 
@@ -135,8 +134,7 @@ export default function HeroSection({ profile }: HeroSectionProps) {
                   alt={profile.full_name || 'Murat Sağ'}
                   className={styles.avatar}
                   onError={(e) => {
-                    console.error('Avatar load error:', e);
-                    console.log('Failed URL:', profile.avatar_url);
+                    // Avatar yükleme hatası - sessizce handle et
                   }}
                 />
               ) : (

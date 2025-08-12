@@ -119,16 +119,13 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params
-    console.log('DELETE request for message ID:', id)
     
     const supabase = createSupabaseServerClient()
     
     // Auth check
     const { data: { session } } = await supabase.auth.getSession()
-    console.log('Session check:', { hasSession: !!session, userId: session?.user?.id })
     
     if (!session) {
-      console.log('No session found, returning 401')
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -139,21 +136,15 @@ export async function DELETE(
       .eq('id', id)
       .single()
 
-    console.log('Message fetch result:', { message, fetchError })
-
     if (fetchError || !message) {
-      console.log('Message not found or fetch error:', fetchError)
       return NextResponse.json({ error: 'Message not found' }, { status: 404 })
     }
 
     // Delete message
-    console.log('Attempting to delete message:', id)
     const { error } = await supabase
       .from('messages')
       .delete()
       .eq('id', id)
-
-    console.log('Delete result:', { error, success: !error })
 
     if (error) {
       console.error('Message delete error:', error)

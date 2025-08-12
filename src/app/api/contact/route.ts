@@ -1,6 +1,5 @@
 // src/app/api/contact/route.ts
-import { createSupabaseServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
+import { createSupabaseServerClient } from '@/lib/supabase-server'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
@@ -8,27 +7,7 @@ export const dynamic = 'force-dynamic'
 // POST - Yeni mesaj gönder (Public endpoint)
 export async function POST(request: NextRequest) {
   try {
-    const cookieStore = await cookies()
-    const supabase = createSupabaseServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll()
-          },
-          setAll(cookiesToSet) {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) =>
-                cookieStore.set(name, value, options)
-              )
-            } catch {
-              // Server Component'ten çağrıldıysa ignore
-            }
-          },
-        },
-      }
-    )
+    const supabase = createSupabaseServerClient()
 
     const body = await request.json()
     const { name, email, subject, message } = body
@@ -121,8 +100,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // TODO: Email bildirimi gönder (isteğe bağlı)
-    // await sendNotificationEmail(newMessage)
+
 
     return NextResponse.json({
       message: 'Mesajınız başarıyla gönderildi. En kısa sürede dönüş yapacağım.',

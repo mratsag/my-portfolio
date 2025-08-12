@@ -48,7 +48,7 @@ export async function POST(request: Request) {
       )
     }
 
-    console.log('Contact form submission saved:', { name, email, subject, message })
+
 
     return NextResponse.json(
       { 

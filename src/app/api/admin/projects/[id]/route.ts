@@ -257,7 +257,7 @@ export async function DELETE(
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
-    // TODO: Delete associated image from storage if exists
+
     // if (project.image_url) {
     //   // Delete from Supabase storage
     // }

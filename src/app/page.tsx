@@ -33,16 +33,7 @@ export default async function Home() {
     const profile = profileResult.status === 'fulfilled' ? profileResult.value.data : null
     const projects = projectsResult.status === 'fulfilled' ? projectsResult.value.data : []
 
-    // Debug: Avatar URL'ini kontrol et
-    if (process.env.NODE_ENV === 'development' && profile?.avatar_url) {
-      console.log('Profile avatar URL:', profile.avatar_url)
-    }
 
-    // Hataları logla (sadece development'ta)
-    if (process.env.NODE_ENV === 'development') {
-      if (profileResult.status === 'rejected') console.error('Profile fetch error:', profileResult.reason)
-      if (projectsResult.status === 'rejected') console.error('Projects fetch error:', projectsResult.reason)
-    }
 
     return (
       <PublicLayout>

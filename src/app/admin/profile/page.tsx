@@ -115,8 +115,7 @@ export default function ProfilePage() {
                   src={`${profile.avatar_url}?t=${Date.now()}`}
                   alt={profile.full_name}
                   onError={(e) => {
-                    console.error('Admin avatar load error:', e);
-                    console.log('Failed admin URL:', profile.avatar_url);
+                    // Avatar yükleme hatası - sessizce handle et
                   }}
                 />
               ) : (

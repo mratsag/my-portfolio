@@ -44,8 +44,6 @@ export default function AvatarUpload({
         throw new Error('Sadece resim dosyaları yüklenebilir')
       }
 
-      console.log('Uploading avatar:', file.name)
-
       // FormData oluştur
       const formData = new FormData()
       formData.append('file', file)
@@ -72,10 +70,6 @@ export default function AvatarUpload({
       }
 
       const { url } = await response.json()
-      
-      console.log('Avatar uploaded successfully:', url)
-      console.log('Avatar URL type:', typeof url)
-      console.log('Avatar URL length:', url?.length)
       onChange(url)
 
     } catch (err) {
@@ -128,8 +122,7 @@ export default function AvatarUpload({
               alt="Avatar"
               className="w-full h-full object-cover"
               onError={(e) => {
-                console.error('AvatarUpload load error:', e);
-                console.log('Failed AvatarUpload URL:', value);
+                // Avatar yükleme hatası - sessizce handle et
               }}
             />
           ) : (

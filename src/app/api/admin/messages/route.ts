@@ -55,12 +55,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
-    console.log('Messages fetched:', {
-      count: count || 0,
-      messagesCount: messages?.length || 0,
-      page,
-      limit
-    })
+
 
     // İstatistikleri hesapla
     const { data: stats } = await supabase
