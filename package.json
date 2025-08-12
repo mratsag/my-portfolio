@@ -1,0 +1,47 @@
+{
+  "name": "my-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test:api": "node scripts/test-public-api.js"
+  },
+  "dependencies": {
+    "@headlessui/react": "^2.2.7",
+    "@hello-pangea/dnd": "^18.0.1",
+    "@heroicons/react": "^2.2.0",
+    "@hookform/resolvers": "^5.2.1",
+    "@supabase/auth-ui-react": "^0.4.7",
+    "@supabase/auth-ui-shared": "^0.1.8",
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.53.0",
+    "@tiptap/pm": "^3.0.9",
+    "@tiptap/react": "^3.0.9",
+    "@tiptap/starter-kit": "^3.0.9",
+    "date-fns": "^4.1.0",
+    "framer-motion": "^12.23.12",
+    "lucide-react": "^0.536.0",
+    "next": "^15.4.5",
+    "next-themes": "^0.4.6",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-dropzone": "^14.3.8",
+    "react-hook-form": "^7.62.0",
+    "recharts": "^3.1.0",
+    "zod": "^4.0.14"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20.19.9",
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.4.5",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
