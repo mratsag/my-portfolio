@@ -1,3 +1,31 @@
+/* Disable loading states */
+.loading,
+[data-loading="true"],
+.loading-spinner,
+.loading-text {
+  display: none !important;
+}
+
+/* Hide Next.js automatic loading UI */
+[data-nextjs-router-loading] {
+  display: none !important;
+}
+
+/* Hide all loading states and spinners */
+.animate-spin,
+.spinner,
+.loading-indicator,
+[role="progressbar"] {
+  display: none !important;
+}
+
+/* Hide loading text */
+.loading-text,
+.loading-message,
+[data-loading-text] {
+  display: none !important;
+}
+
 /* Modern CSS Reset */
 * {
   margin: 0;

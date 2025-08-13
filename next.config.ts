@@ -5,9 +5,11 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ['@supabase/ssr'],
   allowedDevOrigins: ['192.168.254.124', 'www.muratsag.com', 'muratsag.com'],
   
-  // Performance optimizations
+  // Performance optimizations and disable loading states
   experimental: {
     optimizePackageImports: ['@heroicons/react', 'lucide-react'],
+    // Disable automatic loading UI
+    ppr: false,
   },
   
   // Image optimization
