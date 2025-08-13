@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useTheme } from 'next-themes'
 import { Calendar, User, Tag, Search, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
