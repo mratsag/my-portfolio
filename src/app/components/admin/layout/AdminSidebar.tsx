@@ -69,9 +69,15 @@ const navigation: NavigationItem[] = [
     ]
   },
   {
+    name: 'Eğitim',
+    href: '/admin/education',
+    icon: AcademicCapIcon,
+    current: false,
+  },
+  {
     name: 'Yetenekler',
     href: '/admin/skills',
-    icon: AcademicCapIcon,
+    icon: CodeBracketIcon,
     current: false,
   },
   {

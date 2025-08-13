@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
-import { Calendar, MapPin, GraduationCap, Award, Code, Database, Globe } from 'lucide-react'
+import { Calendar, MapPin, GraduationCap, Award, Code, Database, Globe, Download, FileText } from 'lucide-react'
 import styles from '@/styles/public/AboutSection.module.css'
 
 interface AboutSectionProps {
@@ -154,6 +154,12 @@ export default function AboutSection({ profile, experiences, skills, education }
             >
               Eğitim
             </button>
+            <button
+              className={`${styles.tab} ${activeTab === 'cv' ? styles.active : ''}`}
+              onClick={() => setActiveTab('cv')}
+            >
+              CV
+            </button>
           </div>
 
           <div className={styles.tabContent}>
@@ -271,7 +277,11 @@ export default function AboutSection({ profile, experiences, skills, education }
                       </div>
                       <div className={styles.educationContent}>
                         <h4 className={styles.educationTitle}>{edu.degree}</h4>
-                        <p className={styles.educationSchool}>{edu.school}</p>
+                        <p className={styles.educationSchool}>{edu.institution}</p>
+                        {edu.school && (
+                          <p className={styles.educationField}>{edu.school}</p>
+                        )}
+                        <p className={styles.educationField}>{edu.field}</p>
                         <p className={styles.educationPeriod}>
                           {new Date(edu.start_date).getFullYear()} - {edu.end_date ? new Date(edu.end_date).getFullYear() : 'Devam ediyor'}
                         </p>
@@ -281,6 +291,40 @@ export default function AboutSection({ profile, experiences, skills, education }
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {/* CV Tab */}
+            {activeTab === 'cv' && (
+              <div className={styles.cvContent}>
+                <h3 className={styles.sectionTitle}>CV İndir</h3>
+                <div className={styles.cvSection}>
+                  <div className={styles.cvCard}>
+                    <div className={styles.cvIcon}>
+                      <FileText className={styles.fileIcon} />
+                    </div>
+                    <div className={styles.cvInfo}>
+                      <h4 className={styles.cvTitle}>Murat Sağ - CV</h4>
+                      <p className={styles.cvDescription}>
+                        Güncel CV'mi PDF formatında indirebilirsiniz. Tüm deneyimlerim, 
+                        yeteneklerim ve eğitim bilgilerim detaylı olarak yer almaktadır.
+                      </p>
+                      <div className={styles.cvMeta}>
+                        <span className={styles.cvFormat}>PDF</span>
+                        <span className={styles.cvSize}>~500 KB</span>
+                        <span className={styles.cvDate}>Güncel</span>
+                      </div>
+                    </div>
+                    <a 
+                      href="/cv-murat-sag.pdf" 
+                      download="Murat-Sag-CV.pdf"
+                      className={styles.cvDownloadButton}
+                    >
+                      <Download className={styles.downloadIcon} />
+                      CV İndir
+                    </a>
+                  </div>
                 </div>
               </div>
             )}

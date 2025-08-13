@@ -26,6 +26,7 @@ export interface Profile {
     image_url?: string
     demo_url?: string
     github_url?: string
+    live_url?: string
     technologies: string[]
     featured: boolean
     status: 'draft' | 'published'
@@ -44,6 +45,20 @@ export interface Profile {
     end_date?: string
     current: boolean
     order_index: number
+    created_at: string
+    updated_at: string
+    user_id: string
+  }
+
+  export interface Education {
+    id: string
+    institution: string
+    school?: string
+    degree: string
+    field: string
+    start_date: string
+    end_date?: string
+    description?: string
     created_at: string
     updated_at: string
     user_id: string
@@ -76,7 +91,7 @@ export interface Profile {
     updated_at: string
     user_id: string
   }
-  
+
   export interface BlogPost {
     id: string
     title: string
@@ -84,19 +99,21 @@ export interface Profile {
     excerpt: string
     content: string
     image_url?: string
+    author?: string
     published: boolean
     reading_time?: number
+    views?: number
     tags: string[]
     created_at: string
     updated_at: string
     user_id: string
   }
-  
+
   export interface Message {
     id: string
     name: string
     email: string
-    subject?: string
+    subject: string
     message: string
     read: boolean
     created_at: string
