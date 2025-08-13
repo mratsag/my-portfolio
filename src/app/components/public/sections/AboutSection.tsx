@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
-import { Calendar, MapPin, GraduationCap, Award, Code, Database, Globe, Download, FileText } from 'lucide-react'
+import { Calendar, MapPin, GraduationCap, Download, FileText } from 'lucide-react'
 import styles from '@/styles/public/AboutSection.module.css'
 
 interface AboutSectionProps {
@@ -307,7 +307,7 @@ export default function AboutSection({ profile, experiences, skills, education }
                     <div className={styles.cvInfo}>
                       <h4 className={styles.cvTitle}>Murat Sağ - CV</h4>
                       <p className={styles.cvDescription}>
-                        Güncel CV'mi PDF formatında indirebilirsiniz. Tüm deneyimlerim, 
+                        Güncel CV&apos;mi PDF formatında indirebilirsiniz. Tüm deneyimlerim, 
                         yeteneklerim ve eğitim bilgilerim detaylı olarak yer almaktadır.
                       </p>
                       <div className={styles.cvMeta}>

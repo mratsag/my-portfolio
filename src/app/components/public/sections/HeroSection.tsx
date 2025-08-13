@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useTheme } from 'next-themes'
-import { ArrowRight, Download, Mail, Github, Linkedin } from 'lucide-react'
+import { ArrowRight, Mail, Github, Linkedin } from 'lucide-react'
 import styles from '@/styles/public/HeroSection.module.css'
 
 interface HeroSectionProps {

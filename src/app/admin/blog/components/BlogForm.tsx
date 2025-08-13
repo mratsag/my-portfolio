@@ -8,8 +8,6 @@ import { z } from 'zod'
 import { 
   XMarkIcon,
   DocumentTextIcon,
-  UserIcon,
-  TagIcon,
   CheckIcon,
   EyeIcon,
   EyeSlashIcon

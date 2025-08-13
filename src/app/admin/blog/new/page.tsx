@@ -2,21 +2,12 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 import { 
-  ArrowLeftIcon,
-  DocumentTextIcon,
-  UserIcon,
-  TagIcon,
-  EyeIcon,
-  EyeSlashIcon
+  ArrowLeftIcon
 } from '@heroicons/react/24/outline'
 import BlogForm from '../components/BlogForm'
 
 export default function NewBlogPage() {
-  const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const router = useRouter()
 
