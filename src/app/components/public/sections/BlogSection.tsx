@@ -23,18 +23,9 @@ interface BlogSectionProps {
 }
 
 export default function BlogSection({ blogs }: BlogSectionProps) {
-  const [mounted, setMounted] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const { theme } = useTheme()
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) {
-    return null
-  }
 
   // Kategorileri çıkar
   const categories = ['all', ...new Set(blogs?.flatMap(b => b.category || []).filter(Boolean) || [])]
