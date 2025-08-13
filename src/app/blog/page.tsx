@@ -1,4 +1,3 @@
-import { createSupabaseServerClient } from '@/lib/supabase-server'
 import PublicLayout from '@/app/components/public/layout/PublicLayout'
 import BlogSection from '@/app/components/public/sections/BlogSection'
 
@@ -6,19 +5,25 @@ import BlogSection from '@/app/components/public/sections/BlogSection'
 export const revalidate = 300
 
 export default async function BlogPage() {
-  const supabase = createSupabaseServerClient()
+  console.log('BlogPage: Starting...')
   
   try {
-    // Yayınlanmış blog yazılarını al
-    const { data: blogs, error } = await supabase
-      .from('blogs')
-      .select('*')
-      .eq('published', true)
-      .order('created_at', { ascending: false })
+    // Public API'yi kullan
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/public/blogs`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
 
-    if (error) {
-      console.error('Blog fetch error:', error)
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
     }
+
+    const data = await response.json()
+    const blogs = data || []
+
+
 
     return (
       <PublicLayout>

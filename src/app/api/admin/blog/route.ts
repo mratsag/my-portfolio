@@ -8,18 +8,8 @@ export async function GET(request: NextRequest) {
     // Get session
     const { data: { session }, error: sessionError } = await supabase.auth.getSession()
     if (sessionError || !session) {
+      console.error('Session error:', sessionError)
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
-    // Get user profile
-    const { data: profile, error: profileError } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', session.user.id)
-      .single()
-
-    if (profileError) {
-      return NextResponse.json({ error: 'Profile not found' }, { status: 404 })
     }
 
     // Get query parameters
