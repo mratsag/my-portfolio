@@ -1,25 +1,25 @@
 'use client'
 
-import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics'
 import CookieConsent from './CookieConsent'
 
-interface WindowWithGtag extends Window {
-  gtag?: (...args: unknown[]) => void
+interface WindowWithDataLayer extends Window {
+  dataLayer?: unknown[]
 }
 
 export default function CookieConsentWrapper() {
-  useGoogleAnalytics()
-
   const handleCookieAccept = () => {
-    // Google Analytics izin modunu güncelle
-    if (typeof window !== 'undefined' && (window as WindowWithGtag).gtag) {
-      (window as WindowWithGtag).gtag!('consent', 'update', {
-        'analytics_storage': 'granted',
-        'ad_storage': 'granted'
+    // Google Tag Manager consent mode'u güncelle
+    if (typeof window !== 'undefined' && (window as WindowWithDataLayer).dataLayer) {
+      (window as WindowWithDataLayer).dataLayer!.push({
+        'event': 'consent_update',
+        'consent_state': {
+          'analytics_storage': 'granted',
+          'ad_storage': 'granted'
+        }
       });
     }
     
-    // Google Analytics'i yeniden yükle
+    // Sayfayı yeniden yükle
     window.location.reload()
   }
 
