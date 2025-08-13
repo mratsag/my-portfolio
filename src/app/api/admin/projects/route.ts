@@ -1,6 +1,6 @@
 // src/app/api/admin/projects/route.ts
 
-import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
@@ -8,13 +8,10 @@ export const dynamic = 'force-dynamic'
 // GET - Tüm projeleri getir
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createSupabaseServerClient()
-    
-    // Auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     const { searchParams } = new URL(request.url)
     const page = parseInt(searchParams.get('page') || '1')
@@ -26,7 +23,6 @@ export async function GET(request: NextRequest) {
     let query = supabase
       .from('projects')
       .select('*', { count: 'exact' })
-      .eq('user_id', session.user.id)
       .order('created_at', { ascending: false })
 
     // Search filter
@@ -75,13 +71,10 @@ export async function GET(request: NextRequest) {
 // POST - Yeni proje oluştur
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createSupabaseServerClient()
-    
-    // Auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     const body = await request.json()
     const {
@@ -117,7 +110,6 @@ export async function POST(request: NextRequest) {
       .from('projects')
       .select('id')
       .eq('slug', slug)
-      .eq('user_id', session.user.id)
       .single()
 
     let finalSlug = slug
@@ -135,8 +127,7 @@ export async function POST(request: NextRequest) {
       github_url: github_url || null,
       technologies: technologies || [],
       featured: featured || false,
-      status: status || 'draft',
-      user_id: session.user.id
+      status: status || 'draft'
     }
 
     const { data: project, error } = await supabase

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { createClient } from '@supabase/supabase-js'
 
 export async function GET(request: Request) {
   try {
@@ -8,7 +8,10 @@ export async function GET(request: Request) {
     const search = searchParams.get('search')
     const limit = searchParams.get('limit')
 
-    const supabase = createSupabaseServerClient()
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
 
     let query = supabase
       .from('projects')
