@@ -1,5 +1,5 @@
 // src/app/api/admin/projects/[id]/route.ts
-import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
@@ -11,19 +11,15 @@ export async function GET(
 ) {
   const { id } = await params
   try {
-    const supabase = createSupabaseServerClient()
-    
-    // Auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     const { data: project, error } = await supabase
       .from('projects')
       .select('*')
       .eq('id', id)
-      .eq('user_id', session.user.id)
       .single()
 
     if (error) {
@@ -49,13 +45,10 @@ export async function PUT(
 ) {
   const { id } = await params
   try {
-    const supabase = createSupabaseServerClient()
-    
-    // Auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     const body = await request.json()
     const {
@@ -83,7 +76,6 @@ export async function PUT(
       .from('projects')
       .select('*')
       .eq('id', id)
-      .eq('user_id', session.user.id)
       .single()
 
     if (fetchError || !currentProject) {
@@ -105,7 +97,6 @@ export async function PUT(
         .from('projects')
         .select('id')
         .eq('slug', newSlug)
-        .eq('user_id', session.user.id)
         .neq('id', id)
         .single()
 
@@ -134,7 +125,6 @@ export async function PUT(
       .from('projects')
       .update(updateData)
       .eq('id', id)
-      .eq('user_id', session.user.id)
       .select()
       .single()
 
@@ -158,20 +148,16 @@ export async function DELETE(
 ) {
   const { id } = await params
   try {
-    const supabase = createSupabaseServerClient()
-    
-    // Auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     // Check if project exists and belongs to user
     const { data: project, error: fetchError } = await supabase
       .from('projects')
       .select('id, image_url')
       .eq('id', id)
-      .eq('user_id', session.user.id)
       .single()
 
     if (fetchError || !project) {
@@ -183,7 +169,6 @@ export async function DELETE(
       .from('projects')
       .delete()
       .eq('id', id)
-      .eq('user_id', session.user.id)
 
     if (error) {
       console.error('Project delete error:', error)
