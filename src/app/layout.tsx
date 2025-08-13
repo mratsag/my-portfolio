@@ -51,6 +51,9 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  verification: {
+    google: 'sNNJkE3FyNdWwuSYyPf7WfUlmLTjiftuHEgglM5yv_Q',
+  },
 }
 
 export default function RootLayout({
@@ -62,7 +65,6 @@ export default function RootLayout({
     <html lang="tr" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <meta name="google-site-verification" content="sNNJkE3FyNdWwuSYyPf7WfUlmLTjiftuHEgglM5yv_Q" />
       </head>
       <body suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
