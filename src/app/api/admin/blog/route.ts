@@ -26,11 +26,10 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const status = searchParams.get('status')
 
-    // Build query
+    // Build query - get all blogs for admin
     const query = supabase
       .from('blogs')
       .select('*')
-      .eq('user_id', session.user.id)
       .order('created_at', { ascending: false })
 
     // Apply status filter - published column doesn't exist, so show all blogs
