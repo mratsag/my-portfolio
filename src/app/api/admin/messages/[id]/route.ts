@@ -1,5 +1,5 @@
 // src/app/api/admin/messages/[id]/route.ts
-import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
@@ -11,13 +11,10 @@ export async function GET(
 ) {
   const { id } = await params
   try {
-    const supabase = createSupabaseServerClient()
-    
-    // Auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     const { data: message, error } = await supabase
       .from('messages')
@@ -58,13 +55,10 @@ export async function PUT(
 ) {
   const { id } = await params
   try {
-    const supabase = createSupabaseServerClient()
-    
-    // Auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     const body = await request.json()
     const { read } = body
@@ -120,14 +114,10 @@ export async function DELETE(
   try {
     const { id } = await params
     
-    const supabase = createSupabaseServerClient()
-    
-    // Auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     // Check if message exists
     const { data: message, error: fetchError } = await supabase

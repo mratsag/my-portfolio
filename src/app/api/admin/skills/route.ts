@@ -1,6 +1,6 @@
 // src/app/api/admin/skills/route.ts
 
-import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
@@ -8,13 +8,10 @@ export const dynamic = 'force-dynamic'
 // GET - Tüm yetenekleri getir
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createSupabaseServerClient()
-    
-    // Auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     const { searchParams } = new URL(request.url)
     const category = searchParams.get('category')
@@ -23,7 +20,6 @@ export async function GET(request: NextRequest) {
     let query = supabase
       .from('skills')
       .select('*')
-      .eq('user_id', session.user.id)
       .order('order_index', { ascending: true })
       .order('created_at', { ascending: true })
 
@@ -90,13 +86,10 @@ export async function GET(request: NextRequest) {
 // POST - Yeni yetenek oluştur
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createSupabaseServerClient()
-    
-    // Auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     const body = await request.json()
     const { name, category, level } = body
@@ -122,7 +115,6 @@ export async function POST(request: NextRequest) {
       .select('id')
       .eq('name', name.trim())
       .eq('category', category.trim())
-      .eq('user_id', session.user.id)
       .single()
 
     if (existingSkill) {
@@ -137,7 +129,6 @@ export async function POST(request: NextRequest) {
       .from('skills')
       .select('order_index')
       .eq('category', category.trim())
-      .eq('user_id', session.user.id)
       .order('order_index', { ascending: false })
       .limit(1)
       .single()
@@ -148,8 +139,7 @@ export async function POST(request: NextRequest) {
       name: name.trim(),
       category: category.trim(),
       level,
-      order_index: nextOrderIndex,
-      user_id: session.user.id
+      order_index: nextOrderIndex
     }
 
     const { data: skill, error } = await supabase
@@ -174,13 +164,10 @@ export async function POST(request: NextRequest) {
 // PUT - Toplu sıralama güncelleme
 export async function PUT(request: NextRequest) {
   try {
-    const supabase = createSupabaseServerClient()
-    
-    // Auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     const body = await request.json()
     const { skills } = body
@@ -204,7 +191,6 @@ export async function PUT(request: NextRequest) {
         .from('skills')
         .update({ order_index: update.order_index })
         .eq('id', update.id)
-        .eq('user_id', session.user.id)
     }
 
     return NextResponse.json({

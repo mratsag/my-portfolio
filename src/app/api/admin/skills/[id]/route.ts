@@ -1,5 +1,5 @@
 // src/app/api/admin/skills/[id]/route.ts
-import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
@@ -11,19 +11,15 @@ export async function GET(
 ) {
   try {
     const { id } = await params
-    const supabase = createSupabaseServerClient()
-    
-    // Auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     const { data: skill, error } = await supabase
       .from('skills')
       .select('*')
       .eq('id', id)
-      .eq('user_id', session.user.id)
       .single()
 
     if (error) {
@@ -49,13 +45,10 @@ export async function PUT(
 ) {
   try {
     const { id } = await params
-    const supabase = createSupabaseServerClient()
-    
-    // Auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     const body = await request.json()
     const { name, category, level } = body
@@ -80,7 +73,6 @@ export async function PUT(
       .from('skills')
       .select('*')
       .eq('id', id)
-      .eq('user_id', session.user.id)
       .single()
 
     if (fetchError || !currentSkill) {
@@ -93,7 +85,6 @@ export async function PUT(
       .select('id')
       .eq('name', name.trim())
       .eq('category', category.trim())
-      .eq('user_id', session.user.id)
       .neq('id', id)
       .single()
 
@@ -115,7 +106,6 @@ export async function PUT(
       .from('skills')
       .update(updateData)
       .eq('id', id)
-      .eq('user_id', session.user.id)
       .select()
       .single()
 
@@ -139,20 +129,16 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params
-    const supabase = createSupabaseServerClient()
-    
-    // Auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     // Check if skill exists and belongs to user
     const { data: skill, error: fetchError } = await supabase
       .from('skills')
       .select('id, name, category, order_index')
       .eq('id', id)
-      .eq('user_id', session.user.id)
       .single()
 
     if (fetchError || !skill) {
@@ -164,7 +150,6 @@ export async function DELETE(
       .from('skills')
       .delete()
       .eq('id', id)
-      .eq('user_id', session.user.id)
 
     if (error) {
       console.error('Skill delete error:', error)
@@ -176,7 +161,6 @@ export async function DELETE(
       .from('skills')
       .select('id, order_index')
       .eq('category', skill.category)
-      .eq('user_id', session.user.id)
       .gt('order_index', skill.order_index)
       .order('order_index', { ascending: true })
 

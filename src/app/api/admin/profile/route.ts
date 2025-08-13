@@ -1,5 +1,5 @@
 // src/app/api/admin/profile/route.ts
-import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -8,19 +8,15 @@ export const dynamic = 'force-dynamic'
 // GET - Profil bilgilerini getir
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createSupabaseServerClient()
-    
-    // Auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     // Profil bilgilerini al
     const { data: profile, error } = await supabase
       .from('profiles')
       .select('*')
-      .eq('id', session.user.id)
       .single()
 
     if (error) {
@@ -29,9 +25,8 @@ export async function GET(request: NextRequest) {
         const { data: newProfile, error: createError } = await supabase
           .from('profiles')
           .insert({
-            id: session.user.id,
-            email: session.user.email || '',
-            full_name: session.user.user_metadata?.full_name || '',
+            email: '',
+            full_name: '',
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
           })
@@ -61,13 +56,10 @@ export async function GET(request: NextRequest) {
 // PUT - Profil bilgilerini güncelle
 export async function PUT(request: NextRequest) {
   try {
-    const supabase = createSupabaseServerClient()
-    
-    // Auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     const body = await request.json()
     const {
@@ -108,7 +100,7 @@ export async function PUT(request: NextRequest) {
 
     // E-posta validasyonu (basit)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (session.user.email && !emailRegex.test(session.user.email)) {
+    if (body.email && !emailRegex.test(body.email)) {
       return NextResponse.json(
         { error: 'Geçerli bir e-posta adresi giriniz' },
         { status: 400 }
@@ -133,8 +125,7 @@ export async function PUT(request: NextRequest) {
     const { data: profile, error } = await supabase
       .from('profiles')
       .upsert({
-        id: session.user.id,
-        email: session.user.email || '',
+        email: body.email || '',
         ...updateData,
         created_at: new Date().toISOString() // Sadece yeni kayıtlar için
       })

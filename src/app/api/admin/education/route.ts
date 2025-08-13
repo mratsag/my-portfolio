@@ -1,5 +1,5 @@
 // src/app/api/admin/education/route.ts
-import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
@@ -7,18 +7,14 @@ export const dynamic = 'force-dynamic'
 // GET - Tüm eğitim bilgilerini getir
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createSupabaseServerClient()
-    
-    // Auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     const { data: education, error } = await supabase
       .from('education')
       .select('*')
-      .eq('user_id', session.user.id)
       .order('start_date', { ascending: false })
 
     if (error) {
@@ -37,13 +33,10 @@ export async function GET(request: NextRequest) {
 // POST - Yeni eğitim bilgisi ekle
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createSupabaseServerClient()
-    
-    // Auth check
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     const body = await request.json()
     const { institution, school, degree, field, start_date, end_date, description } = body
@@ -60,7 +53,6 @@ export async function POST(request: NextRequest) {
     const { data: education, error } = await supabase
       .from('education')
       .insert({
-        user_id: session.user.id,
         institution: institution.trim(),
         school: school?.trim() || null,
         degree: degree.trim(),
