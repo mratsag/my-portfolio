@@ -1,4 +1,4 @@
-import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { createClient } from '@supabase/supabase-js'
 import PublicLayout from '@/app/components/public/layout/PublicLayout'
 import AboutSection from '@/app/components/public/sections/AboutSection'
 
@@ -6,7 +6,10 @@ import AboutSection from '@/app/components/public/sections/AboutSection'
 export const revalidate = 30
 
 export default async function AboutPage() {
-  const supabase = createSupabaseServerClient()
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
   
   // Tüm sorguları paralel olarak çalıştır
   const [profileResult, experiencesResult, skillsResult, educationResult] = await Promise.allSettled([
@@ -29,7 +32,7 @@ export default async function AboutPage() {
       .select('*')
       .order('order_index', { ascending: true }),
     
-    // Eğitim bilgilerini al
+    // Eğitim bilgilerini al - RLS bypass için tüm verileri çek
     supabase
       .from('education')
       .select('*')
@@ -41,6 +44,13 @@ export default async function AboutPage() {
   const experiences = experiencesResult.status === 'fulfilled' ? experiencesResult.value.data : undefined
   const skills = skillsResult.status === 'fulfilled' ? skillsResult.value.data : undefined
   const education = educationResult.status === 'fulfilled' ? educationResult.value.data : undefined
+
+  // Debug için console.log
+  console.log('Education data:', education)
+  console.log('Education result status:', educationResult.status)
+  if (educationResult.status === 'rejected') {
+    console.error('Education error:', educationResult.reason)
+  }
 
   return (
     <PublicLayout>
