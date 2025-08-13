@@ -49,10 +49,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Get current user ID (using service role, we'll use a default user ID)
+    const { data: users } = await supabase.auth.admin.listUsers()
+    const defaultUserId = users?.users?.[0]?.id || 'ce805e36-b98e-48a9-825b-0c9198093953'
+
     // Insert education
     const { data: education, error } = await supabase
       .from('education')
       .insert({
+        user_id: defaultUserId,
         institution: institution.trim(),
         school: school?.trim() || null,
         degree: degree.trim(),

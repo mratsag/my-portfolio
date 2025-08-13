@@ -8,7 +8,7 @@ export const revalidate = 30
 export default async function AboutPage() {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
   
   // Tüm sorguları paralel olarak çalıştır
@@ -45,12 +45,7 @@ export default async function AboutPage() {
   const skills = skillsResult.status === 'fulfilled' ? skillsResult.value.data : undefined
   const education = educationResult.status === 'fulfilled' ? educationResult.value.data : undefined
 
-  // Debug için console.log
-  console.log('Education data:', education)
-  console.log('Education result status:', educationResult.status)
-  if (educationResult.status === 'rejected') {
-    console.error('Education error:', educationResult.reason)
-  }
+
 
   return (
     <PublicLayout>
