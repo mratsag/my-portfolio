@@ -27,15 +27,15 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status')
 
     // Build query - get all blogs for admin
-    const query = supabase
+    let query = supabase
       .from('blogs')
       .select('*')
       .order('created_at', { ascending: false })
 
-    // Apply status filter - published column doesn't exist, so show all blogs
-    // if (status && status !== 'all') {
-    //   query = query.eq('published', status === 'published')
-    // }
+    // Apply status filter
+    if (status && status !== 'all') {
+      query = query.eq('published', status === 'published')
+    }
 
     const { data: blogs, error: blogsError } = await query
 
@@ -44,10 +44,10 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to fetch blogs' }, { status: 500 })
     }
 
-    // Calculate stats - published column doesn't exist, so all blogs are considered published
+    // Calculate stats
     const total = blogs?.length || 0
-    const published = total // All blogs are considered published since no published column
-    const draft = 0 // No draft status since no published column
+    const published = blogs?.filter(blog => blog.published)?.length || 0
+    const draft = blogs?.filter(blog => !blog.published)?.length || 0
     const views = blogs?.reduce((sum, blog) => sum + (blog.views || 0), 0) || 0
 
     const stats = {
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { title, excerpt, content, author, tags } = body
+    const { title, excerpt, content, author, tags, published } = body
 
     // Validate required fields
     if (!title || !content) {
@@ -96,6 +96,7 @@ export async function POST(request: NextRequest) {
         content,
         author: author || null,
         tags: tags || [],
+        published: published || false,
         views: 0
       })
       .select()

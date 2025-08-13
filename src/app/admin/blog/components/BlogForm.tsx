@@ -21,7 +21,8 @@ const blogSchema = z.object({
   excerpt: z.string().max(500, 'Özet en fazla 500 karakter olabilir').optional(),
   content: z.string().min(1, 'İçerik gereklidir'),
   author: z.string().max(100, 'Yazar adı en fazla 100 karakter olabilir').optional(),
-  tags: z.array(z.string()).max(10, 'En fazla 10 etiket ekleyebilirsiniz').optional()
+  tags: z.array(z.string()).max(10, 'En fazla 10 etiket ekleyebilirsiniz').optional(),
+  published: z.boolean()
 })
 
 type BlogFormData = z.infer<typeof blogSchema>
@@ -56,7 +57,8 @@ export default function BlogForm({
       excerpt: blog?.excerpt || '',
       content: blog?.content || '',
       author: blog?.author || '',
-      tags: blog?.tags || []
+      tags: blog?.tags || [],
+      published: blog?.published || false
     }
   })
 
@@ -182,6 +184,22 @@ export default function BlogForm({
               )}
             </div>
 
+            {/* Published */}
+            <div className="blog-form-field">
+              <label className="blog-form-label">
+                Yayın Durumu
+              </label>
+              <div className="blog-form-checkbox">
+                <input
+                  {...register('published')}
+                  type="checkbox"
+                  className="blog-form-checkbox-input"
+                />
+                <span className="blog-form-checkbox-label">
+                  Yazıyı yayınla
+                </span>
+              </div>
+            </div>
 
           </div>
 

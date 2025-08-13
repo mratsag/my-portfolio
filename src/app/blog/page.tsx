@@ -9,10 +9,11 @@ export default async function BlogPage() {
   const supabase = createSupabaseServerClient()
   
   try {
-    // Tüm blog yazılarını al
+    // Yayınlanmış blog yazılarını al
     const { data: blogs, error } = await supabase
       .from('blogs')
       .select('*')
+      .eq('published', true)
       .order('created_at', { ascending: false })
 
     if (error) {
