@@ -116,12 +116,8 @@ export default function BlogList({
 
             <div className="blog-card-footer">
               <div className="blog-card-status">
-                <span className={`blog-status-badge ${
-                  blog.published 
-                    ? 'blog-status-published' 
-                    : 'blog-status-draft'
-                }`}>
-                  {blog.published ? 'Yayınlandı' : 'Taslak'}
+                <span className="blog-status-badge blog-status-published">
+                  Yayınlandı
                 </span>
               </div>
               
@@ -187,12 +183,8 @@ export default function BlogList({
                 </div>
               </td>
               <td className="blog-table-cell">
-                <span className={`blog-status-badge ${
-                  blog.published 
-                    ? 'blog-status-published' 
-                    : 'blog-status-draft'
-                }`}>
-                  {blog.published ? 'Yayınlandı' : 'Taslak'}
+                <span className="blog-status-badge blog-status-published">
+                  Yayınlandı
                 </span>
               </td>
               <td className="blog-table-cell">
