@@ -21,7 +21,16 @@ export function useGoogleAnalytics() {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '${GA_TRACKING_ID}');
+        
+        // İzin modunu başlat
+        gtag('consent', 'default', {
+          'analytics_storage': 'denied',
+          'ad_storage': 'denied'
+        });
+        
+        gtag('config', '${GA_TRACKING_ID}', {
+          'consent_mode': 'advanced'
+        });
       `
       document.head.appendChild(script2)
 
