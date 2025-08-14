@@ -1,3 +1,4 @@
+import { createClient } from '@supabase/supabase-js'
 import PublicLayout from '@/app/components/public/layout/PublicLayout'
 import BlogSection from '@/app/components/public/sections/BlogSection'
 
@@ -5,26 +6,25 @@ import BlogSection from '@/app/components/public/sections/BlogSection'
 export const revalidate = 300
 
 export default async function BlogPage() {
-  console.log('BlogPage: Starting...')
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
   
   try {
-    // Public API'yi kullan
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/public/blogs`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    // Tüm blog yazılarını al
+    const { data: blogs, error } = await supabase
+      .from('blogs')
+      .select('*')
+      .eq('published', true)
+      .order('created_at', { ascending: false })
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    if (error) {
+      console.error('Blogs fetch error:', error)
     }
 
-    const data = await response.json()
-    const blogs = data || []
-
     console.log('BlogPage: Final blogs data:', blogs)
-    console.log('BlogPage: Blogs length:', blogs.length)
+    console.log('BlogPage: Blogs length:', blogs?.length)
 
     return (
       <PublicLayout>
