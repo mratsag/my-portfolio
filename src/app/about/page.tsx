@@ -1,9 +1,31 @@
 import { createClient } from '@supabase/supabase-js'
+import { Metadata } from 'next'
 import PublicLayout from '@/app/components/public/layout/PublicLayout'
 import AboutSection from '@/app/components/public/sections/AboutSection'
 
 // Cache for 30 seconds to allow faster profile updates
 export const revalidate = 30
+
+export const metadata: Metadata = {
+  title: 'Hakkımda - Murat Sağ',
+  description: 'Yazılım geliştirici ve bilgisayar mühendisliği öğrencisi Murat Sağ hakkında detaylı bilgi. Deneyimler, yetenekler ve eğitim geçmişi.',
+  keywords: 'hakkımda, murat sağ, yazılım geliştirici, bilgisayar mühendisliği, deneyimler, yetenekler, eğitim, portfolio',
+  openGraph: {
+    title: 'Hakkımda - Murat Sağ',
+    description: 'Yazılım geliştirici ve bilgisayar mühendisliği öğrencisi Murat Sağ hakkında detaylı bilgi.',
+    url: 'https://www.muratsag.com/about',
+    siteName: 'Murat Sağ - Portfolio',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Hakkımda - Murat Sağ',
+    description: 'Yazılım geliştirici ve bilgisayar mühendisliği öğrencisi Murat Sağ hakkında detaylı bilgi.',
+  },
+  alternates: {
+    canonical: 'https://www.muratsag.com/about',
+  },
+}
 
 export default async function AboutPage() {
   const supabase = createClient(

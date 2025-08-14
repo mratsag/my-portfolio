@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { ThemeProvider } from 'next-themes'
 import CookieConsentWrapper from '../components/CookieConsentWrapper'
+import PersonSchema from '../components/JsonLd'
 
 export const metadata: Metadata = {
   title: 'Murat Sağ - Portfolio',
@@ -66,6 +67,15 @@ export default function RootLayout({
     <html lang="tr" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <link rel="manifest" href="/manifest.json" />
+        <PersonSchema
+          name="Murat Sağ"
+          jobTitle="Software Developer & Computer Engineering Student"
+          description="Yazılım geliştirici ve bilgisayar mühendisliği öğrencisi"
+          url="https://www.muratsag.com"
+          email="murat@muratsag.com"
+          github="https://github.com/muratsag"
+          linkedin="https://linkedin.com/in/muratsag"
+        />
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{
