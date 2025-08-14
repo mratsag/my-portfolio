@@ -13,7 +13,7 @@ interface BlogSectionProps {
     excerpt?: string
     content?: string
     image_url?: string
-    category?: string[]
+    tags?: string[]
     author?: string
     published_at?: string
     slug?: string
@@ -36,12 +36,10 @@ export default function BlogSection({ blogs }: BlogSectionProps) {
     return null
   }
 
-  console.log('BlogSection: Received blogs:', blogs)
-  console.log('BlogSection: Blogs length:', blogs?.length)
-  console.log('BlogSection: First blog:', blogs?.[0])
 
-  // Kategorileri çıkar
-  const categories = ['all', ...new Set(blogs?.flatMap(b => b.category || []).filter(Boolean) || [])]
+
+  // Etiketleri çıkar
+  const categories = ['all', ...new Set(blogs?.flatMap(b => b.tags || []).filter(Boolean) || [])]
 
   // Filtreleme
   const filteredBlogs = blogs?.filter(blog => {
@@ -50,7 +48,7 @@ export default function BlogSection({ blogs }: BlogSectionProps) {
                          blog.content?.toLowerCase().includes(searchTerm.toLowerCase())
     
     const matchesCategory = selectedCategory === 'all' || 
-                           blog.category?.includes(selectedCategory)
+                           blog.tags?.includes(selectedCategory)
 
     return matchesSearch && matchesCategory
   }) || []
@@ -156,10 +154,10 @@ export default function BlogSection({ blogs }: BlogSectionProps) {
                       </p>
                     )}
 
-                    {blog.category && (
+                    {blog.tags && blog.tags.length > 0 && (
                       <div className={styles.blogCategory}>
                         <Tag className={styles.categoryIcon} />
-                        <span>{blog.category}</span>
+                        <span>{blog.tags.join(', ')}</span>
                       </div>
                     )}
 

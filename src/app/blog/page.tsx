@@ -23,8 +23,7 @@ export default async function BlogPage() {
       console.error('Blogs fetch error:', error)
     }
 
-    console.log('BlogPage: Final blogs data:', blogs)
-    console.log('BlogPage: Blogs length:', blogs?.length)
+
 
     return (
       <PublicLayout>
