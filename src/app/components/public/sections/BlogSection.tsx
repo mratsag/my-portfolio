@@ -27,6 +27,10 @@ export default function BlogSection({ blogs }: BlogSectionProps) {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const { theme } = useTheme()
 
+  console.log('BlogSection: Received blogs:', blogs)
+  console.log('BlogSection: Blogs length:', blogs?.length)
+  console.log('BlogSection: First blog:', blogs?.[0])
+
   // Kategorileri çıkar
   const categories = ['all', ...new Set(blogs?.flatMap(b => b.category || []).filter(Boolean) || [])]
 

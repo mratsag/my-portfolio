@@ -23,6 +23,9 @@ export default async function BlogPage() {
     const data = await response.json()
     const blogs = data || []
 
+    console.log('BlogPage: Final blogs data:', blogs)
+    console.log('BlogPage: Blogs length:', blogs.length)
+
     return (
       <PublicLayout>
         <BlogSection blogs={blogs || []} />
