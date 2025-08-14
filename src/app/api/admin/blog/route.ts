@@ -79,7 +79,8 @@ export async function POST(request: NextRequest) {
         author: author || null,
         tags: tags || [],
         published: published || false,
-        views: 0
+        views: 0,
+        user_id: 'ce805e36-b98e-48a9-825b-0c9198093953' // Default user ID for admin operations
       })
       .select()
       .single()
