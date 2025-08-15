@@ -93,9 +93,6 @@ export default function Footer() {
           <div className={styles.copyright}>
             © {currentYear} Murat Sağ. Tüm hakları saklıdır.
           </div>
-          <div className={styles.tech}>
-            Next.js & Supabase ile geliştirildi
-          </div>
         </div>
       </div>
     </footer>
