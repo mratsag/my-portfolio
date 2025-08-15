@@ -38,12 +38,155 @@ interface ProjectFormProps {
 }
 
 const commonTechnologies = [
-  'React', 'Next.js', 'Vue.js', 'Angular', 'JavaScript', 'TypeScript',
-  'Node.js', 'Express', 'Nest.js', 'Python', 'Django', 'Flask',
-  'Java', 'Spring Boot', 'C#', '.NET', 'PHP', 'Laravel',
-  'HTML', 'CSS', 'Tailwind CSS', 'Bootstrap', 'Sass',
-  'MongoDB', 'PostgreSQL', 'MySQL', 'Redis', 'Firebase',
-  'Docker', 'AWS', 'Vercel', 'Netlify', 'Git', 'GitHub'
+  // Frontend Frameworks & Libraries
+  'React', 'Next.js', 'Vue.js', 'Angular', 'Svelte', 'SvelteKit', 'Nuxt.js',
+  'Gatsby', 'Remix', 'Astro', 'Solid.js', 'Preact', 'Alpine.js',
+  
+  // Programming Languages
+  'JavaScript', 'TypeScript', 'Python', 'Java', 'C#', 'C++', 'C', 'Go', 'Rust',
+  'PHP', 'Ruby', 'Swift', 'Kotlin', 'Scala', 'Dart', 'R', 'MATLAB', 'Julia',
+  'Perl', 'Lua', 'Haskell', 'Elixir', 'Clojure', 'F#', 'Objective-C',
+  
+  // Backend Frameworks
+  'Node.js', 'Express', 'Nest.js', 'Fastify', 'Koa', 'Hapi', 'Adonis.js',
+  'Django', 'Flask', 'FastAPI', 'Tornado', 'Bottle', 'CherryPy',
+  'Spring Boot', 'Spring MVC', 'Spring Security', 'Micronaut', 'Quarkus',
+  '.NET Core', '.NET Framework', 'ASP.NET', 'Blazor', 'SignalR',
+  'Laravel', 'Symfony', 'CodeIgniter', 'CakePHP', 'Slim',
+  'Ruby on Rails', 'Sinatra', 'Hanami', 'Grape',
+  'Flask', 'Django REST Framework', 'FastAPI', 'Tornado',
+  
+  // Database Technologies
+  'MongoDB', 'PostgreSQL', 'MySQL', 'SQLite', 'SQL Server', 'Oracle',
+  'Redis', 'Cassandra', 'CouchDB', 'Neo4j', 'InfluxDB', 'Elasticsearch',
+  'DynamoDB', 'Firebase Firestore', 'Supabase', 'PlanetScale', 'CockroachDB',
+  'TimescaleDB', 'ArangoDB', 'RethinkDB', 'RavenDB',
+  
+  // Cloud & DevOps
+  'Docker', 'Kubernetes', 'AWS', 'Azure', 'Google Cloud', 'DigitalOcean',
+  'Heroku', 'Vercel', 'Netlify', 'Railway', 'Render', 'Fly.io',
+  'Terraform', 'Ansible', 'Jenkins', 'GitHub Actions', 'GitLab CI',
+  'CircleCI', 'Travis CI', 'ArgoCD', 'Helm', 'Istio',
+  
+  // Frontend Styling & UI
+  'HTML', 'CSS', 'Sass', 'SCSS', 'Less', 'Stylus', 'PostCSS',
+  'Tailwind CSS', 'Bootstrap', 'Material-UI', 'Ant Design', 'Chakra UI',
+  'Mantine', 'NextUI', 'Radix UI', 'Headless UI', 'Framer Motion',
+  'Styled Components', 'Emotion', 'CSS Modules', 'CSS-in-JS',
+  'Bulma', 'Foundation', 'Semantic UI', 'UIKit', 'Pure CSS',
+  
+  // State Management & Data Fetching
+  'Redux', 'Redux Toolkit', 'Zustand', 'Jotai', 'Recoil', 'XState',
+  'Vuex', 'Pinia', 'NgRx', 'MobX', 'Apollo Client', 'React Query',
+  'SWR', 'TanStack Query', 'Zustand', 'Valtio', 'Rematch',
+  
+  // Testing
+  'Jest', 'Vitest', 'Cypress', 'Playwright', 'Selenium', 'Puppeteer',
+  'Testing Library', 'Mocha', 'Chai', 'Sinon', 'Jasmine', 'Karma',
+  'Pytest', 'Unittest', 'Robot Framework', 'JUnit', 'TestNG',
+  'NUnit', 'xUnit', 'PHPUnit', 'RSpec', 'Cucumber',
+  
+  // Build Tools & Bundlers
+  'Webpack', 'Vite', 'Rollup', 'Parcel', 'esbuild', 'SWC',
+  'Babel', 'TypeScript Compiler', 'Gulp', 'Grunt', 'Browserify',
+  
+  // Package Managers
+  'npm', 'yarn', 'pnpm', 'bun', 'pip', 'poetry', 'conda',
+  'Maven', 'Gradle', 'NuGet', 'Composer', 'Bundler', 'Cargo',
+  
+  // Version Control
+  'Git', 'GitHub', 'GitLab', 'Bitbucket', 'SVN', 'Mercurial',
+  
+  // Mobile Development
+  'React Native', 'Flutter', 'Ionic', 'Cordova', 'PhoneGap',
+  'Xamarin', 'NativeScript', 'Capacitor', 'Expo', 'Tauri',
+  
+  // Desktop Development
+  'Electron', 'Tauri', 'NW.js', 'Qt', 'WPF', 'WinForms',
+  'JavaFX', 'Swing', 'GTK', 'wxWidgets', 'Flutter Desktop',
+  
+  // AI & Machine Learning
+  'TensorFlow', 'PyTorch', 'Scikit-learn', 'Keras', 'OpenAI API',
+  'Hugging Face', 'Pandas', 'NumPy', 'Matplotlib', 'Seaborn',
+  'Jupyter', 'Colab', 'MLflow', 'Weights & Biases', 'DVC',
+  
+  // Data Science & Analytics
+  'R', 'MATLAB', 'SPSS', 'SAS', 'Tableau', 'Power BI', 'Looker',
+  'Apache Spark', 'Hadoop', 'Kafka', 'Airflow', 'dbt',
+  
+  // 3D & Graphics
+  'Three.js', 'Babylon.js', 'PlayCanvas', 'Unity', 'Unreal Engine',
+  'Blender', 'Maya', '3ds Max', 'Cinema 4D', 'Houdini',
+  'WebGL', 'OpenGL', 'Vulkan', 'DirectX', 'Metal',
+  
+  // Game Development
+  'Unity', 'Unreal Engine', 'Godot', 'Phaser', 'PixiJS',
+  'Matter.js', 'Cannon.js', 'Ammo.js', 'Box2D', 'Chipmunk',
+  
+  // IoT & Hardware
+  'Arduino', 'Raspberry Pi', 'ESP32', 'ESP8266', 'STM32',
+  'MicroPython', 'CircuitPython', 'PlatformIO', 'Mbed',
+  
+  // Blockchain & Web3
+  'Solidity', 'Web3.js', 'Ethers.js', 'Hardhat', 'Truffle',
+  'OpenZeppelin', 'IPFS', 'Polygon', 'Ethereum', 'Bitcoin',
+  
+  // Real-time & Communication
+  'Socket.io', 'WebSockets', 'SignalR', 'gRPC', 'GraphQL',
+  'REST API', 'SOAP', 'WebRTC', 'PeerJS', 'SocketCluster',
+  
+  // Security
+  'JWT', 'OAuth', 'OpenID Connect', 'SAML', 'CORS', 'CSP',
+  'Helmet.js', 'bcrypt', 'argon2', 'Passport.js', 'Auth0',
+  
+  // Monitoring & Logging
+  'Sentry', 'LogRocket', 'DataDog', 'New Relic', 'Grafana',
+  'Prometheus', 'ELK Stack', 'Winston', 'Pino', 'Morgan',
+  
+  // Content Management
+  'Strapi', 'Sanity', 'Contentful', 'Prismic', 'Ghost',
+  'WordPress', 'Drupal', 'Joomla', 'Squarespace', 'Webflow',
+  
+  // E-commerce
+  'Shopify', 'WooCommerce', 'Magento', 'PrestaShop', 'OpenCart',
+  'Stripe', 'PayPal', 'Square', 'Adyen', 'Klarna',
+  
+  // GIS & Mapping
+  'Leaflet', 'Mapbox', 'Google Maps', 'OpenLayers', 'D3.js',
+  'QGIS', 'ArcGIS', 'PostGIS', 'GeoServer', 'CartoDB',
+  
+  // Audio & Video
+  'Web Audio API', 'MediaRecorder', 'FFmpeg', 'GStreamer',
+  'WebRTC', 'HLS', 'DASH', 'Vimeo API', 'YouTube API',
+  
+  // Documentation
+  'Storybook', 'Docusaurus', 'VuePress', 'GitBook', 'ReadTheDocs',
+  'Swagger', 'OpenAPI', 'JSDoc', 'TypeDoc', 'Sphinx',
+  
+  // Performance & Optimization
+  'Lighthouse', 'WebPageTest', 'Bundle Analyzer', 'Core Web Vitals',
+  'Service Workers', 'PWA', 'CDN', 'Edge Computing', 'Serverless',
+  
+  // Accessibility
+  'ARIA', 'WCAG', 'axe-core', 'Lighthouse Accessibility',
+  'Screen Readers', 'Keyboard Navigation', 'Color Contrast',
+  
+  // Internationalization
+  'i18next', 'react-i18next', 'vue-i18n', 'ngx-translate',
+  'Intl API', 'Moment.js', 'Day.js', 'date-fns', 'Luxon',
+  
+  // LIDAR & Point Cloud
+  'Potree', 'Three.js Point Cloud', 'PCL (Point Cloud Library)',
+  'Open3D', 'CloudCompare', 'PDAL', 'LAStools', 'Fusion 360',
+  'MeshLab', 'Blender Point Cloud', 'Unity Point Cloud',
+  'Unreal Engine Point Cloud', 'WebGL Point Cloud',
+  'LIDAR Processing', 'Point Cloud Visualization', '3D Scanning',
+  'Terrain Mapping', 'Building Information Modeling (BIM)',
+  'Autodesk ReCap', 'Agisoft Metashape', 'Pix4D', 'DroneDeploy',
+  'LiDAR Data Analysis', 'Point Cloud Registration', 'Mesh Generation',
+  'Surface Reconstruction', 'Volume Calculation', 'Slope Analysis',
+  'Flood Modeling', 'Forest Inventory', 'Urban Planning',
+  'Archaeological Survey', 'Geological Mapping', 'Infrastructure Inspection'
 ]
 
 export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
@@ -141,7 +284,7 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
   const filteredSuggestions = commonTechnologies.filter(
     tech => tech.toLowerCase().includes(newTechnology.toLowerCase()) && 
     !watchedTechnologies.includes(tech)
-  )
+  ).slice(0, 15) // Daha fazla öneri göster
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -285,25 +428,34 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Kullanılan Teknolojiler
             </label>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+              💡 300+ teknoloji arasından seçim yapabilirsiniz. Yazmaya başlayın ve kategorilere göre gruplandırılmış önerileri görün.
+            </p>
             
             {/* Current Technologies */}
             {watchedTechnologies && watchedTechnologies.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-3">
-                {watchedTechnologies.map((tech) => (
-                  <span
-                    key={tech}
-                    className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200"
-                  >
-                    {tech}
-                    <button
-                      type="button"
-                      onClick={() => removeTechnology(tech)}
-                      className="ml-2 text-indigo-600 hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-100"
+              <div className="mb-3">
+                <div className="flex flex-wrap gap-2">
+                  {watchedTechnologies.map((tech) => (
+                    <span
+                      key={tech}
+                      className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-800 dark:from-indigo-900 dark:to-purple-900 dark:text-indigo-200 border border-indigo-200 dark:border-indigo-700 shadow-sm"
                     >
-                      <XMarkIcon className="w-3 h-3" />
-                    </button>
-                  </span>
-                ))}
+                      <CodeBracketIcon className="w-3 h-3 mr-1" />
+                      {tech}
+                      <button
+                        type="button"
+                        onClick={() => removeTechnology(tech)}
+                        className="ml-2 text-indigo-600 hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-100 transition-colors"
+                      >
+                        <XMarkIcon className="w-3 h-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                  📊 {watchedTechnologies.length} teknoloji seçildi
+                </p>
               </div>
             )}
 
@@ -332,17 +484,139 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
 
               {/* Suggestions */}
               {showTechSuggestions && filteredSuggestions.length > 0 && (
-                <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-40 overflow-auto">
-                  {filteredSuggestions.slice(0, 8).map((tech) => (
-                    <button
-                      key={tech}
-                      type="button"
-                      onClick={() => addTechnology(tech)}
-                      className="w-full px-3 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white"
-                    >
-                      {tech}
-                    </button>
-                  ))}
+                <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-auto">
+                  <div className="p-2 text-xs text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+                    💡 {filteredSuggestions.length} teknoloji bulundu. Kategorilere göre gruplandırıldı:
+                  </div>
+                  
+                  {/* Frontend & Languages */}
+                  {filteredSuggestions.filter(tech => 
+                    ['React', 'Next.js', 'Vue.js', 'Angular', 'JavaScript', 'TypeScript', 'HTML', 'CSS', 'Tailwind CSS', 'Bootstrap'].includes(tech)
+                  ).length > 0 && (
+                    <div>
+                      <div className="px-3 py-1 text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20">
+                        🌐 Frontend & Diller
+                      </div>
+                      {filteredSuggestions.filter(tech => 
+                        ['React', 'Next.js', 'Vue.js', 'Angular', 'JavaScript', 'TypeScript', 'HTML', 'CSS', 'Tailwind CSS', 'Bootstrap'].includes(tech)
+                      ).map((tech) => (
+                        <button
+                          key={tech}
+                          type="button"
+                          onClick={() => addTechnology(tech)}
+                          className="w-full px-3 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                        >
+                          {tech}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {/* Backend & Databases */}
+                  {filteredSuggestions.filter(tech => 
+                    ['Node.js', 'Express', 'Python', 'Django', 'Java', 'Spring Boot', 'MongoDB', 'PostgreSQL', 'MySQL', 'Redis'].includes(tech)
+                  ).length > 0 && (
+                    <div>
+                      <div className="px-3 py-1 text-xs font-medium text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20">
+                        ⚙️ Backend & Veritabanları
+                      </div>
+                      {filteredSuggestions.filter(tech => 
+                        ['Node.js', 'Express', 'Python', 'Django', 'Java', 'Spring Boot', 'MongoDB', 'PostgreSQL', 'MySQL', 'Redis'].includes(tech)
+                      ).map((tech) => (
+                        <button
+                          key={tech}
+                          type="button"
+                          onClick={() => addTechnology(tech)}
+                          className="w-full px-3 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                        >
+                          {tech}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {/* Cloud & DevOps */}
+                  {filteredSuggestions.filter(tech => 
+                    ['Docker', 'AWS', 'Vercel', 'Netlify', 'Git', 'GitHub', 'Kubernetes', 'Azure', 'Google Cloud'].includes(tech)
+                  ).length > 0 && (
+                    <div>
+                      <div className="px-3 py-1 text-xs font-medium text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20">
+                        ☁️ Cloud & DevOps
+                      </div>
+                      {filteredSuggestions.filter(tech => 
+                        ['Docker', 'AWS', 'Vercel', 'Netlify', 'Git', 'GitHub', 'Kubernetes', 'Azure', 'Google Cloud'].includes(tech)
+                      ).map((tech) => (
+                        <button
+                          key={tech}
+                          type="button"
+                          onClick={() => addTechnology(tech)}
+                          className="w-full px-3 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                        >
+                          {tech}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {/* LIDAR & 3D */}
+                  {filteredSuggestions.filter(tech => 
+                    tech.toLowerCase().includes('lidar') || tech.toLowerCase().includes('point cloud') || 
+                    tech.toLowerCase().includes('3d') || tech.toLowerCase().includes('potree') ||
+                    tech.toLowerCase().includes('blender') || tech.toLowerCase().includes('unity')
+                  ).length > 0 && (
+                    <div>
+                      <div className="px-3 py-1 text-xs font-medium text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/20">
+                        🎯 LIDAR & 3D Teknolojileri
+                      </div>
+                      {filteredSuggestions.filter(tech => 
+                        tech.toLowerCase().includes('lidar') || tech.toLowerCase().includes('point cloud') || 
+                        tech.toLowerCase().includes('3d') || tech.toLowerCase().includes('potree') ||
+                        tech.toLowerCase().includes('blender') || tech.toLowerCase().includes('unity')
+                      ).map((tech) => (
+                        <button
+                          key={tech}
+                          type="button"
+                          onClick={() => addTechnology(tech)}
+                          className="w-full px-3 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                        >
+                          {tech}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {/* Other Technologies */}
+                  {filteredSuggestions.filter(tech => 
+                    !['React', 'Next.js', 'Vue.js', 'Angular', 'JavaScript', 'TypeScript', 'HTML', 'CSS', 'Tailwind CSS', 'Bootstrap',
+                      'Node.js', 'Express', 'Python', 'Django', 'Java', 'Spring Boot', 'MongoDB', 'PostgreSQL', 'MySQL', 'Redis',
+                      'Docker', 'AWS', 'Vercel', 'Netlify', 'Git', 'GitHub', 'Kubernetes', 'Azure', 'Google Cloud'].includes(tech) &&
+                    !(tech.toLowerCase().includes('lidar') || tech.toLowerCase().includes('point cloud') || 
+                      tech.toLowerCase().includes('3d') || tech.toLowerCase().includes('potree') ||
+                      tech.toLowerCase().includes('blender') || tech.toLowerCase().includes('unity'))
+                  ).length > 0 && (
+                    <div>
+                      <div className="px-3 py-1 text-xs font-medium text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-900/20">
+                        🔧 Diğer Teknolojiler
+                      </div>
+                      {filteredSuggestions.filter(tech => 
+                        !['React', 'Next.js', 'Vue.js', 'Angular', 'JavaScript', 'TypeScript', 'HTML', 'CSS', 'Tailwind CSS', 'Bootstrap',
+                          'Node.js', 'Express', 'Python', 'Django', 'Java', 'Spring Boot', 'MongoDB', 'PostgreSQL', 'MySQL', 'Redis',
+                          'Docker', 'AWS', 'Vercel', 'Netlify', 'Git', 'GitHub', 'Kubernetes', 'Azure', 'Google Cloud'].includes(tech) &&
+                        !(tech.toLowerCase().includes('lidar') || tech.toLowerCase().includes('point cloud') || 
+                          tech.toLowerCase().includes('3d') || tech.toLowerCase().includes('potree') ||
+                          tech.toLowerCase().includes('blender') || tech.toLowerCase().includes('unity'))
+                      ).slice(0, 8).map((tech) => (
+                        <button
+                          key={tech}
+                          type="button"
+                          onClick={() => addTechnology(tech)}
+                          className="w-full px-3 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                        >
+                          {tech}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
