@@ -310,7 +310,7 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
             
             <div className={styles.inputGroup}>
               <label className={styles.inputLabel}>
-                <DocumentTextIcon className="w-5 h-5" />
+                <DocumentTextIcon className={`${styles.inputIcon} ${styles.iconHover}`} />
                 Proje Başlığı *
               </label>
               <input
@@ -325,7 +325,7 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
 
             <div className={styles.inputGroup}>
               <label className={styles.inputLabel}>
-                <DocumentTextIcon className="w-5 h-5" />
+                <DocumentTextIcon className={`${styles.inputIcon} ${styles.iconHover}`} />
                 Kısa Açıklama *
               </label>
               <textarea
@@ -398,10 +398,10 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
             <h3 className={styles.sectionTitle}>🔗 Proje Linkleri</h3>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className={styles.inputGroup}>
-                <label className={styles.inputLabel}>
-                  <LinkIcon className="w-5 h-5" />
-                  Demo URL
-                </label>
+                              <label className={styles.inputLabel}>
+                <LinkIcon className={`${styles.inputIcon} ${styles.iconHover}`} />
+                Demo URL
+              </label>
                 <input
                   {...register('demo_url')}
                   type="url"
@@ -414,10 +414,10 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
               </div>
 
               <div className={styles.inputGroup}>
-                <label className={styles.inputLabel}>
-                  <CodeBracketIcon className="w-5 h-5" />
-                  GitHub URL
-                </label>
+                              <label className={styles.inputLabel}>
+                <CodeBracketIcon className={`${styles.inputIcon} ${styles.iconHover}`} />
+                GitHub URL
+              </label>
                 <input
                   {...register('github_url')}
                   type="url"
@@ -448,14 +448,14 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                         key={tech}
                         className={styles.technologyTag}
                       >
-                        <CodeBracketIcon className="w-3 h-3 mr-1" />
+                        <CodeBracketIcon className={styles.techTagIcon} />
                         {tech}
                         <button
                           type="button"
                           onClick={() => removeTechnology(tech)}
                           className="ml-2 text-white hover:text-red-200 transition-colors"
                         >
-                          <XMarkIcon className="w-3 h-3" />
+                          <XMarkIcon className={styles.removeIcon} />
                         </button>
                       </span>
                     ))}
@@ -485,7 +485,7 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                     onClick={handleNewTechnologySubmit}
                     className={styles.addButton}
                   >
-                    <PlusIcon className="w-4 h-4" />
+                    <PlusIcon className={styles.addButtonIcon} />
                   </button>
                 </div>
 
@@ -502,7 +502,8 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                   ).length > 0 && (
                     <div>
                       <div className={styles.categoryHeader}>
-                        🌐 Frontend & Diller
+                        <span className={styles.categoryIcon}>🌐</span>
+                        Frontend & Diller
                       </div>
                       {filteredSuggestions.filter(tech => 
                         ['React', 'Next.js', 'Vue.js', 'Angular', 'JavaScript', 'TypeScript', 'HTML', 'CSS', 'Tailwind CSS', 'Bootstrap'].includes(tech)
@@ -525,7 +526,8 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                   ).length > 0 && (
                     <div>
                       <div className={styles.categoryHeader}>
-                        ⚙️ Backend & Veritabanları
+                        <span className={styles.categoryIcon}>⚙️</span>
+                        Backend & Veritabanları
                       </div>
                       {filteredSuggestions.filter(tech => 
                         ['Node.js', 'Express', 'Python', 'Django', 'Java', 'Spring Boot', 'MongoDB', 'PostgreSQL', 'MySQL', 'Redis'].includes(tech)
@@ -548,7 +550,8 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                   ).length > 0 && (
                     <div>
                       <div className={styles.categoryHeader}>
-                        ☁️ Cloud & DevOps
+                        <span className={styles.categoryIcon}>☁️</span>
+                        Cloud & DevOps
                       </div>
                       {filteredSuggestions.filter(tech => 
                         ['Docker', 'AWS', 'Vercel', 'Netlify', 'Git', 'GitHub', 'Kubernetes', 'Azure', 'Google Cloud'].includes(tech)
@@ -573,7 +576,8 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                   ).length > 0 && (
                     <div>
                       <div className={styles.categoryHeader}>
-                        🎯 LIDAR & 3D Teknolojileri
+                        <span className={styles.categoryIcon}>🎯</span>
+                        LIDAR & 3D Teknolojileri
                       </div>
                       {filteredSuggestions.filter(tech => 
                         tech.toLowerCase().includes('lidar') || tech.toLowerCase().includes('point cloud') || 
@@ -603,7 +607,8 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
                   ).length > 0 && (
                     <div>
                       <div className={styles.categoryHeader}>
-                        🔧 Diğer Teknolojiler
+                        <span className={styles.categoryIcon}>🔧</span>
+                        Diğer Teknolojiler
                       </div>
                       {filteredSuggestions.filter(tech => 
                         !['React', 'Next.js', 'Vue.js', 'Angular', 'JavaScript', 'TypeScript', 'HTML', 'CSS', 'Tailwind CSS', 'Bootstrap',
@@ -676,7 +681,7 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
             >
               {loading ? (
                 <div className="flex items-center">
-                  <div className={styles.loadingSpinner}></div>
+                  <div className={styles.loadingIcon}></div>
                   Kaydediliyor...
                 </div>
               ) : (

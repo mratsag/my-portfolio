@@ -563,3 +563,273 @@
 .suggestionsContainer::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
 }
+
+/* Icon Styles */
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  transition: all 0.3s ease;
+}
+
+.iconSmall {
+  width: 1rem;
+  height: 1rem;
+}
+
+.iconLarge {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.iconPrimary {
+  color: #667eea;
+}
+
+.iconSecondary {
+  color: #6b7280;
+}
+
+.iconSuccess {
+  color: #10b981;
+}
+
+.iconWarning {
+  color: #f59e0b;
+}
+
+.iconError {
+  color: #ef4444;
+}
+
+.iconWhite {
+  color: white;
+}
+
+.iconGradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.iconAnimated {
+  animation: iconPulse 2s infinite;
+}
+
+.iconHover {
+  transition: all 0.3s ease;
+}
+
+.iconHover:hover {
+  transform: scale(1.1);
+  filter: brightness(1.2);
+}
+
+.iconSpin {
+  animation: spin 1s linear infinite;
+}
+
+.iconBounce {
+  animation: iconBounce 1s infinite;
+}
+
+.iconShake {
+  animation: iconShake 0.5s ease-in-out;
+}
+
+.iconGlow {
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+.iconGlow:hover {
+  filter: drop-shadow(0 0 12px currentColor);
+}
+
+/* Icon Animations */
+@keyframes iconPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes iconBounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -8px, 0);
+  }
+  70% {
+    transform: translate3d(0, -4px, 0);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+@keyframes iconShake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-2px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(2px);
+  }
+}
+
+/* Section Icon Styles */
+.sectionIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0.75rem;
+  color: #667eea;
+  filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
+  transition: all 0.3s ease;
+}
+
+.sectionIcon:hover {
+  transform: rotate(5deg) scale(1.1);
+  filter: drop-shadow(0 4px 8px rgba(102, 126, 234, 0.4));
+}
+
+/* Input Icon Styles */
+.inputIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #6b7280;
+  transition: all 0.3s ease;
+  margin-right: 0.5rem;
+}
+
+.inputIcon:hover {
+  color: #667eea;
+  transform: scale(1.1);
+}
+
+/* Button Icon Styles */
+.buttonIcon {
+  width: 1rem;
+  height: 1rem;
+  transition: all 0.3s ease;
+}
+
+.buttonIcon:hover {
+  transform: scale(1.2);
+}
+
+.addButtonIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  transition: all 0.3s ease;
+}
+
+.addButtonIcon:hover {
+  transform: rotate(90deg) scale(1.2);
+}
+
+/* Technology Tag Icon */
+.techTagIcon {
+  width: 0.875rem;
+  height: 0.875rem;
+  margin-right: 0.25rem;
+  opacity: 0.9;
+  transition: all 0.2s ease;
+}
+
+.techTagIcon:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Remove Icon */
+.removeIcon {
+  width: 0.75rem;
+  height: 0.75rem;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.removeIcon:hover {
+  opacity: 1;
+  transform: scale(1.2);
+  color: #ef4444;
+}
+
+/* Loading Icon */
+.loadingIcon {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem;
+}
+
+/* Help Icon */
+.helpIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #1e40af;
+  margin-right: 0.5rem;
+  animation: iconPulse 3s infinite;
+}
+
+/* Category Icons */
+.categoryIcon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+  opacity: 0.8;
+}
+
+.frontendIcon {
+  color: #3b82f6;
+}
+
+.backendIcon {
+  color: #10b981;
+}
+
+.cloudIcon {
+  color: #8b5cf6;
+}
+
+.lidarIcon {
+  color: #f59e0b;
+}
+
+.otherIcon {
+  color: #6b7280;
+}
+
+/* Dark mode icon adjustments */
+@media (prefers-color-scheme: dark) {
+  .inputIcon {
+    color: #9ca3af;
+  }
+  
+  .inputIcon:hover {
+    color: #667eea;
+  }
+  
+  .sectionIcon {
+    color: #667eea;
+  }
+  
+  .helpIcon {
+    color: #60a5fa;
+  }
+  
+  .removeIcon:hover {
+    color: #f87171;
+  }
+}
