@@ -1,0 +1,494 @@
+/* Home SEO Section Styles */
+.seoSection {
+  padding: 4rem 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Color Variables for easy customization */
+.colorScheme {
+  /* These will be applied globally via CSS custom properties */
+}
+
+.seoSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e2e8f0' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.content {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.mainTitle {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 2rem;
+  line-height: 1.2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: color 0.3s ease;
+}
+
+.mainTitle span {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: all 0.3s ease;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-top: 3rem;
+  text-align: left;
+}
+
+.skillCard {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.skillCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.skillTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.skillTitle::before {
+  content: '';
+  width: 4px;
+  height: 24px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 2px;
+  transition: background 0.3s ease;
+}
+
+.skillDescription {
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.skillList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.skillItem {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  color: #475569;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.skillItem:hover {
+  color: #6366f1;
+  transform: translateX(5px);
+}
+
+.skillItem::before {
+  content: '▹';
+  color: #6366f1;
+  font-weight: bold;
+  margin-right: 0.75rem;
+  font-size: 1.1rem;
+  transition: color 0.2s ease;
+}
+
+/* CTA Section */
+.ctaSection {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  padding: 4rem 0;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s ease;
+}
+
+.ctaSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M20 20c0 11.046-8.954 20-20 20s-20-8.954-20-20 8.954-20 20-20 20 8.954 20 20zm0 0c0-11.046 8.954-20 20-20s20 8.954 20 20-8.954 20-20 20-20-8.954-20-20z'/%3E%3C/g%3E%3C/svg%3E");
+  transition: opacity 0.3s ease;
+}
+
+.ctaContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.ctaTitle {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: color 0.3s ease;
+}
+
+.ctaDescription {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  transition: color 0.3s ease;
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: white;
+  color: #6366f1;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  border: 2px solid transparent;
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: #4f46e5;
+}
+
+.ctaButton::after {
+  content: '→';
+  font-size: 1.2rem;
+  transition: transform 0.2s ease;
+}
+
+.ctaButton:hover::after {
+  transform: translateX(3px);
+}
+
+/* Experience Highlights */
+.experienceHighlights {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.experienceHighlights:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.experienceTitle {
+  color: white;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+.experienceList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.experienceItem {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.experienceItem:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  transform: translateX(5px);
+}
+
+.experienceItem::before {
+  content: '✓';
+  color: #10b981;
+  font-weight: bold;
+  transition: color 0.2s ease;
+}
+
+.experienceItem:hover::before {
+  color: #34d399;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .mainTitle {
+    font-size: 2rem;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .skillCard {
+    padding: 1.5rem;
+  }
+  
+  .ctaTitle {
+    font-size: 2rem;
+  }
+  
+  .ctaDescription {
+    font-size: 1rem;
+  }
+  
+  .experienceList {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .seoSection,
+  .ctaSection {
+    padding: 3rem 0;
+  }
+  
+  .mainTitle {
+    font-size: 1.75rem;
+  }
+  
+  .ctaTitle {
+    font-size: 1.75rem;
+  }
+  
+  .ctaButton {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* Dark Mode Support */
+[data-theme="dark"] .seoSection {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+[data-theme="dark"] .seoSection::before {
+  opacity: 0.3;
+}
+
+[data-theme="dark"] .skillCard {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .skillCard:hover {
+  background: rgba(30, 41, 59, 0.95);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .mainTitle {
+  color: #f8fafc;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .mainTitle span {
+  background: linear-gradient(135deg, #818cf8, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="dark"] .skillTitle {
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .skillTitle::before {
+  background: linear-gradient(135deg, #818cf8, #a78bfa);
+}
+
+[data-theme="dark"] .skillDescription {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .skillItem {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .skillItem:hover {
+  color: #818cf8;
+}
+
+[data-theme="dark"] .skillItem::before {
+  color: #818cf8;
+}
+
+[data-theme="dark"] .ctaSection {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+}
+
+[data-theme="dark"] .ctaButton {
+  background: #1e293b;
+  color: #f1f5f9;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .ctaButton:hover {
+  background: #334155;
+  color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .experienceHighlights {
+  background: rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .experienceHighlights:hover {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .experienceItem:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Light Mode Enhancements */
+[data-theme="light"] .seoSection {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+[data-theme="light"] .skillCard {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="light"] .skillCard:hover {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+[data-theme="light"] .mainTitle {
+  color: #1e293b;
+}
+
+[data-theme="light"] .mainTitle span {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="light"] .skillTitle {
+  color: #1e293b;
+}
+
+[data-theme="light"] .skillTitle::before {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+}
+
+[data-theme="light"] .skillDescription {
+  color: #64748b;
+}
+
+[data-theme="light"] .skillItem {
+  color: #475569;
+}
+
+[data-theme="light"] .skillItem:hover {
+  color: #6366f1;
+}
+
+[data-theme="light"] .skillItem::before {
+  color: #6366f1;
+}
+
+[data-theme="light"] .ctaSection {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+}
+
+[data-theme="light"] .ctaButton {
+  background: white;
+  color: #6366f1;
+}
+
+[data-theme="light"] .ctaButton:hover {
+  background: #f8fafc;
+  color: #4f46e5;
+}
+
+[data-theme="light"] .experienceHighlights {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="light"] .experienceHighlights:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="light"] .experienceItem:hover {
+  background: rgba(255, 255, 255, 0.1);
+}

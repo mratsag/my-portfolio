@@ -81,13 +81,10 @@ export default function HeroSection({ profile }: HeroSectionProps) {
                 <ArrowRight className={styles.buttonIcon} />
               </Link>
               
-              <button 
-                onClick={() => scrollToSection('contact')}
-                className={styles.secondaryButton}
-              >
+              <Link href="/contact" className={styles.secondaryButton}>
                 <Mail className={styles.buttonIcon} />
                 <span>İletişim</span>
-              </button>
+              </Link>
             </div>
 
             <div className={styles.socialLinks}>

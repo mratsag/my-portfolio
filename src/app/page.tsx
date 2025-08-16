@@ -3,6 +3,7 @@ import { createSupabaseServerClient } from '@/lib/supabase-server'
 import { Metadata } from 'next'
 import PublicLayout from '@/app/components/public/layout/PublicLayout'
 import HeroSection from '@/app/components/public/sections/HeroSection'
+import styles from '@/styles/components/HomeSEO.module.css'
 
 // Cache for 10 seconds to allow faster profile updates
 export const revalidate = 10
@@ -57,40 +58,42 @@ export default async function Home() {
       <PublicLayout>
         <HeroSection profile={profile} />
         
-        {/* SEO için ek içerik */}
-        <section className="py-16 bg-gray-50 dark:bg-gray-900">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-                Yazılım Geliştirici & Bilgisayar Mühendisliği Öğrencisi
+        {/* SEO için ek içerik - CV'den alınan bilgilerle */}
+        <section className={styles.seoSection}>
+          <div className={styles.container}>
+            <div className={styles.content}>
+              <h2 className={styles.mainTitle}>
+                Yazılım Geliştirici & <span>Bilgisayar Mühendisliği Öğrencisi</span>
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                    Web Geliştirme
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-4">
-                    React, Next.js, TypeScript ve modern web teknolojileri ile kullanıcı dostu ve performanslı web uygulamaları geliştiriyorum.
+              <div className={styles.grid}>
+                <div className={styles.skillCard}>
+                  <h3 className={styles.skillTitle}>Program Dilleri & Backend</h3>
+                  <p className={styles.skillDescription}>
+                    Java, Python, C, C#, Dart gibi programlama dillerinde ileri seviye deneyim. 
+                    Spring Boot, Django ve .NET framework&apos;leri ile backend sistemleri geliştiriyorum.
                   </p>
-                  <ul className="text-gray-600 dark:text-gray-400 space-y-2">
-                    <li>• React.js & Next.js</li>
-                    <li>• TypeScript & JavaScript</li>
-                    <li>• Tailwind CSS & Styled Components</li>
-                    <li>• Node.js & Express.js</li>
+                  <ul className={styles.skillList}>
+                    <li className={styles.skillItem}>Java (İleri Seviye) - Ziraat ATM Projesi</li>
+                    <li className={styles.skillItem}>Python (İleri Seviye) - WeatherSocket Projesi</li>
+                    <li className={styles.skillItem}>C (Orta Seviye) - Socket Programming</li>
+                    <li className={styles.skillItem}>C# (İleri Seviye) - Weekly Tracking</li>
+                    <li className={styles.skillItem}>Dart (Orta Seviye) - Servis App Mobile</li>
+                    <li className={styles.skillItem}>Spring Boot (Orta Seviye) - Full Stack Projesi</li>
                   </ul>
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                    Mobil & Backend Geliştirme
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-4">
-                    Java, Python, C# ve Dart ile mobil uygulamalar ve backend sistemleri geliştiriyorum.
+                <div className={styles.skillCard}>
+                  <h3 className={styles.skillTitle}>Web & Mobil Geliştirme</h3>
+                  <p className={styles.skillDescription}>
+                    React.js, Next.js, TypeScript ile modern web uygulamaları. 
+                    Flutter ile cross-platform mobil uygulamalar geliştiriyorum.
                   </p>
-                  <ul className="text-gray-600 dark:text-gray-400 space-y-2">
-                    <li>• Java & Spring Boot</li>
-                    <li>• Python & Django</li>
-                    <li>• C# & .NET</li>
-                    <li>• Flutter & Dart</li>
+                  <ul className={styles.skillList}>
+                    <li className={styles.skillItem}>React.js (Orta Seviye) - Full Stack Projesi</li>
+                    <li className={styles.skillItem}>HTML/CSS (Orta Seviye) - BTK Website</li>
+                    <li className={styles.skillItem}>JavaScript (Orta Seviye) - CV Projesi</li>
+                    <li className={styles.skillItem}>Flutter & Dart - Cross-platform Mobile</li>
+                    <li className={styles.skillItem}>MySQL (İleri Seviye) - Veritabanı Yönetimi</li>
+                    <li className={styles.skillItem}>pgAdmin (Orta Seviye) - PostgreSQL</li>
                   </ul>
                 </div>
               </div>
@@ -98,21 +101,30 @@ export default async function Home() {
           </div>
         </section>
         
-        {/* İletişim CTA */}
-        <section className="py-16 bg-indigo-600">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">
+        {/* İletişim CTA - CV'den alınan deneyimlerle */}
+        <section className={styles.ctaSection}>
+          <div className={styles.ctaContainer}>
+            <h2 className={styles.ctaTitle}>
               Projeleriniz İçin İletişime Geçin
             </h2>
-            <p className="text-indigo-100 mb-8 max-w-2xl mx-auto">
+            <p className={styles.ctaDescription}>
               Web sitesi, mobil uygulama veya yazılım projeleriniz için profesyonel çözümler sunuyorum. 
               Karabük Üniversitesi Bilgisayar Mühendisliği öğrencisi olarak en güncel teknolojileri kullanarak 
               projelerinizi hayata geçiriyorum.
             </p>
-            <a 
-              href="/contact" 
-              className="inline-flex items-center px-6 py-3 bg-white text-indigo-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors"
-            >
+            
+            {/* CV'den alınan deneyimler */}
+            <div className={styles.experienceHighlights}>
+              <h3 className={styles.experienceTitle}>Profesyonel Deneyimler</h3>
+              <ul className={styles.experienceList}>
+                <li className={styles.experienceItem}>Software Developer - Kabul Yazılım (2025)</li>
+                <li className={styles.experienceItem}>Mobil Uygulama Geliştirici - AZR Bilişim (2024-2025)</li>
+                <li className={styles.experienceItem}>Intern - Reset Bilgi Teknolojileri (2025)</li>
+                <li className={styles.experienceItem}>TEKNOFEST Finalist - Akıllı Wi-Fi Kapsama (2024)</li>
+              </ul>
+            </div>
+            
+            <a href="/contact" className={styles.ctaButton}>
               İletişime Geç
             </a>
           </div>
