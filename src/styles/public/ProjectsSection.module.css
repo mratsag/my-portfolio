@@ -179,6 +179,9 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
   border: 1px solid #f3f4f6;
+  text-decoration: none;
+  display: block;
+  color: inherit;
 }
 
 .projects[data-theme="dark"] .projectCard {
@@ -346,6 +349,9 @@
   font-size: 0.875rem;
   font-weight: 500;
   transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
 }
 
 .projects[data-theme="dark"] .projectLink {

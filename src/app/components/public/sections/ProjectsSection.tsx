@@ -112,7 +112,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
           {filteredProjects.length > 0 ? (
             <div className={styles.projectsGrid}>
               {filteredProjects.map((project) => (
-                <div key={project.id} className={styles.projectCard}>
+                <Link key={project.id} href={`/projects/${project.id}`} className={styles.projectCard}>
                   <div className={styles.projectImage}>
                     {project.image_url ? (
                       <img
@@ -165,26 +165,30 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
 
                     <div className={styles.projectLinks}>
                       {project.github_url && (
-                        <a
-                          href={project.github_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <button
+                          type="button"
                           className={styles.projectLink}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            window.open(project.github_url, '_blank', 'noopener,noreferrer')
+                          }}
                         >
                           <Github className={styles.linkIcon} />
                           <span>GitHub</span>
-                        </a>
+                        </button>
                       )}
                       {project.live_url && (
-                        <a
-                          href={project.live_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <button
+                          type="button"
                           className={styles.projectLink}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            window.open(project.live_url, '_blank', 'noopener,noreferrer')
+                          }}
                         >
                           <ExternalLink className={styles.linkIcon} />
                           <span>Canlı Demo</span>
-                        </a>
+                        </button>
                       )}
                     </div>
 
@@ -201,13 +205,13 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                     </div>
 
                     <div className={styles.projectFooter}>
-                      <Link href={`/projects/${project.id}`} className={styles.viewDetails}>
+                      <div className={styles.viewDetails}>
                         <span>Detayları Gör</span>
                         <ArrowRight className={styles.arrowIcon} />
-                      </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           ) : (
