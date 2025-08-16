@@ -121,16 +121,46 @@ export async function PUT(request: NextRequest) {
       updated_at: new Date().toISOString()
     }
 
-    // Profili güncelle veya oluştur
-    const { data: profile, error } = await supabase
+    // Önce mevcut profili bul
+    const { data: existingProfile, error: fetchError } = await supabase
       .from('profiles')
-      .upsert({
-        email: body.email || '',
-        ...updateData,
-        created_at: new Date().toISOString() // Sadece yeni kayıtlar için
-      })
-      .select()
+      .select('*')
       .single()
+
+    if (fetchError && fetchError.code !== 'PGRST116') {
+      console.error('Profile fetch error:', fetchError)
+      return NextResponse.json({ error: fetchError.message }, { status: 500 })
+    }
+
+    let profile
+    let error
+
+    if (existingProfile) {
+      // Mevcut profili güncelle
+      const { data: updatedProfile, error: updateError } = await supabase
+        .from('profiles')
+        .update(updateData)
+        .eq('id', existingProfile.id)
+        .select()
+        .single()
+
+      profile = updatedProfile
+      error = updateError
+    } else {
+      // Yeni profil oluştur
+      const { data: newProfile, error: createError } = await supabase
+        .from('profiles')
+        .insert({
+          email: body.email || '',
+          ...updateData,
+          created_at: new Date().toISOString()
+        })
+        .select()
+        .single()
+
+      profile = newProfile
+      error = createError
+    }
 
     if (error) {
       console.error('Profile update error:', error)
