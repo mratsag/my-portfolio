@@ -10,6 +10,7 @@ import {
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline'
 import { createClient } from '@/lib/supabase'
+import styles from '@/styles/admin/ProjectForm.module.css'
 
 interface ImageUploadProps {
   value?: string
@@ -163,11 +164,11 @@ export default function ImageUpload({
               </div>
             ) : (
               <>
-                <div className="mx-auto w-16 h-16 text-gray-400">
+                <div className={styles.uploadIconContainer}>
                   {isDragActive ? (
-                    <ArrowUpTrayIcon className="w-full h-full" />
+                    <ArrowUpTrayIcon className={styles.uploadIcon} />
                   ) : (
-                    <PhotoIcon className="w-full h-full" />
+                    <PhotoIcon className={styles.uploadIcon} />
                   )}
                 </div>
                 

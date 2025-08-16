@@ -290,6 +290,27 @@
   background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
 }
 
+.uploadIcon {
+  width: 48px !important;
+  height: 48px !important;
+  color: #0ea5e9;
+  fill: #0ea5e9;
+  transition: all 0.3s ease;
+}
+
+.imageUploadSection:hover .uploadIcon {
+  color: #0284c7;
+  fill: #0284c7;
+  transform: scale(1.05);
+}
+
+.uploadIconContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
 .richTextSection {
   border: 2px solid #e5e7eb;
   border-radius: 15px;
