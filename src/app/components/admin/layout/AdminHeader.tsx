@@ -16,6 +16,7 @@ import { createClient } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
+import styles from '@/styles/admin/AdminLayout.module.css'
 
 interface UserWithProfile {
   id: string
@@ -87,39 +88,39 @@ export default function AdminHeader() {
   }
 
   return (
-    <header className="admin-header">
+    <header className={styles['admin-header']}>
       <div className="flex items-center justify-between w-full">
         {/* Search */}
-        <div className="header-search">
+        <div className={styles['header-search']}>
           <div className="relative">
-            <MagnifyingGlassIcon className="header-search-icon" />
+            <MagnifyingGlassIcon className={styles['header-search-icon']} />
             <input
               type="text"
               placeholder="Ara..."
-              className="header-search-input"
+              className={styles['header-search-input']}
             />
           </div>
         </div>
 
         {/* Right side */}
-        <div className="header-actions">
+        <div className={styles['header-actions']}>
           {/* Theme toggle */}
           <button
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="header-action-btn"
+            className={styles['header-action-btn']}
           >
             {theme === 'dark' ? (
-              <SunIcon className="icon-md" />
+              <SunIcon className={styles['icon-md']} />
             ) : (
-              <MoonIcon className="icon-md" />
+              <MoonIcon className={styles['icon-md']} />
             )}
           </button>
 
           {/* Notifications */}
-          <button className="header-action-btn relative">
-            <BellIcon className="icon-md" />
+          <button className={`${styles['header-action-btn']} relative`}>
+            <BellIcon className={styles['icon-md']} />
             {notifications > 0 && (
-              <span className="header-notification-badge">
+              <span className={styles['header-notification-badge']}>
                 {notifications}
               </span>
             )}
@@ -127,23 +128,23 @@ export default function AdminHeader() {
 
           {/* User dropdown */}
           <Menu as="div" className="relative">
-            <Menu.Button className="user-menu">
+            <Menu.Button className={styles['user-menu']}>
               {user?.profile?.avatar_url ? (
                 <img
-                  className="user-avatar"
+                  className={styles['user-avatar']}
                   src={user.profile.avatar_url}
                   alt={user.profile.full_name || user.email}
                 />
               ) : (
-                <div className="user-avatar">
-                  <UserCircleIcon className="icon-md" />
+                <div className={styles['user-avatar']}>
+                  <UserCircleIcon className={styles['icon-md']} />
                 </div>
               )}
-              <div className="user-info">
-                <p className="user-name">
+              <div className={styles['user-info']}>
+                <p className={styles['user-name']}>
                   {user?.profile?.full_name || 'Admin'}
                 </p>
-                <p className="user-email">
+                <p className={styles['user-email']}>
                   {user?.email}
                 </p>
               </div>
@@ -158,14 +159,14 @@ export default function AdminHeader() {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Menu.Items className="user-dropdown-menu">
+              <Menu.Items className={styles['user-dropdown-menu']}>
                 <Menu.Item>
                   {({ active }) => (
                     <button
                       onClick={() => router.push('/admin/profile')}
-                      className={`user-dropdown-item ${active ? 'hover:bg-gray-100 dark:hover:bg-gray-700' : ''}`}
+                      className={`${styles['user-dropdown-item']} ${active ? 'hover:bg-gray-100 dark:hover:bg-gray-700' : ''}`}
                     >
-                      <UserCircleIcon className="user-dropdown-icon" />
+                      <UserCircleIcon className={styles['user-dropdown-icon']} />
                       Profil
                     </button>
                   )}
@@ -174,21 +175,21 @@ export default function AdminHeader() {
                   {({ active }) => (
                     <button
                       onClick={() => router.push('/admin/settings')}
-                      className={`user-dropdown-item ${active ? 'hover:bg-gray-100 dark:hover:bg-gray-700' : ''}`}
+                      className={`${styles['user-dropdown-item']} ${active ? 'hover:bg-gray-100 dark:hover:bg-gray-700' : ''}`}
                     >
-                      <Cog6ToothIcon className="user-dropdown-icon" />
+                      <Cog6ToothIcon className={styles['user-dropdown-icon']} />
                       Ayarlar
                     </button>
                   )}
                 </Menu.Item>
-                <div className="user-dropdown-divider"></div>
+                <div className={styles['user-dropdown-divider']}></div>
                 <Menu.Item>
                   {({ active }) => (
                     <button
                       onClick={handleSignOut}
-                      className={`user-dropdown-item ${active ? 'hover:bg-gray-100 dark:hover:bg-gray-700' : ''}`}
+                      className={`${styles['user-dropdown-item']} ${active ? 'hover:bg-gray-100 dark:hover:bg-gray-700' : ''}`}
                     >
-                      <ArrowRightOnRectangleIcon className="user-dropdown-icon" />
+                      <ArrowRightOnRectangleIcon className={styles['user-dropdown-icon']} />
                       Çıkış Yap
                     </button>
                   )}
