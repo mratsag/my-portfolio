@@ -295,6 +295,8 @@
   height: 48px !important;
   color: #0ea5e9;
   fill: #0ea5e9;
+  display: block !important;
+  visibility: visible !important;
   transition: all 0.3s ease;
 }
 
