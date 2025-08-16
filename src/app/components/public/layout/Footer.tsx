@@ -52,7 +52,7 @@ export default function Footer() {
             <h4 className={styles.sectionTitle}>Sosyal Medya</h4>
             <div className={styles.socialLinks}>
               <a
-                href="https://github.com/muratsag"
+                href="https://github.com/mratsag"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.socialLink}
@@ -70,7 +70,7 @@ export default function Footer() {
                 <Linkedin className={styles.socialIcon} />
               </a>
               <a
-                href="https://twitter.com/muratsag"
+                href="https://x.com/mratsagg"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.socialLink}
