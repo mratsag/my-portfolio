@@ -75,7 +75,7 @@ export default async function Home() {
                   <ul className={styles.skillList}>
                     <li className={styles.skillItem}>Java (İleri Seviye) - Ziraat ATM Projesi</li>
                     <li className={styles.skillItem}>Python (İleri Seviye) - WeatherSocket Projesi</li>
-                    <li className={styles.skillItem}>C (Orta Seviye) - Socket Programming</li>
+                    <li className={styles.skillItem}>C (İleri Seviye) - Socket Programming</li>
                     <li className={styles.skillItem}>C# (İleri Seviye) - Weekly Tracking</li>
                     <li className={styles.skillItem}>Dart (Orta Seviye) - Servis App Mobile</li>
                     <li className={styles.skillItem}>Spring Boot (Orta Seviye) - Full Stack Projesi</li>
@@ -88,8 +88,8 @@ export default async function Home() {
                     Flutter ile cross-platform mobil uygulamalar geliştiriyorum.
                   </p>
                   <ul className={styles.skillList}>
-                    <li className={styles.skillItem}>React.js (Orta Seviye) - Full Stack Projesi</li>
-                    <li className={styles.skillItem}>HTML/CSS (Orta Seviye) - BTK Website</li>
+                    <li className={styles.skillItem}>React.js (Orta Seviye) - Adataha Web Site</li>
+                    <li className={styles.skillItem}>HTML/CSS (İleri Seviye) - BTK Website</li>
                     <li className={styles.skillItem}>JavaScript (Orta Seviye) - CV Projesi</li>
                     <li className={styles.skillItem}>Flutter & Dart - Cross-platform Mobile</li>
                     <li className={styles.skillItem}>MySQL (İleri Seviye) - Veritabanı Yönetimi</li>
