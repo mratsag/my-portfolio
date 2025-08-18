@@ -169,7 +169,7 @@ export default function AboutSection({ profile, experiences, skills, education }
                 <div className={styles.bioSection}>
                   <h3 className={styles.sectionTitle}>Hakkımda</h3>
                   <p className={styles.bioText}>
-                    {profile?.bio || 'Merhaba! Ben Murat Sağ, yazılım geliştirme konusunda tutkulu bir bilgisayar mühendisliği öğrencisiyim. Modern web teknolojileri ve mobil uygulama geliştirme alanlarında deneyim sahibiyim.'}
+                    Merhaba! Ben Murat Sağ, yazılım geliştirme konusunda tutkulu bir bilgisayar mühendisliği öğrencisiyim. Modern web teknolojileri ve mobil uygulama geliştirme alanlarında deneyim sahibiyim.
                   </p>
                   <p className={styles.bioText}>
                     React.js, Next.js, TypeScript gibi frontend teknolojileri ile Spring Boot, Node.js gibi backend teknolojilerinde projeler geliştiriyorum. Ayrıca mobil uygulama geliştirme konusunda da deneyimim bulunuyor.

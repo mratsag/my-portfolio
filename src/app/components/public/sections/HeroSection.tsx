@@ -22,6 +22,7 @@ export default function HeroSection({ profile }: HeroSectionProps) {
   const [isVisible, setIsVisible] = useState(false)
   const [mounted, setMounted] = useState(false)
   const { theme } = useTheme()
+  const [avatarError, setAvatarError] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -33,18 +34,6 @@ export default function HeroSection({ profile }: HeroSectionProps) {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' })
     }
-  }
-
-  // Profil fotoğrafı URL'sine timestamp ekleyerek cache'i bypass et
-  const getAvatarUrl = (url?: string) => {
-    if (!url) return undefined
-    // URL'de zaten timestamp varsa kullan, yoksa ekle
-    if (url.includes('?t=')) {
-      return url
-    }
-    const separator = url.includes('?') ? '&' : '?'
-    const finalUrl = `${url}${separator}t=${Date.now()}`
-    return finalUrl
   }
 
   if (!mounted) {
@@ -72,7 +61,7 @@ export default function HeroSection({ profile }: HeroSectionProps) {
             </h2>
             
             <p className={styles.description}>
-              {profile?.bio || 'Java, Python, C, Dart ve C# gibi programlama dillerinde deneyim sahibi, React.js ve Spring Boot teknolojileriyle projeler geliştiren bir yazılım geliştirici.'}
+              Java, Python, C, Dart ve C# gibi programlama dillerinde deneyim sahibi, React.js ve Spring Boot teknolojileriyle projeler geliştiren bir yazılım geliştirici. Karabük Üniversitesi Bilgisayar Mühendisliği öğrencisi olarak modern web teknolojileri ve mobil uygulama geliştirme konularında tutkulu bir geliştiriciyim.
             </p>
 
             <div className={styles.actions}>
@@ -125,14 +114,12 @@ export default function HeroSection({ profile }: HeroSectionProps) {
           {/* Right Side - Visual Content */}
           <div className={`${styles.visualContent} ${isVisible ? styles.visible : ''}`}>
             <div className={styles.avatarContainer}>
-              {profile?.avatar_url ? (
+              {profile?.avatar_url && !avatarError ? (
                 <img
-                  src={getAvatarUrl(profile.avatar_url)}
+                  src={profile.avatar_url}
                   alt={profile.full_name || 'Murat Sağ'}
                   className={styles.avatar}
-                  onError={(e) => {
-                    // Avatar yükleme hatası - sessizce handle et
-                  }}
+                  onError={() => setAvatarError(true)}
                 />
               ) : (
                 <div className={styles.avatarPlaceholder}>

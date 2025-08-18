@@ -42,21 +42,15 @@ export const metadata: Metadata = {
 export default async function Home() {
   const supabase = createSupabaseServerClient()
   
-  try {
-    // Profil bilgilerini al
-    const profileResult = await supabase
-      .from('profiles')
-      .select('*')
-      .limit(1)
-      .single()
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('*')
+    .limit(1)
+    .single()
 
-    const profile = profileResult.data
-
-
-
-    return (
-      <PublicLayout>
-        <HeroSection profile={profile} />
+  return (
+    <PublicLayout>
+      <HeroSection profile={profile || undefined} />
         
         {/* SEO için ek içerik - CV'den alınan bilgilerle */}
         <section className={styles.seoSection}>
@@ -131,12 +125,4 @@ export default async function Home() {
         </section>
       </PublicLayout>
     )
-  } catch (error) {
-    console.error('Home page error:', error)
-    return (
-      <PublicLayout>
-        <HeroSection profile={undefined} />
-      </PublicLayout>
-    )
-  }
 }
