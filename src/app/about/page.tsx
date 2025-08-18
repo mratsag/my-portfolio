@@ -67,6 +67,34 @@ export default async function AboutPage() {
   const skills = skillsResult.status === 'fulfilled' ? skillsResult.value.data : undefined
   const education = educationResult.status === 'fulfilled' ? educationResult.value.data : undefined
 
+  // Debug bilgileri
+  console.log('=== ABOUT PAGE DEBUG ===')
+  console.log('Skills Result Status:', skillsResult.status)
+  if (skillsResult.status === 'fulfilled') {
+    console.log('Skills Data:', skillsResult.value.data)
+    console.log('Skills Count:', skillsResult.value.data?.length)
+    console.log('Skills Error:', skillsResult.value.error)
+  } else {
+    console.log('Skills Error:', skillsResult.reason)
+  }
+  console.log('Final Skills:', skills)
+  console.log('Skills Length:', skills?.length)
+  
+  // Skills verilerini detaylı kontrol et
+  if (skills && skills.length > 0) {
+    console.log('=== SKILLS DETAILS ===')
+    skills.forEach((skill, index) => {
+      console.log(`Skill ${index + 1}:`, {
+        id: skill.id,
+        name: skill.name,
+        category: skill.category,
+        level: skill.level,
+        order_index: skill.order_index
+      })
+    })
+  } else {
+    console.log('No skills data found!')
+  }
 
 
   return (

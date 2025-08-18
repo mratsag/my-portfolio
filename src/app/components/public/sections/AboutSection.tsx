@@ -50,9 +50,29 @@ export default function AboutSection({ profile, experiences, skills, education }
   const [activeTab, setActiveTab] = useState('about')
   const { theme } = useTheme()
 
+  // Skill kategorilerini hemen hesapla
+  const skillCategories = {
+    'Frontend': skills?.filter(skill => skill.category === 'Frontend') || [],
+    'Backend': skills?.filter(skill => skill.category === 'Backend') || [],
+    'Database': skills?.filter(skill => skill.category === 'Database') || [],
+    'Programming Languages': skills?.filter(skill => skill.category === 'Programming Languages') || [],
+    'Mobile': skills?.filter(skill => skill.category === 'Mobile') || [],
+    'Tools': skills?.filter(skill => skill.category === 'Tools') || [],
+    'Design': skills?.filter(skill => skill.category === 'Design') || [],
+    'Other': skills?.filter(skill => !skill.category || !['Frontend', 'Backend', 'Database', 'Programming Languages', 'Mobile', 'Tools', 'Design'].includes(skill.category)) || []
+  }
+
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  // Debug bilgileri
+  useEffect(() => {
+    console.log('=== ABOUT SECTION DEBUG ===')
+    console.log('Skills Props:', skills)
+    console.log('Skills Length:', skills?.length)
+    console.log('Skills Categories:', skillCategories)
+  }, [skills, skillCategories])
 
   // Profil fotoğrafı URL'sine timestamp ekleyerek cache'i bypass et
   const getAvatarUrl = (url?: string) => {
@@ -64,14 +84,6 @@ export default function AboutSection({ profile, experiences, skills, education }
 
   if (!mounted) {
     return null
-  }
-
-  const skillCategories = {
-    'Frontend': skills?.filter(skill => skill.category === 'frontend') || [],
-    'Backend': skills?.filter(skill => skill.category === 'backend') || [],
-    'Database': skills?.filter(skill => skill.category === 'database') || [],
-    'DevOps': skills?.filter(skill => skill.category === 'devops') || [],
-    'Other': skills?.filter(skill => !skill.category || skill.category === 'other') || []
   }
 
   return (
