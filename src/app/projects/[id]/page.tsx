@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import PublicLayout from '@/app/components/public/layout/PublicLayout'
 import ProjectDetailSection from '@/app/components/public/sections/ProjectDetailSection'
+import ProjectSchema from '../../../components/ProjectSchema'
 
 interface ProjectDetailPageProps {
   params: Promise<{
@@ -87,6 +88,17 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
 
   return (
     <PublicLayout>
+      <ProjectSchema
+        title={project.title}
+        description={project.description || project.content?.substring(0, 160) || 'Proje detayları'}
+        url={`https://www.muratsag.com/projects/${project.id}`}
+        technologies={project.technologies || []}
+        image={project.image_url}
+        githubUrl={project.github_url}
+        demoUrl={project.demo_url}
+        createdDate={project.created_at}
+        updatedDate={project.updated_at}
+      />
       <ProjectDetailSection project={project} profile={profile} />
     </PublicLayout>
   )
