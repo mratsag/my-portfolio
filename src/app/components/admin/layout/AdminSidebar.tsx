@@ -141,9 +141,14 @@ export default function AdminSidebar() {
         if (response.ok) {
           const data = await response.json()
           setUnreadMessageCount(data.unreadCount)
+        } else if (response.status === 401) {
+          // Session yoksa sessizce devam et, hata gösterme
+          setUnreadMessageCount(0)
         }
       } catch (error) {
-        console.error('Error fetching unread message count:', error)
+        // Network hatası durumunda sessizce devam et
+        console.debug('Could not fetch unread message count:', error)
+        setUnreadMessageCount(0)
       }
     }
 
@@ -161,7 +166,7 @@ export default function AdminSidebar() {
     
     return () => {
       clearInterval(interval)
-      window.removeEventListener('messageStatusChanged', handleMessageStatusChange)
+      window.removeEventListener('messageStatusChanged', handleMessageStatusChanged)
     }
   }, [])
 

@@ -8,11 +8,12 @@ export async function GET(request: NextRequest) {
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
     
-    // Get session
+    // Session kontrolü yap ama hata durumunda sessizce devam et
     const { data: { session }, error: sessionError } = await supabase.auth.getSession()
     
     if (sessionError || !session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      // Session yoksa 0 döndür, hata verme
+      return NextResponse.json({ unreadCount: 0 })
     }
 
     // Get unread message count
@@ -23,7 +24,7 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.error('Error fetching unread messages count:', error)
-      return NextResponse.json({ error: 'Failed to fetch unread messages count' }, { status: 500 })
+      return NextResponse.json({ unreadCount: 0 })
     }
 
     return NextResponse.json({ 
@@ -32,6 +33,6 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     console.error('Error in messages stats API:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json({ unreadCount: 0 })
   }
 } 
