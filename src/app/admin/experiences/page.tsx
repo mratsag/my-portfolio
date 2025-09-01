@@ -12,7 +12,7 @@ import {
   EyeSlashIcon
 } from '@heroicons/react/24/outline'
 import ExperienceList from './components/ExperienceList'
-import ExperienceForm from './components/ExperienceForm'
+
 import { Experience } from '@/lib/types'
 
 interface ExperiencesData {
@@ -28,8 +28,7 @@ interface ExperiencesData {
 export default function ExperiencesPage() {
   const [experiencesData, setExperiencesData] = useState<ExperiencesData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [isFormOpen, setIsFormOpen] = useState(false)
-  const [editingExperience, setEditingExperience] = useState<Experience | null>(null)
+
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('list')
 
@@ -53,13 +52,13 @@ export default function ExperiencesPage() {
   }, [])
 
   const handleAddExperience = () => {
-    setEditingExperience(null)
-    setIsFormOpen(true)
+    // Yeni deneyim sayfasına yönlendir
+    window.location.href = '/admin/experiences/new'
   }
 
   const handleEditExperience = (experience: Experience) => {
-    setEditingExperience(experience)
-    setIsFormOpen(true)
+    // Düzenleme sayfasına yönlendir
+    window.location.href = `/admin/experiences/${experience.id}/edit`
   }
 
   const handleDeleteExperience = async (experienceId: string) => {
@@ -226,16 +225,7 @@ export default function ExperiencesPage() {
         />
       )}
 
-      {/* Experience Form Modal */}
-      <ExperienceForm
-        experience={editingExperience || undefined}
-        isOpen={isFormOpen}
-        onClose={() => {
-          setIsFormOpen(false)
-          setEditingExperience(null)
-        }}
-        onSuccess={handleFormSuccess}
-      />
+
     </div>
   )
 }

@@ -29,14 +29,12 @@ type ExperienceFormData = z.infer<typeof experienceSchema>
 
 interface ExperienceFormProps {
   experience?: Experience
-  isOpen: boolean
   onClose: () => void
   onSuccess: () => void
 }
 
 export default function ExperienceForm({ 
   experience, 
-  isOpen, 
   onClose, 
   onSuccess 
 }: ExperienceFormProps) {
@@ -103,11 +101,11 @@ export default function ExperienceForm({
     }
   }
 
-  if (!isOpen) return null
+
 
   return (
-    <div className="experience-form-overlay">
-      <div className="experience-form-container">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+      <div className="p-6">
         {/* Header */}
         <div className="experience-form-header">
           <div className="experience-form-header-content">

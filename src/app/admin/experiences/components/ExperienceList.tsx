@@ -78,13 +78,13 @@ export default function ExperienceList({
               </div>
               
               <div className="experience-card-actions">
-                <button
-                  onClick={() => onEdit(experience)}
+                <a
+                  href={`/admin/experiences/${experience.id}/edit`}
                   className="experience-action-button experience-edit-button"
                   title="Düzenle"
                 >
                   <PencilIcon className="experience-action-icon" />
-                </button>
+                </a>
                 <button
                   onClick={() => onDelete(experience.id)}
                   disabled={deleteLoading === experience.id}
@@ -202,13 +202,13 @@ export default function ExperienceList({
               </td>
               <td className="experiences-table-cell">
                 <div className="experience-cell-actions">
-                  <button
-                    onClick={() => onEdit(experience)}
+                  <a
+                    href={`/admin/experiences/${experience.id}/edit`}
                     className="experience-action-button experience-edit-button"
                     title="Düzenle"
                   >
                     <PencilIcon className="experience-action-icon" />
-                  </button>
+                  </a>
                   <button
                     onClick={() => onDelete(experience.id)}
                     disabled={deleteLoading === experience.id}
