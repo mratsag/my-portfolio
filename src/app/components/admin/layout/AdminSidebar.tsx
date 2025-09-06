@@ -166,7 +166,7 @@ export default function AdminSidebar() {
     
     return () => {
       clearInterval(interval)
-      window.removeEventListener('messageStatusChanged', handleMessageStatusChanged)
+      window.removeEventListener('messageStatusChanged', handleMessageStatusChange)
     }
   }, [])
 

@@ -43,7 +43,6 @@ export default function NewExperiencePage() {
       {/* Experience Form */}
       <ExperienceForm 
         experience={undefined} 
-        isOpen={true}
         onClose={() => router.push('/admin/experiences')}
         onSuccess={handleSuccess} 
       />
