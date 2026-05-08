@@ -1,5 +1,5 @@
 // src/lib/supabase-server.ts
-import { createServerClient } from '@supabase/ssr'
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
 export const createSupabaseServerClient = () => createServerClient(
@@ -16,11 +16,11 @@ export const createSupabaseServerClient = () => createServerClient(
           return []
         }
       },
-      setAll(cookiesToSet) {
+      setAll(_cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
         // Cookie setting is handled by middleware
         // This is only called in Server Components where we can't set cookies
         console.warn('Cookie setting attempted in Server Component - handled by middleware')
       },
     },
   }
-) 
+)

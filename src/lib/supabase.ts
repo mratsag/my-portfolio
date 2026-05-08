@@ -1,5 +1,5 @@
 // src/lib/supabase.ts
-import { createBrowserClient } from '@supabase/ssr'
+import { createBrowserClient, type CookieOptions } from '@supabase/ssr'
 
 let supabaseClient: ReturnType<typeof createBrowserClient> | null = null
 
@@ -24,7 +24,7 @@ export const createClient = () => {
               return []
             }
           },
-          setAll(cookiesToSet) {
+          setAll(cookiesToSet: { name: string; value: string; options?: CookieOptions }[]) {
             try {
               if (typeof document !== 'undefined') {
                 cookiesToSet.forEach(({ name, value, options }) => {
