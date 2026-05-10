@@ -7,7 +7,7 @@ import AnalyticsLoader from '../components/AnalyticsLoader'
 
 export const metadata: Metadata = {
   title: 'Murat Sağ - Software Developer & Computer Engineering Student | Portfolio',
-  description: 'Yazılım geliştirici ve bilgisayar mühendisliği öğrencisi Murat Sağ. React, Next.js, TypeScript, Java, Python ile web geliştirme, mobil uygulamalar ve yazılım çözümleri. Karabük Üniversitesi.',
+  description: 'Yazılım geliştirici ve bilgisayar mühendisi Murat Sağ. React, Next.js, TypeScript, Java, Python ile web geliştirme, mobil uygulamalar ve yazılım çözümleri. Karabük Üniversitesi.',
   keywords: [
     'Murat Sağ',
     'yazılım geliştirici',
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Murat Sağ - Software Developer & Computer Engineering Student',
-    description: 'Yazılım geliştirici ve bilgisayar mühendisliği öğrencisi. React, Next.js, TypeScript, Java, Python ile web geliştirme ve mobil uygulamalar.',
+    description: 'Yazılım geliştirici ve bilgisayar mühendisi. React, Next.js, TypeScript, Java, Python ile web geliştirme ve mobil uygulamalar.',
     url: 'https://www.muratsag.com',
     siteName: 'Murat Sağ Portfolio',
     images: [
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Murat Sağ - Software Developer & Computer Engineering Student',
-    description: 'Yazılım geliştirici ve bilgisayar mühendisliği öğrencisi. Web geliştirme ve mobil uygulamalar.',
+    description: 'Yazılım geliştirici ve bilgisayar mühendisi. Web geliştirme ve mobil uygulamalar.',
     images: ['/og-image.svg'],
   },
   robots: {
@@ -100,7 +100,7 @@ export default function RootLayout({
         <PersonSchema
           name="Murat Sağ"
           jobTitle="Software Developer & Computer Engineering Student"
-          description="Yazılım geliştirici ve bilgisayar mühendisliği öğrencisi"
+          description="Yazılım geliştirici ve bilgisayar mühendisi"
           url="https://www.muratsag.com"
           email="murat@muratsag.com"
           github="https://github.com/muratsag"

@@ -22,11 +22,11 @@ export const revalidate = 30
 
 export const metadata: Metadata = {
   title: 'Hakkımda - Murat Sağ',
-  description: 'Yazılım geliştirici ve bilgisayar mühendisliği öğrencisi Murat Sağ hakkında detaylı bilgi. Deneyimler, yetenekler ve eğitim geçmişi.',
+  description: 'Yazılım geliştirici ve bilgisayar mühendisi Murat Sağ hakkında detaylı bilgi. Deneyimler, yetenekler ve eğitim geçmişi.',
   keywords: 'hakkımda, murat sağ, yazılım geliştirici, bilgisayar mühendisliği, deneyimler, yetenekler, eğitim, portfolio',
   openGraph: {
     title: 'Hakkımda - Murat Sağ',
-    description: 'Yazılım geliştirici ve bilgisayar mühendisliği öğrencisi Murat Sağ hakkında detaylı bilgi.',
+    description: 'Yazılım geliştirici ve bilgisayar mühendisi Murat Sağ hakkında detaylı bilgi.',
     url: 'https://www.muratsag.com/about',
     siteName: 'Murat Sağ - Portfolio',
     type: 'website',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Hakkımda - Murat Sağ',
-    description: 'Yazılım geliştirici ve bilgisayar mühendisliği öğrencisi Murat Sağ hakkında detaylı bilgi.',
+    description: 'Yazılım geliştirici ve bilgisayar mühendisi Murat Sağ hakkında detaylı bilgi.',
   },
   alternates: {
     canonical: 'https://www.muratsag.com/about',

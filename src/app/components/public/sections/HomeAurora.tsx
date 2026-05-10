@@ -56,7 +56,7 @@ const ROTATING_TITLES = [
   'Full Stack Developer',
   'Mobile Developer',
   'Backend Engineer',
-  'Bilgisayar Müh. Öğrencisi',
+  'Bilgisayar Mühendisi',
 ]
 
 function useTypewriter(words: string[], speed = 100, pause = 1800) {

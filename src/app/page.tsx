@@ -24,11 +24,11 @@ export const revalidate = 10
 
 export const metadata: Metadata = {
   title: 'Murat Sağ - Software Developer & Computer Engineering Student',
-  description: 'Yazılım geliştirici ve bilgisayar mühendisliği öğrencisi. Web geliştirme, mobil uygulamalar ve yazılım çözümleri konularında deneyimli.',
+  description: 'Yazılım geliştirici ve bilgisayar mühendisi. Web geliştirme, mobil uygulamalar ve yazılım çözümleri konularında deneyimli.',
   keywords: 'yazılım geliştirici, web geliştirme, mobil uygulama, react, next.js, typescript, javascript, portfolio, murat sağ',
   openGraph: {
     title: 'Murat Sağ - Software Developer & Computer Engineering Student',
-    description: 'Yazılım geliştirici ve bilgisayar mühendisliği öğrencisi. Web geliştirme, mobil uygulamalar ve yazılım çözümleri.',
+    description: 'Yazılım geliştirici ve bilgisayar mühendisi. Web geliştirme, mobil uygulamalar ve yazılım çözümleri.',
     url: 'https://www.muratsag.com',
     siteName: 'Murat Sağ - Portfolio',
     images: [
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Murat Sağ - Software Developer & Computer Engineering Student',
-    description: 'Yazılım geliştirici ve bilgisayar mühendisliği öğrencisi.',
+    description: 'Yazılım geliştirici ve bilgisayar mühendisi.',
     images: ['/og-image.svg'],
   },
   alternates: {
