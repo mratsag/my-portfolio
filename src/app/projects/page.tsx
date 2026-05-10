@@ -1,7 +1,21 @@
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import { Metadata } from 'next'
+import { Geist, Geist_Mono } from 'next/font/google'
 import PublicLayout from '@/app/components/public/layout/PublicLayout'
-import ProjectsSection from '@/app/components/public/sections/ProjectsSection'
+import ProjectsListAurora from '@/app/components/public/sections/ProjectsListAurora'
+
+// Geist (Vercel) — Aurora typography
+const geist = Geist({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
+
+const geistMono = Geist_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-mono',
+})
 
 // Cache for 5 minutes
 export const revalidate = 300
@@ -29,9 +43,8 @@ export const metadata: Metadata = {
 
 export default async function ProjectsPage() {
   const supabase = createSupabaseServerClient()
-  
+
   try {
-    // Tüm projeleri al
     const { data: projects, error } = await supabase
       .from('projects')
       .select('*')
@@ -43,15 +56,19 @@ export default async function ProjectsPage() {
 
     return (
       <PublicLayout>
-        <ProjectsSection projects={projects || []} />
+        <div className={`${geist.variable} ${geistMono.variable}`}>
+          <ProjectsListAurora projects={projects || []} />
+        </div>
       </PublicLayout>
     )
   } catch (error) {
     console.error('Projects page error:', error)
     return (
       <PublicLayout>
-        <ProjectsSection projects={[]} />
+        <div className={`${geist.variable} ${geistMono.variable}`}>
+          <ProjectsListAurora projects={[]} />
+        </div>
       </PublicLayout>
     )
   }
-} 
+}

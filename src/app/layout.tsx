@@ -3,6 +3,7 @@ import './globals.css'
 import { ThemeProvider } from 'next-themes'
 import CookieConsentWrapper from '../components/CookieConsentWrapper'
 import PersonSchema from '../components/JsonLd'
+import AnalyticsLoader from '../components/AnalyticsLoader'
 
 export const metadata: Metadata = {
   title: 'Murat Sağ - Software Developer & Computer Engineering Student | Portfolio',
@@ -71,12 +72,12 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'sNNJkE3FyNdWwuSYyPf7WfUlmLTjiftuHEgglM5yv_Q',
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'sNNJkE3FyNdWwuSYyPf7WfUlmLTjiftuHEgglM5yv_Q',
   },
   category: 'technology',
   classification: 'Portfolio',
   other: {
-    'google-site-verification': 'sNNJkE3FyNdWwuSYyPf7WfUlmLTjiftuHEgglM5yv_Q',
+    'google-site-verification': process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'sNNJkE3FyNdWwuSYyPf7WfUlmLTjiftuHEgglM5yv_Q',
   },
 }
 
@@ -105,32 +106,11 @@ export default function RootLayout({
           github="https://github.com/muratsag"
           linkedin="https://linkedin.com/in/muratsag"
         />
-        {/* Google Tag Manager */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-              })(window,document,'script','dataLayer','GTM-WH63DW5V');
-            `,
-          }}
-        />
-        {/* End Google Tag Manager */}
       </head>
       <body suppressHydrationWarning>
-        {/* Google Tag Manager (noscript) */}
-        <noscript>
-          <iframe 
-            src="https://www.googletagmanager.com/ns.html?id=GTM-WH63DW5V"
-            height="0" 
-            width="0" 
-            style={{display:'none',visibility:'hidden'}}
-          />
-        </noscript>
-        {/* End Google Tag Manager (noscript) */}
-        
+        {/* GTM yalnızca cookie consent verildiğinde yüklenir (KVKK/GDPR uyumu) */}
+        <AnalyticsLoader />
+
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
           <CookieConsentWrapper />

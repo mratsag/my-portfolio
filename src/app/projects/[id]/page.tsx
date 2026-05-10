@@ -1,9 +1,23 @@
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
+import { Geist, Geist_Mono } from 'next/font/google'
 import PublicLayout from '@/app/components/public/layout/PublicLayout'
-import ProjectDetailSection from '@/app/components/public/sections/ProjectDetailSection'
+import ProjectDetailAurora from '@/app/components/public/sections/ProjectDetailAurora'
 import ProjectSchema from '../../../components/ProjectSchema'
+
+// Geist (Vercel) — Aurora typography
+const geist = Geist({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
+
+const geistMono = Geist_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-mono',
+})
 
 interface ProjectDetailPageProps {
   params: Promise<{
@@ -11,12 +25,10 @@ interface ProjectDetailPageProps {
   }>
 }
 
-// Generate metadata for project detail page
 export async function generateMetadata({ params }: ProjectDetailPageProps): Promise<Metadata> {
   const { id } = await params
   const supabase = createSupabaseServerClient()
-  
-  // Projeyi al
+
   const { data: project, error } = await supabase
     .from('projects')
     .select('*')
@@ -35,27 +47,29 @@ export async function generateMetadata({ params }: ProjectDetailPageProps): Prom
 
   return {
     title: `${project.title} - Murat Sağ`,
-    description: description,
+    description,
     keywords: `${technologies}, proje, yazılım, web geliştirme, murat sağ`,
     openGraph: {
       title: project.title,
-      description: description,
+      description,
       type: 'website',
       url: `https://www.muratsag.com/projects/${project.id}`,
       siteName: 'Murat Sağ - Portfolio',
-      images: project.image_url ? [
-        {
-          url: project.image_url,
-          width: 1200,
-          height: 630,
-          alt: project.title,
-        }
-      ] : undefined,
+      images: project.image_url
+        ? [
+            {
+              url: project.image_url,
+              width: 1200,
+              height: 630,
+              alt: project.title,
+            },
+          ]
+        : undefined,
     },
     twitter: {
       card: 'summary_large_image',
       title: project.title,
-      description: description,
+      description,
       images: project.image_url ? [project.image_url] : undefined,
     },
     alternates: {
@@ -67,8 +81,7 @@ export async function generateMetadata({ params }: ProjectDetailPageProps): Prom
 export default async function ProjectDetailPage({ params }: ProjectDetailPageProps) {
   const { id } = await params
   const supabase = createSupabaseServerClient()
-  
-  // Projeyi al
+
   const { data: project, error } = await supabase
     .from('projects')
     .select('*')
@@ -78,13 +91,6 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
   if (error || !project) {
     notFound()
   }
-
-  // Profil bilgilerini al
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .limit(1)
-    .single()
 
   return (
     <PublicLayout>
@@ -99,7 +105,9 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
         createdDate={project.created_at}
         updatedDate={project.updated_at}
       />
-      <ProjectDetailSection project={project} profile={profile} />
+      <div className={`${geist.variable} ${geistMono.variable}`}>
+        <ProjectDetailAurora project={project} />
+      </div>
     </PublicLayout>
   )
-} 
+}

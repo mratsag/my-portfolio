@@ -7,16 +7,38 @@ import QuickActions from './dashboard/components/QuickActions'
 
 export default async function AdminDashboard() {
   const supabase = createSupabaseServerClient()
-  
-  // İstatistikleri al
-  const [projectsCount, experiencesCount, skillsCount, messagesCount] = await Promise.all([
+
+  // Bu ayın ilk günü ve bugünün başlangıcı (ISO)
+  const now = new Date()
+  const firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString()
+
+  // Toplam ve bu ay eklenen sayıları paralel al
+  const [
+    projectsCount,
+    experiencesCount,
+    skillsCount,
+    monthProjects,
+    monthExperiences,
+    monthSkills,
+    monthMessages,
+    todayMessages,
+    unreadMessages,
+    blogsForViews,
+  ] = await Promise.all([
     supabase.from('projects').select('*', { count: 'exact', head: true }),
     supabase.from('experiences').select('*', { count: 'exact', head: true }),
     supabase.from('skills').select('*', { count: 'exact', head: true }),
-    supabase.from('messages').select('*', { count: 'exact', head: true }),
+    supabase.from('projects').select('id', { count: 'exact', head: true }).gte('created_at', firstOfMonth),
+    supabase.from('experiences').select('id', { count: 'exact', head: true }).gte('created_at', firstOfMonth),
+    supabase.from('skills').select('id', { count: 'exact', head: true }).gte('created_at', firstOfMonth),
+    supabase.from('messages').select('id', { count: 'exact', head: true }).gte('created_at', firstOfMonth),
+    supabase.from('messages').select('id', { count: 'exact', head: true }).gte('created_at', startOfToday),
+    supabase.from('messages').select('id', { count: 'exact', head: true }).eq('read', false),
+    supabase.from('blogs').select('views'),
   ])
 
-  // Son aktiviteleri al
+  // Son aktiviteler
   const { data: recentProjects } = await supabase
     .from('projects')
     .select('id, title, created_at, status')
@@ -29,56 +51,48 @@ export default async function AdminDashboard() {
     .order('created_at', { ascending: false })
     .limit(5)
 
-  // Blog yazılarını al
   const { data: recentBlogs } = await supabase
     .from('blogs')
     .select('id, title, created_at, published')
     .order('created_at', { ascending: false })
     .limit(3)
 
-  // Bugünkü mesajları al - daha basit yaklaşım
-  const today = new Date()
-  const todayString = today.toISOString().split('T')[0] // YYYY-MM-DD formatı
-  
-  const { data: todayMessages } = await supabase
-    .from('messages')
-    .select('id, created_at')
-    .ilike('created_at', `${todayString}%`)
+  // Toplam blog görüntülenme — tüm blog.views toplamı
+  const totalBlogViews = (blogsForViews.data ?? []).reduce(
+    (sum, b: { views?: number | null }) => sum + (b.views ?? 0),
+    0
+  )
 
-      // Debug bilgileri kaldırıldı
-
-  // Okunmamış mesajları al
-  const { data: unreadMessages } = await supabase
-    .from('messages')
-    .select('id')
-    .eq('read', false)
+  const todayMessagesCount = todayMessages.count || 0
+  const unreadMessagesCount = unreadMessages.count || 0
+  const messagesThisMonth = monthMessages.count || 0
 
   const stats = [
     {
       name: 'Toplam Projeler',
       value: projectsCount.count || 0,
-      change: '+12%',
+      change: `+${monthProjects.count || 0}`,
       changeType: 'increase' as const,
       icon: 'projects' as const
     },
     {
       name: 'Deneyimler',
       value: experiencesCount.count || 0,
-      change: '+2',
+      change: `+${monthExperiences.count || 0}`,
       changeType: 'increase' as const,
       icon: 'experiences' as const
     },
     {
       name: 'Yetenekler',
       value: skillsCount.count || 0,
-      change: '+5',
+      change: `+${monthSkills.count || 0}`,
       changeType: 'increase' as const,
       icon: 'skills' as const
     },
     {
       name: 'Okunmamış Mesajlar',
-      value: unreadMessages?.length || 0,
-      change: `${todayMessages?.length || 0} yeni`,
+      value: unreadMessagesCount,
+      change: `+${messagesThisMonth}`,
       changeType: 'increase' as const,
       icon: 'messages' as const
     }
@@ -94,8 +108,6 @@ export default async function AdminDashboard() {
         </p>
       </div>
 
-
-
       {/* Stats Cards */}
       <div className="stats-grid">
         {stats.map((stat) => (
@@ -107,7 +119,7 @@ export default async function AdminDashboard() {
       <div className="content-grid">
         {/* Recent Activity - 2/3 width */}
         <div>
-          <RecentActivity 
+          <RecentActivity
             recentProjects={recentProjects || []}
             recentMessages={recentMessages || []}
           />
@@ -121,22 +133,22 @@ export default async function AdminDashboard() {
 
       {/* Additional Dashboard Widgets */}
       <div className="dashboard-widgets">
-        {/* Site Performance */}
+        {/* Site Özeti — gerçek verilerden */}
         <div className="widget-card">
           <h3 className="widget-title">
-            Bugünkü Özet
+            Site Özeti
           </h3>
           <div className="widget-content">
             <div className="widget-stat">
-              <span className="widget-stat-label">Site ziyareti</span>
+              <span className="widget-stat-label">Toplam blog görüntülenme</span>
               <span className="widget-stat-value">
-                {Math.floor((projectsCount.count || 0) * 3 + (experiencesCount.count || 0) * 2 + (skillsCount.count || 0) * 1)}
+                {totalBlogViews.toLocaleString()}
               </span>
             </div>
             <div className="widget-stat">
-              <span className="widget-stat-label">Yeni mesaj</span>
+              <span className="widget-stat-label">Bugün gelen mesaj</span>
               <span className="widget-stat-value">
-                {todayMessages?.length || 0}
+                {todayMessagesCount}
               </span>
             </div>
           </div>
@@ -158,7 +170,7 @@ export default async function AdminDashboard() {
                   if (days < 30) return `${Math.floor(days / 7)} hafta önce`
                   return `${Math.floor(days / 30)} ay önce`
                 }
-                
+
                 return (
                   <div key={blog.id} className="blog-item">
                     <div className={`blog-status ${blog.published ? 'green' : 'yellow'}`}></div>

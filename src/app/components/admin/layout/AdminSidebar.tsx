@@ -133,42 +133,51 @@ export default function AdminSidebar() {
     return pathname.startsWith(href)
   }
 
-  // Fetch unread message count
+  // Okunmamış mesaj sayısı: ilk fetch + Supabase Realtime ile canlı güncelleme
   useEffect(() => {
+    let cancelled = false
+
     const fetchUnreadCount = async () => {
       try {
         const response = await fetch('/api/admin/messages/stats')
+        if (cancelled) return
         if (response.ok) {
           const data = await response.json()
           setUnreadMessageCount(data.unreadCount)
         } else if (response.status === 401) {
-          // Session yoksa sessizce devam et, hata gösterme
           setUnreadMessageCount(0)
         }
       } catch (error) {
-        // Network hatası durumunda sessizce devam et
+        if (cancelled) return
         console.debug('Could not fetch unread message count:', error)
         setUnreadMessageCount(0)
       }
     }
 
     fetchUnreadCount()
-    
-    // Refresh every 30 seconds
-    const interval = setInterval(fetchUnreadCount, 30000)
-    
-    // Listen for message status changes
-    const handleMessageStatusChange = () => {
-      fetchUnreadCount()
-    }
-    
+
+    // Realtime: messages tablosundaki INSERT/UPDATE/DELETE eventlerinde sayıyı yenile
+    const channel = supabase
+      .channel('admin-messages-unread')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'messages' },
+        () => {
+          fetchUnreadCount()
+        }
+      )
+      .subscribe()
+
+    // Manuel tetikleme için event (ör. mesaj okundu işaretlendi)
+    const handleMessageStatusChange = () => fetchUnreadCount()
     window.addEventListener('messageStatusChanged', handleMessageStatusChange)
-    
+
     return () => {
-      clearInterval(interval)
+      cancelled = true
+      supabase.removeChannel(channel)
       window.removeEventListener('messageStatusChanged', handleMessageStatusChange)
     }
-  }, [])
+  }, [supabase])
 
   return (
     <>

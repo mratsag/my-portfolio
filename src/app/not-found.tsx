@@ -1,39 +1,73 @@
 import Link from 'next/link'
+import { Geist, Geist_Mono } from 'next/font/google'
+import { ArrowRight, Home, Mail, Search } from 'lucide-react'
+import styles from '@/styles/components/NotFoundAurora.module.css'
+
+const geist = Geist({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
+
+const geistMono = Geist_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-mono',
+})
+
+export const metadata = {
+  title: '404 — Sayfa Bulunamadı | Murat Sağ',
+  description: 'Aradığın sayfa bulunamadı.',
+}
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-md w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 text-center">
-        <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-gray-100 dark:bg-gray-700">
-          <svg
-            className="h-6 w-6 text-gray-600 dark:text-gray-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33"
-            />
-          </svg>
+    <div className={`${geist.variable} ${geistMono.variable}`}>
+      <main className={styles.page}>
+        <div className={styles.glowBg} aria-hidden="true" />
+
+        <div className={styles.content}>
+          <p className={styles.label}>Hata / 404</p>
+          <h1 className={styles.bigCode}>404</h1>
+          <p className={styles.title}>Sayfa bulunamadı.</p>
+          <p className={styles.sub}>
+            Aradığın sayfa taşınmış, silinmiş veya hiç var olmamış olabilir. Yanlış
+            bir bağlantıya tıkladıysan haber ver.
+          </p>
+
+          <div className={styles.actions}>
+            <Link href="/" className={styles.primary}>
+              <Home size={16} />
+              Ana sayfaya dön
+            </Link>
+            <Link href="/contact" className={styles.ghost}>
+              <Mail size={16} />
+              Bana yaz
+            </Link>
+          </div>
+
+          <div className={styles.suggestionList}>
+            <p className={styles.suggestionTitle}>
+              <Search size={12} style={{ display: 'inline', marginRight: 6, verticalAlign: -1 }} />
+              Belki şuna mı bakıyordun?
+            </p>
+            <div className={styles.suggestions}>
+              <Link href="/projects" className={styles.suggestion}>
+                Projeler
+                <ArrowRight size={14} className={styles.suggestionArrow} />
+              </Link>
+              <Link href="/blog" className={styles.suggestion}>
+                Blog
+                <ArrowRight size={14} className={styles.suggestionArrow} />
+              </Link>
+              <Link href="/about" className={styles.suggestion}>
+                Hakkımda
+                <ArrowRight size={14} className={styles.suggestionArrow} />
+              </Link>
+            </div>
+          </div>
         </div>
-        <h1 className="mt-4 text-2xl font-bold text-gray-900 dark:text-white">
-          404 - Sayfa Bulunamadı
-        </h1>
-        <p className="mt-2 text-gray-600 dark:text-gray-400">
-          Aradığınız sayfa mevcut değil veya taşınmış olabilir.
-        </p>
-        <div className="mt-6">
-          <Link
-            href="/"
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Ana Sayfaya Dön
-          </Link>
-        </div>
-      </div>
+      </main>
     </div>
   )
 }

@@ -1,9 +1,23 @@
 import { createClient } from '@supabase/supabase-js'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
+import { Geist, Geist_Mono } from 'next/font/google'
 import PublicLayout from '@/app/components/public/layout/PublicLayout'
-import BlogDetailSection from '@/app/components/public/sections/BlogDetailSection'
+import BlogDetailAurora from '@/app/components/public/sections/BlogDetailAurora'
 import ArticleSchema from '../../../components/ArticleSchema'
+
+// Geist (Vercel) — Aurora typography
+const geist = Geist({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
+
+const geistMono = Geist_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-mono',
+})
 
 interface BlogDetailPageProps {
   params: Promise<{
@@ -18,8 +32,7 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
-  
-  // Blog yazısını al
+
   const { data: blog, error } = await supabase
     .from('blogs')
     .select('*')
@@ -68,8 +81,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
-  
-  // Blog yazısını al
+
   const { data: blog, error } = await supabase
     .from('blogs')
     .select('*')
@@ -80,7 +92,6 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
     notFound()
   }
 
-  // Profil bilgilerini al
   const { data: profile } = await supabase
     .from('profiles')
     .select('*')
@@ -98,7 +109,9 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
         modifiedDate={blog.updated_at}
         image={blog.image_url}
       />
-      <BlogDetailSection blog={blog} profile={profile} />
+      <div className={`${geist.variable} ${geistMono.variable}`}>
+        <BlogDetailAurora blog={blog} profile={profile} />
+      </div>
     </PublicLayout>
   )
-} 
+}

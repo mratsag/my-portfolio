@@ -1,11 +1,25 @@
 'use client'
-// src/app/admin/auth/login/page.tsx
+// src/app/auth/login/page.tsx
 
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
-import styles from '@/styles/auth/LoginPage.module.css'
+import { Geist, Geist_Mono } from 'next/font/google'
+import { AlertCircle, ArrowLeft, Eye, EyeOff } from 'lucide-react'
+import { createClient } from '@/lib/supabase'
+import styles from '@/styles/components/LoginAurora.module.css'
+
+const geist = Geist({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
+
+const geistMono = Geist_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-mono',
+})
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -13,7 +27,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  
+
   const router = useRouter()
   const supabase = createClient()
 
@@ -23,18 +37,18 @@ export default function LoginPage() {
     setError('')
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
-      if (error) {
-        setError('Giriş başarısız: ' + error.message)
+      if (signInError) {
+        setError('Giriş başarısız: ' + signInError.message)
       } else {
         router.push('/admin')
         router.refresh()
       }
-    } catch (err) {
+    } catch {
       setError('Beklenmeyen bir hata oluştu')
     } finally {
       setLoading(false)
@@ -42,105 +56,96 @@ export default function LoginPage() {
   }
 
   return (
-    <div className={styles.loginContainer}>
-      {/* Floating particles */}
-      <div className={styles.particles}>
-        <div className={styles.particle}></div>
-        <div className={styles.particle}></div>
-        <div className={styles.particle}></div>
-        <div className={styles.particle}></div>
-        <div className={styles.particle}></div>
-        <div className={styles.particle}></div>
-        <div className={styles.particle}></div>
-        <div className={styles.particle}></div>
-        <div className={styles.particle}></div>
-      </div>
+    <div className={`${geist.variable} ${geistMono.variable}`}>
+      <main className={styles.page}>
+        <div className={styles.glowBg} aria-hidden="true" />
 
-      {/* Header */}
-      <div className={styles.header}>
-        <div className={styles.logo}>
-          <span className={styles.logoText}>M</span>
-        </div>
-        <h1 className={styles.title}>Admin Paneli</h1>
-        <p className={styles.subtitle}>Portfolio yönetim sistemi</p>
-      </div>
-
-      {/* Login Card */}
-      <div className={styles.loginCard}>
-        <form className={styles.form} onSubmit={handleSignIn}>
-          {error && (
-            <div className={styles.errorMessage}>
-              {error}
-            </div>
-          )}
-
-          <div className={styles.formGroup}>
-            <label htmlFor="email" className={styles.label}>
-              E-posta
-            </label>
-            <div className={styles.inputContainer}>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className={styles.input}
-                placeholder="E-posta"
-              />
-            </div>
+        <div className={styles.content}>
+          {/* Brand */}
+          <div className={styles.brand}>
+            <Link href="/" className={styles.brandLink}>
+              <span className={styles.brandIcon}>M</span>
+            </Link>
+            <p className={styles.brandLabel}>Admin / Giriş</p>
+            <h1 className={styles.brandTitle}>Tekrar hoş geldin.</h1>
+            <p className={styles.brandSub}>Portfolio yönetim paneline giriş yap.</p>
           </div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="password" className={styles.label}>
-              Şifre
-            </label>
-            <div className={styles.inputContainer}>
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? 'text' : 'password'}
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={styles.input}
-                placeholder="Şifre"
-              />
-              <button
-                type="button"
-                className={styles.passwordToggle}
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <EyeSlashIcon className="w-5 h-5" />
+          {/* Card */}
+          <div className={styles.card}>
+            <form onSubmit={handleSignIn} className={styles.form}>
+              {error && (
+                <div className={styles.errorBanner} role="alert">
+                  <AlertCircle size={18} className={styles.errorIcon} />
+                  <span>{error}</span>
+                </div>
+              )}
+
+              <div className={styles.field}>
+                <label htmlFor="email" className={styles.label}>
+                  E-posta
+                </label>
+                <div className={styles.inputWrap}>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className={styles.input}
+                    placeholder="ornek@email.com"
+                  />
+                </div>
+              </div>
+
+              <div className={styles.field}>
+                <label htmlFor="password" className={styles.label}>
+                  Şifre
+                </label>
+                <div className={styles.inputWrap}>
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    autoComplete="current-password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className={`${styles.input} ${styles.inputWithToggle}`}
+                    placeholder="••••••••"
+                  />
+                  <button
+                    type="button"
+                    className={styles.toggleBtn}
+                    onClick={() => setShowPassword((s) => !s)}
+                    aria-label={showPassword ? 'Şifreyi gizle' : 'Şifreyi göster'}
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </div>
+
+              <button type="submit" disabled={loading} className={styles.submit}>
+                {loading ? (
+                  <>
+                    <span className={styles.spinner} aria-hidden="true" />
+                    Giriş yapılıyor...
+                  </>
                 ) : (
-                  <EyeIcon className="w-5 h-5" />
+                  'Giriş Yap'
                 )}
               </button>
-            </div>
+            </form>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className={styles.submitButton}
-          >
-            {loading ? (
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div className={styles.loadingSpinner}></div>
-                Giriş yapılıyor...
-              </div>
-            ) : (
-              'Giriş Yap'
-            )}
-          </button>
-        </form>
-
-
-      </div>
+          <Link href="/" className={styles.backLink}>
+            <ArrowLeft size={14} />
+            Siteye geri dön
+          </Link>
+        </div>
+      </main>
     </div>
   )
 }

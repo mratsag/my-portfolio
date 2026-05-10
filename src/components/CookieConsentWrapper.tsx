@@ -2,29 +2,15 @@
 
 import CookieConsent from './CookieConsent'
 
-interface WindowWithDataLayer extends Window {
-  dataLayer?: unknown[]
-}
-
 export default function CookieConsentWrapper() {
   const handleCookieAccept = () => {
-    // Google Tag Manager consent mode'u güncelle
-    if (typeof window !== 'undefined' && (window as WindowWithDataLayer).dataLayer) {
-      (window as WindowWithDataLayer).dataLayer!.push({
-        'event': 'consent_update',
-        'consent_state': {
-          'analytics_storage': 'granted',
-          'ad_storage': 'granted'
-        }
-      });
-    }
-    
-    // Sayfayı yeniden yükle
-    window.location.reload()
+    // AnalyticsLoader bu eventi dinleyip GTM'i yükler
+    window.dispatchEvent(new Event('cookieConsentAccepted'))
   }
 
   const handleCookieDecline = () => {
-    // Kullanıcı çerezleri reddetti, hiçbir şey yapma
+    // Reddedildi — analytics yüklenmez, mevcut session'da bir şey değişmez
+    window.dispatchEvent(new Event('cookieConsentDeclined'))
   }
 
   return (

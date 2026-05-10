@@ -1,7 +1,21 @@
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import { Metadata } from 'next'
+import { Geist, Geist_Mono } from 'next/font/google'
 import PublicLayout from '@/app/components/public/layout/PublicLayout'
-import ContactSection from '@/app/components/public/sections/ContactSection'
+import ContactAurora from '@/app/components/public/sections/ContactAurora'
+
+// Geist (Vercel) — anasayfayla aynı typography
+const geist = Geist({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
+
+const geistMono = Geist_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-mono',
+})
 
 // Cache for 5 minutes
 export const revalidate = 300
@@ -29,8 +43,7 @@ export const metadata: Metadata = {
 
 export default async function ContactPage() {
   const supabase = createSupabaseServerClient()
-  
-  // Profil bilgilerini al
+
   const { data: profile } = await supabase
     .from('profiles')
     .select('*')
@@ -39,7 +52,9 @@ export default async function ContactPage() {
 
   return (
     <PublicLayout>
-      <ContactSection profile={profile} />
+      <div className={`${geist.variable} ${geistMono.variable}`}>
+        <ContactAurora profile={profile || undefined} />
+      </div>
     </PublicLayout>
   )
-} 
+}

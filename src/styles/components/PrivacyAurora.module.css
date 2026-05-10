@@ -1,0 +1,358 @@
+/* Privacy — Aurora design language, reading-focused */
+
+.page {
+  background: #FFFFFF;
+  color: #0A0A0A;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
+  font-feature-settings: 'cv01', 'cv02', 'ss01', 'ss03';
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+:global(.dark) .page {
+  background: #0A0A0A;
+  color: #FAFAFA;
+}
+
+.glowBg {
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.10) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(40px);
+}
+
+:global(.dark) .glowBg {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* HERO */
+.hero {
+  padding: 6rem 0 2.5rem;
+}
+
+.sectionLabel {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.8125rem;
+  color: #2563EB;
+  letter-spacing: 0.02em;
+  font-feature-settings: 'tnum', 'cv01';
+  margin: 0 0 1rem 0;
+  font-weight: 500;
+}
+
+:global(.dark) .sectionLabel {
+  color: #60A5FA;
+}
+
+.heroTitle {
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+  margin: 0 0 1rem 0;
+  color: #0A0A0A;
+  text-wrap: balance;
+}
+
+:global(.dark) .heroTitle {
+  color: #FAFAFA;
+}
+
+.heroTitleAccent {
+  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+:global(.dark) .heroTitleAccent {
+  background: linear-gradient(135deg, #60A5FA 0%, #A78BFA 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.heroMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.8125rem;
+  color: #71717A;
+  letter-spacing: -0.005em;
+  font-feature-settings: 'tnum';
+  margin-bottom: 1.5rem;
+}
+
+.heroSub {
+  font-size: 1.0625rem;
+  color: #52525B;
+  line-height: 1.65;
+  margin: 0;
+  letter-spacing: -0.005em;
+  text-wrap: pretty;
+}
+
+:global(.dark) .heroSub {
+  color: #A1A1AA;
+}
+
+/* SECTIONS */
+.section {
+  padding: 2.5rem 0;
+  border-top: 1px solid #EDEDEF;
+}
+
+:global(.dark) .section {
+  border-top-color: #1F1F23;
+}
+
+.sectionNum {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  color: #2563EB;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin: 0 0 0.625rem 0;
+}
+
+:global(.dark) .sectionNum {
+  color: #60A5FA;
+}
+
+.sectionTitle {
+  font-size: clamp(1.5rem, 3vw, 1.875rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0 0 1.25rem 0;
+  color: #0A0A0A;
+  text-wrap: balance;
+}
+
+:global(.dark) .sectionTitle {
+  color: #FAFAFA;
+}
+
+.text {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: #18181B;
+  letter-spacing: -0.005em;
+  margin: 0 0 1rem 0;
+  text-wrap: pretty;
+}
+
+:global(.dark) .text {
+  color: #E4E4E7;
+}
+
+.text:last-child {
+  margin-bottom: 0;
+}
+
+.subTitle {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 1.5rem 0 0.75rem 0;
+  color: #0A0A0A;
+}
+
+:global(.dark) .subTitle {
+  color: #FAFAFA;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.25rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.listItem {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 0.625rem;
+  align-items: start;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #18181B;
+  letter-spacing: -0.005em;
+}
+
+:global(.dark) .listItem {
+  color: #E4E4E7;
+}
+
+.listItem::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563EB, #7C3AED);
+  margin-top: 9px;
+  margin-left: 8px;
+}
+
+:global(.dark) .listItem::before {
+  background: linear-gradient(135deg, #60A5FA, #A78BFA);
+}
+
+.listItem strong {
+  font-weight: 600;
+  color: #0A0A0A;
+}
+
+:global(.dark) .listItem strong {
+  color: #FAFAFA;
+}
+
+.link {
+  color: #2563EB;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(37, 99, 235, 0.4);
+  transition: text-decoration-color 0.2s ease;
+}
+
+.link:hover {
+  text-decoration-color: #2563EB;
+}
+
+:global(.dark) .link {
+  color: #60A5FA;
+  text-decoration-color: rgba(96, 165, 250, 0.4);
+}
+
+:global(.dark) .link:hover {
+  text-decoration-color: #60A5FA;
+}
+
+/* CONTACT CARD — son section */
+.contactCard {
+  margin: 3rem 0 2rem;
+  padding: 2rem;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F6F6F8 100%);
+  border: 1px solid #EDEDEF;
+  border-radius: 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.contactCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #2563EB 0%, #7C3AED 100%);
+  opacity: 0.85;
+}
+
+:global(.dark) .contactCard {
+  background: linear-gradient(180deg, #131316 0%, #0E0E12 100%);
+  border-color: #1F1F23;
+}
+
+:global(.dark) .contactCard::before {
+  background: linear-gradient(90deg, #60A5FA 0%, #A78BFA 100%);
+}
+
+.contactTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  margin: 0 0 0.5rem 0;
+  color: #0A0A0A;
+}
+
+:global(.dark) .contactTitle {
+  color: #FAFAFA;
+}
+
+.contactSub {
+  font-size: 0.9375rem;
+  color: #52525B;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.005em;
+}
+
+:global(.dark) .contactSub {
+  color: #A1A1AA;
+}
+
+.contactBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.5rem;
+  background: #0A0A0A;
+  color: #FFFFFF;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  letter-spacing: -0.01em;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.contactBtn:hover {
+  transform: translateY(-2px);
+  background: #2563EB;
+}
+
+:global(.dark) .contactBtn {
+  background: #FAFAFA;
+  color: #0A0A0A;
+}
+
+:global(.dark) .contactBtn:hover {
+  background: #60A5FA;
+}
+
+.footerSpacer {
+  height: 4rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+  .hero {
+    padding: 4.5rem 0 2rem;
+  }
+  .section {
+    padding: 2rem 0;
+  }
+  .contactCard {
+    padding: 1.5rem;
+  }
+}

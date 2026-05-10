@@ -92,23 +92,6 @@ export interface Profile {
     user_id: string
   }
 
-  export interface BlogPost {
-    id: string
-    title: string
-    slug: string
-    excerpt: string
-    content: string
-    image_url?: string
-    author?: string
-    published: boolean
-    reading_time?: number
-    views?: number
-    tags: string[]
-    created_at: string
-    updated_at: string
-    user_id: string
-  }
-
   export interface Message {
     id: string
     name: string

@@ -1,7 +1,21 @@
 import { createClient } from '@supabase/supabase-js'
 import { Metadata } from 'next'
+import { Geist, Geist_Mono } from 'next/font/google'
 import PublicLayout from '@/app/components/public/layout/PublicLayout'
-import BlogSection from '@/app/components/public/sections/BlogSection'
+import BlogListAurora from '@/app/components/public/sections/BlogListAurora'
+
+// Geist (Vercel) — Aurora typography
+const geist = Geist({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
+
+const geistMono = Geist_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-mono',
+})
 
 // Cache for 5 minutes
 export const revalidate = 300
@@ -33,9 +47,8 @@ export default async function BlogPage() {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
-  
+
   try {
-    // Tüm blog yazılarını al
     const { data: blogs, error } = await supabase
       .from('blogs')
       .select('*')
@@ -46,19 +59,21 @@ export default async function BlogPage() {
       console.error('Blogs fetch error:', error)
     }
 
-
-
     return (
       <PublicLayout>
-        <BlogSection blogs={blogs || []} />
+        <div className={`${geist.variable} ${geistMono.variable}`}>
+          <BlogListAurora blogs={blogs || []} />
+        </div>
       </PublicLayout>
     )
   } catch (error) {
     console.error('Blog page error:', error)
     return (
       <PublicLayout>
-        <BlogSection blogs={[]} />
+        <div className={`${geist.variable} ${geistMono.variable}`}>
+          <BlogListAurora blogs={[]} />
+        </div>
       </PublicLayout>
     )
   }
-} 
+}
