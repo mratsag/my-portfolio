@@ -3,121 +3,86 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { 
-  HomeIcon, 
-  UserIcon, 
-  BriefcaseIcon, 
-  AcademicCapIcon, 
-  CodeBracketIcon,
-  DocumentTextIcon,
-  ChatBubbleLeftRightIcon,
-  Cog6ToothIcon,
-  XMarkIcon,
-  Bars3Icon,
-  ChevronDownIcon,
-  ArrowRightOnRectangleIcon
-} from '@heroicons/react/24/outline'
+import { usePathname, useRouter } from 'next/navigation'
+import {
+  Home,
+  User,
+  Briefcase,
+  GraduationCap,
+  Code,
+  FileText,
+  MessageSquare,
+  Settings,
+  X,
+  ChevronDown,
+  LogOut,
+} from 'lucide-react'
 import { createClient } from '@/lib/supabase'
-import { useRouter } from 'next/navigation'
+import styles from '@/styles/components/AdminLayoutAurora.module.css'
 
-interface NavigationItem {
-  name: string
-  href: string
-  icon: React.ComponentType<{ className?: string }>
-  current: boolean
-  children?: NavigationChild[]
-  badge?: string
-}
-
-interface NavigationChild {
+interface NavChild {
   name: string
   href: string
 }
 
-const navigation: NavigationItem[] = [
-  {
-    name: 'Dashboard',
-    href: '/admin',
-    icon: HomeIcon,
-    current: false,
-  },
-  {
-    name: 'Profil',
-    href: '/admin/profile',
-    icon: UserIcon,
-    current: false,
-  },
+interface NavItem {
+  name: string
+  href: string
+  icon: React.ComponentType<{ size?: number; className?: string }>
+  children?: NavChild[]
+}
+
+const navigation: NavItem[] = [
+  { name: 'Dashboard', href: '/admin', icon: Home },
+  { name: 'Profil', href: '/admin/profile', icon: User },
   {
     name: 'Projeler',
     href: '/admin/projects',
-    icon: CodeBracketIcon,
-    current: false,
+    icon: Code,
     children: [
       { name: 'Tüm Projeler', href: '/admin/projects' },
       { name: 'Yeni Proje', href: '/admin/projects/new' },
-    ]
+    ],
   },
   {
     name: 'Deneyimler',
     href: '/admin/experiences',
-    icon: BriefcaseIcon,
-    current: false,
+    icon: Briefcase,
     children: [
       { name: 'Tüm Deneyimler', href: '/admin/experiences' },
       { name: 'Yeni Deneyim', href: '/admin/experiences/new' },
-    ]
+    ],
   },
-  {
-    name: 'Eğitim',
-    href: '/admin/education',
-    icon: AcademicCapIcon,
-    current: false,
-  },
-  {
-    name: 'Yetenekler',
-    href: '/admin/skills',
-    icon: CodeBracketIcon,
-    current: false,
-  },
+  { name: 'Eğitim', href: '/admin/education', icon: GraduationCap },
+  { name: 'Yetenekler', href: '/admin/skills', icon: Code },
   {
     name: 'Blog',
     href: '/admin/blog',
-    icon: DocumentTextIcon,
-    current: false,
+    icon: FileText,
     children: [
       { name: 'Tüm Yazılar', href: '/admin/blog' },
       { name: 'Yeni Yazı', href: '/admin/blog/new' },
-    ]
+    ],
   },
-  {
-    name: 'Mesajlar',
-    href: '/admin/messages',
-    icon: ChatBubbleLeftRightIcon,
-    current: false,
-    badge: '0' // Dinamik olarak güncellenecek
-  },
-  {
-    name: 'Ayarlar',
-    href: '/admin/settings',
-    icon: Cog6ToothIcon,
-    current: false,
-  },
+  { name: 'Mesajlar', href: '/admin/messages', icon: MessageSquare },
+  { name: 'Ayarlar', href: '/admin/settings', icon: Settings },
 ]
 
-export default function AdminSidebar() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+interface AdminSidebarProps {
+  isMobileOpen: boolean
+  onMobileClose: () => void
+}
+
+export default function AdminSidebar({ isMobileOpen, onMobileClose }: AdminSidebarProps) {
   const [expandedItems, setExpandedItems] = useState<string[]>([])
   const [unreadMessageCount, setUnreadMessageCount] = useState(0)
   const pathname = usePathname()
   const router = useRouter()
   const supabase = createClient()
 
-  const toggleExpanded = (itemName: string) => {
-    setExpandedItems(prev => 
-      prev.includes(itemName) 
-        ? prev.filter(item => item !== itemName)
-        : [...prev, itemName]
+  const toggleExpanded = (name: string) => {
+    setExpandedItems((prev) =>
+      prev.includes(name) ? prev.filter((i) => i !== name) : [...prev, name]
     )
   }
 
@@ -126,14 +91,12 @@ export default function AdminSidebar() {
     router.push('/auth/login')
   }
 
-  const isCurrentPath = (href: string) => {
-    if (href === '/admin') {
-      return pathname === '/admin'
-    }
-    return pathname.startsWith(href)
+  const isActive = (href: string) => {
+    if (href === '/admin') return pathname === '/admin'
+    return pathname === href || pathname.startsWith(href + '/')
   }
 
-  // Okunmamış mesaj sayısı: ilk fetch + Supabase Realtime ile canlı güncelleme
+  // Realtime: messages tablosundaki değişikliklerde unread sayısını yenile
   useEffect(() => {
     let cancelled = false
 
@@ -147,199 +110,125 @@ export default function AdminSidebar() {
         } else if (response.status === 401) {
           setUnreadMessageCount(0)
         }
-      } catch (error) {
+      } catch {
         if (cancelled) return
-        console.debug('Could not fetch unread message count:', error)
         setUnreadMessageCount(0)
       }
     }
 
     fetchUnreadCount()
 
-    // Realtime: messages tablosundaki INSERT/UPDATE/DELETE eventlerinde sayıyı yenile
     const channel = supabase
-      .channel('admin-messages-unread')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'messages' },
-        () => {
-          fetchUnreadCount()
-        }
-      )
+      .channel('admin-messages-unread-sidebar')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, () => {
+        fetchUnreadCount()
+      })
       .subscribe()
 
-    // Manuel tetikleme için event (ör. mesaj okundu işaretlendi)
-    const handleMessageStatusChange = () => fetchUnreadCount()
-    window.addEventListener('messageStatusChanged', handleMessageStatusChange)
+    const handleEvent = () => fetchUnreadCount()
+    window.addEventListener('messageStatusChanged', handleEvent)
 
     return () => {
       cancelled = true
       supabase.removeChannel(channel)
-      window.removeEventListener('messageStatusChanged', handleMessageStatusChange)
+      window.removeEventListener('messageStatusChanged', handleEvent)
     }
   }, [supabase])
 
   return (
     <>
-      {/* Mobile menu button */}
-      <div className="lg:hidden fixed top-4 left-4 z-50">
-        <button
-          type="button"
-          className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-          onClick={() => setSidebarOpen(true)}
-        >
-          <Bars3Icon className="icon-lg" />
-        </button>
-      </div>
+      {/* Mobile overlay */}
+      {isMobileOpen && <div className={styles.sidebarOverlay} onClick={onMobileClose} />}
 
-      {/* Mobile sidebar overlay */}
-      {sidebarOpen && (
-        <div className="lg:hidden fixed inset-0 z-40 flex">
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
-          <div className="relative flex-1 flex flex-col max-w-xs w-full admin-sidebar">
-            <div className="absolute top-0 right-0 -mr-12 pt-2">
-              <button
-                type="button"
-                className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                onClick={() => setSidebarOpen(false)}
-              >
-                <XMarkIcon className="icon-lg text-white" />
-              </button>
-            </div>
-            <SidebarContent 
-              navigation={navigation}
-              pathname={pathname}
-              expandedItems={expandedItems}
-              toggleExpanded={toggleExpanded}
-              isCurrentPath={isCurrentPath}
-              handleSignOut={handleSignOut}
-              unreadMessageCount={unreadMessageCount}
-            />
+      <aside className={`${styles.sidebar} ${!isMobileOpen ? styles.sidebarHidden : ''}`}>
+        {/* Brand */}
+        <div className={styles.brand}>
+          <Link href="/admin" className={styles.brandIcon}>
+            M
+          </Link>
+          <div className={styles.brandText}>
+            <h1 className={styles.brandName}>Murat Sağ</h1>
+            <p className={styles.brandSub}>Admin Panel</p>
           </div>
+          <button
+            type="button"
+            onClick={onMobileClose}
+            className={styles.mobileMenuBtn}
+            style={{ marginLeft: 'auto' }}
+            aria-label="Menüyü kapat"
+          >
+            <X size={18} />
+          </button>
         </div>
-      )}
 
-      {/* Desktop sidebar */}
-      <div className="hidden lg:block admin-sidebar">
-        <SidebarContent 
-          navigation={navigation}
-          pathname={pathname}
-          expandedItems={expandedItems}
-          toggleExpanded={toggleExpanded}
-          isCurrentPath={isCurrentPath}
-          handleSignOut={handleSignOut}
-          unreadMessageCount={unreadMessageCount}
-        />
-      </div>
-    </>
-  )
-}
+        {/* Nav */}
+        <nav className={styles.nav}>
+          {navigation.map((item) => {
+            const active = isActive(item.href)
+            const expanded = expandedItems.includes(item.name)
+            const Icon = item.icon
 
-function SidebarContent({ 
-  navigation, 
-  pathname, 
-  expandedItems, 
-  toggleExpanded, 
-  isCurrentPath,
-  handleSignOut,
-  unreadMessageCount
-}: {
-  navigation: NavigationItem[]
-  pathname: string
-  expandedItems: string[]
-  toggleExpanded: (name: string) => void
-  isCurrentPath: (href: string) => boolean
-  handleSignOut: () => void
-  unreadMessageCount: number
-}) {
-  return (
-    <>
-      {/* Logo */}
-      <div className="sidebar-logo">
-        <div className="sidebar-logo-icon">
-          <span className="text-white font-bold text-lg">M</span>
-        </div>
-        <div>
-          <h1 className="sidebar-logo-text">
-            Murat Sağ
-          </h1>
-          <p className="sidebar-logo-subtitle">
-            Admin Panel
-          </p>
-        </div>
-      </div>
+            if (item.children) {
+              return (
+                <div key={item.name}>
+                  <button
+                    type="button"
+                    onClick={() => toggleExpanded(item.name)}
+                    className={`${styles.navItem} ${active ? styles.navItemActive : ''}`}
+                  >
+                    <Icon size={18} className={styles.navIcon} />
+                    <span className={styles.navLabel}>{item.name}</span>
+                    {item.name === 'Mesajlar' && unreadMessageCount > 0 && (
+                      <span className={styles.navBadge}>{unreadMessageCount}</span>
+                    )}
+                    <ChevronDown
+                      size={16}
+                      className={`${styles.navChevron} ${expanded ? styles.navChevronOpen : ''}`}
+                    />
+                  </button>
+                  {expanded && (
+                    <div className={styles.subnav}>
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          onClick={onMobileClose}
+                          className={`${styles.subnavItem} ${pathname === child.href ? styles.subnavItemActive : ''}`}
+                        >
+                          {child.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )
+            }
 
-      {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto">
-        {navigation.map((item) => {
-          // Mesajlar için dinamik badge
-          const badge = item.name === 'Mesajlar' && unreadMessageCount > 0 
-            ? unreadMessageCount.toString() 
-            : item.badge
-          
-          return (
-          <div key={item.name}>
-            {item.children ? (
-              <div>
-                <button
-                  onClick={() => toggleExpanded(item.name)}
-                  className={`nav-item ${isCurrentPath(item.href) ? 'active' : ''}`}
-                >
-                  <item.icon className="nav-item-icon" />
-                  {item.name}
-                                  {badge && (
-                  <span className="nav-item-badge">
-                    {badge}
-                  </span>
-                )}
-                  <ChevronDownIcon 
-                    className={`nav-item-icon transition-transform ${
-                      expandedItems.includes(item.name) ? 'transform rotate-180' : ''
-                    }`}
-                  />
-                </button>
-                {expandedItems.includes(item.name) && (
-                  <div className="nav-submenu">
-                    {item.children.map((child: NavigationChild) => (
-                      <Link
-                        key={child.name}
-                        href={child.href}
-                        className={`nav-submenu-item ${pathname === child.href ? 'active' : ''}`}
-                      >
-                        {child.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : (
+            return (
               <Link
+                key={item.name}
                 href={item.href}
-                className={`nav-item ${isCurrentPath(item.href) ? 'active' : ''}`}
+                onClick={onMobileClose}
+                className={`${styles.navItem} ${active ? styles.navItemActive : ''}`}
               >
-                <item.icon className="nav-item-icon" />
-                {item.name}
-                {badge && (
-                  <span className="nav-item-badge">
-                    {badge}
-                  </span>
+                <Icon size={18} className={styles.navIcon} />
+                <span className={styles.navLabel}>{item.name}</span>
+                {item.name === 'Mesajlar' && unreadMessageCount > 0 && (
+                  <span className={styles.navBadge}>{unreadMessageCount}</span>
                 )}
               </Link>
-            )}
-          </div>
-        )})}
-      </nav>
+            )
+          })}
+        </nav>
 
-      {/* User menu */}
-      <div className="flex-shrink-0 p-4 border-t border-gray-200 dark:border-gray-700">
-        <button
-          onClick={handleSignOut}
-          className="nav-item"
-        >
-          <ArrowRightOnRectangleIcon className="nav-item-icon" />
-          Çıkış Yap
-        </button>
-      </div>
+        {/* Footer */}
+        <div className={styles.sidebarFooter}>
+          <button type="button" onClick={handleSignOut} className={styles.navItem}>
+            <LogOut size={18} className={styles.navIcon} />
+            <span className={styles.navLabel}>Çıkış Yap</span>
+          </button>
+        </div>
+      </aside>
     </>
   )
 }

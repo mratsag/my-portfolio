@@ -1,22 +1,22 @@
 'use client'
 // src/app/components/admin/layout/AdminHeader.tsx
 
-import { useState, useEffect } from 'react'
-import { 
-  BellIcon,
-  MagnifyingGlassIcon,
-  SunIcon,
-  MoonIcon,
-  UserCircleIcon,
-  Cog6ToothIcon,
-  ArrowRightOnRectangleIcon
-} from '@heroicons/react/24/outline'
-import { useTheme } from 'next-themes'
-import { createClient } from '@/lib/supabase'
+import { Fragment, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTheme } from 'next-themes'
 import { Menu, Transition } from '@headlessui/react'
-import { Fragment } from 'react'
-import styles from '@/styles/admin/AdminLayout.module.css'
+import {
+  Search,
+  Sun,
+  Moon,
+  Bell,
+  User as UserIcon,
+  Settings,
+  LogOut,
+  Menu as MenuIcon,
+} from 'lucide-react'
+import { createClient } from '@/lib/supabase'
+import styles from '@/styles/components/AdminLayoutAurora.module.css'
 
 interface UserWithProfile {
   id: string
@@ -24,12 +24,15 @@ interface UserWithProfile {
   profile?: {
     full_name?: string
     avatar_url?: string
-  }
+  } | null
 }
 
-export default function AdminHeader() {
+interface AdminHeaderProps {
+  onMobileMenuOpen: () => void
+}
+
+export default function AdminHeader({ onMobileMenuOpen }: AdminHeaderProps) {
   const [mounted, setMounted] = useState(false)
-  const [notifications, setNotifications] = useState(3) // Bildirim sayısı
   const [user, setUser] = useState<UserWithProfile | null>(null)
   const { theme, setTheme } = useTheme()
   const router = useRouter()
@@ -37,167 +40,139 @@ export default function AdminHeader() {
 
   useEffect(() => {
     setMounted(true)
-  }, [])
 
-  useEffect(() => {
-    setMounted(true)
-    
-    // Kullanıcı bilgilerini al
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        // Profil bilgilerini al
+      const {
+        data: { user: authUser },
+      } = await supabase.auth.getUser()
+      if (authUser) {
         const { data: profile } = await supabase
           .from('profiles')
           .select('*')
-          .eq('id', user.id)
+          .eq('id', authUser.id)
           .single()
-        
-        setUser({ ...user, profile })
+        setUser({ ...authUser, profile })
       }
     }
 
     getUser()
-  }, [])
+  }, [supabase])
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
     router.push('/auth/login')
   }
 
-  if (!mounted) {
-    return (
-      <header className="admin-header">
-        <div className="flex items-center justify-between w-full">
-          <div className="header-search">
-            <div className="relative">
-              <MagnifyingGlassIcon className="header-search-icon" />
-              <input
-                type="text"
-                placeholder="Ara..."
-                className="header-search-input"
-              />
-            </div>
-          </div>
-          <div className="header-actions">
-            <div className="header-action-btn"></div>
-          </div>
-        </div>
-      </header>
-    )
-  }
+  const initials = (user?.profile?.full_name || user?.email || 'A')
+    .split(' ')
+    .map((p) => p[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join('')
+    .toUpperCase()
 
   return (
-    <header className={styles['admin-header']}>
-      <div className="flex items-center justify-between w-full">
-        {/* Search */}
-        <div className={styles['header-search']}>
-          <div className="relative">
-            <MagnifyingGlassIcon className={styles['header-search-icon']} />
-            <input
-              type="text"
-              placeholder="Ara..."
-              className={styles['header-search-input']}
-            />
-          </div>
-        </div>
+    <header className={styles.header}>
+      {/* Mobile menu */}
+      <button
+        type="button"
+        onClick={onMobileMenuOpen}
+        className={styles.mobileMenuBtn}
+        aria-label="Menüyü aç"
+      >
+        <MenuIcon size={18} />
+      </button>
 
-        {/* Right side */}
-        <div className={styles['header-actions']}>
-          {/* Theme toggle */}
+      {/* Search */}
+      <div className={styles.searchWrap}>
+        <Search size={16} className={styles.searchIcon} />
+        <input type="text" placeholder="Ara..." className={styles.searchInput} />
+      </div>
+
+      {/* Actions */}
+      <div className={styles.headerActions}>
+        {/* Theme toggle */}
+        {mounted && (
           <button
+            type="button"
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className={styles['header-action-btn']}
+            className={styles.iconBtn}
+            aria-label="Tema değiştir"
           >
-            {theme === 'dark' ? (
-              <SunIcon className={styles['icon-md']} />
-            ) : (
-              <MoonIcon className={styles['icon-md']} />
-            )}
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
+        )}
 
-          {/* Notifications */}
-          <button className={`${styles['header-action-btn']} relative`}>
-            <BellIcon className={styles['icon-md']} />
-            {notifications > 0 && (
-              <span className={styles['header-notification-badge']}>
-                {notifications}
-              </span>
-            )}
-          </button>
+        {/* Notifications */}
+        <button type="button" className={styles.iconBtn} aria-label="Bildirimler">
+          <Bell size={18} />
+        </button>
 
-          {/* User dropdown */}
-          <Menu as="div" className="relative">
-            <Menu.Button className={styles['user-menu']}>
+        {/* User dropdown */}
+        <Menu as="div" className="relative">
+          <Menu.Button className={styles.userBtn}>
+            <span className={styles.userAvatar}>
               {user?.profile?.avatar_url ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  className={styles['user-avatar']}
                   src={user.profile.avatar_url}
                   alt={user.profile.full_name || user.email}
+                  className={styles.userAvatarImg}
                 />
               ) : (
-                <div className={styles['user-avatar']}>
-                  <UserCircleIcon className={styles['icon-md']} />
-                </div>
+                <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>{initials}</span>
               )}
-              <div className={styles['user-info']}>
-                <p className={styles['user-name']}>
-                  {user?.profile?.full_name || 'Admin'}
-                </p>
-                <p className={styles['user-email']}>
-                  {user?.email}
-                </p>
-              </div>
-            </Menu.Button>
+            </span>
+            <span className={styles.userMeta}>
+              <span className={styles.userName}>{user?.profile?.full_name || 'Admin'}</span>
+              <span className={styles.userEmail}>{user?.email}</span>
+            </span>
+          </Menu.Button>
 
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-200"
-              enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100"
-              leave="transition ease-in duration-75"
-              leaveFrom="transform opacity-100 scale-100"
-              leaveTo="transform opacity-0 scale-95"
-            >
-              <Menu.Items className={styles['user-dropdown-menu']}>
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      onClick={() => router.push('/admin/profile')}
-                      className={`${styles['user-dropdown-item']} ${active ? 'hover:bg-gray-100 dark:hover:bg-gray-700' : ''}`}
-                    >
-                      <UserCircleIcon className={styles['user-dropdown-icon']} />
-                      Profil
-                    </button>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      onClick={() => router.push('/admin/settings')}
-                      className={`${styles['user-dropdown-item']} ${active ? 'hover:bg-gray-100 dark:hover:bg-gray-700' : ''}`}
-                    >
-                      <Cog6ToothIcon className={styles['user-dropdown-icon']} />
-                      Ayarlar
-                    </button>
-                  )}
-                </Menu.Item>
-                <div className={styles['user-dropdown-divider']}></div>
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      onClick={handleSignOut}
-                      className={`${styles['user-dropdown-item']} ${active ? 'hover:bg-gray-100 dark:hover:bg-gray-700' : ''}`}
-                    >
-                      <ArrowRightOnRectangleIcon className={styles['user-dropdown-icon']} />
-                      Çıkış Yap
-                    </button>
-                  )}
-                </Menu.Item>
-              </Menu.Items>
-            </Transition>
-          </Menu>
-        </div>
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-150"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-100"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Menu.Items className={styles.dropdown}>
+              <Menu.Item>
+                <button
+                  type="button"
+                  onClick={() => router.push('/admin/profile')}
+                  className={styles.dropdownItem}
+                >
+                  <UserIcon size={16} />
+                  Profil
+                </button>
+              </Menu.Item>
+              <Menu.Item>
+                <button
+                  type="button"
+                  onClick={() => router.push('/admin/settings')}
+                  className={styles.dropdownItem}
+                >
+                  <Settings size={16} />
+                  Ayarlar
+                </button>
+              </Menu.Item>
+              <div className={styles.dropdownDivider} />
+              <Menu.Item>
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  className={`${styles.dropdownItem} ${styles.dropdownItemDanger}`}
+                >
+                  <LogOut size={16} />
+                  Çıkış Yap
+                </button>
+              </Menu.Item>
+            </Menu.Items>
+          </Transition>
+        </Menu>
       </div>
     </header>
   )

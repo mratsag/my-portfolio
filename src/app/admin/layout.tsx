@@ -1,10 +1,21 @@
 // src/app/admin/layout.tsx
 
 import { redirect } from 'next/navigation'
+import { Geist, Geist_Mono } from 'next/font/google'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
-import AdminSidebar from '@/app/components/admin/layout/AdminSidebar'
-import AdminHeader from '@/app/components/admin/layout/AdminHeader'
-import AdminBreadcrumb from '@/app/components/admin/layout/AdminBreadcrumb'
+import AdminShell from '@/app/components/admin/layout/AdminShell'
+
+const geist = Geist({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
+
+const geistMono = Geist_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-mono',
+})
 
 export default async function AdminLayout({
   children,
@@ -12,7 +23,7 @@ export default async function AdminLayout({
   children: React.ReactNode
 }) {
   const supabase = createSupabaseServerClient()
-  
+
   const {
     data: { session },
   } = await supabase.auth.getSession()
@@ -22,23 +33,8 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen">
-      {/* Sidebar */}
-      <AdminSidebar />
-      
-      {/* Main Content */}
-      <div className="admin-main">
-        {/* Header */}
-        <AdminHeader />
-        
-        {/* Breadcrumb */}
-        <AdminBreadcrumb />
-        
-        {/* Page Content */}
-        <main className="admin-content">
-          {children}
-        </main>
-      </div>
+    <div className={`${geist.variable} ${geistMono.variable}`}>
+      <AdminShell>{children}</AdminShell>
     </div>
   )
 }
