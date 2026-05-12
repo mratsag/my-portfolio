@@ -25,15 +25,21 @@ interface ProjectDetailPageProps {
   }>
 }
 
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+// URL parametresi UUID veya slug olabilir — her ikisi için de çalış
+async function fetchProject(idOrSlug: string) {
+  const supabase = createSupabaseServerClient()
+  const isUuid = UUID_REGEX.test(idOrSlug)
+  const column = isUuid ? 'id' : 'slug'
+
+  return supabase.from('projects').select('*').eq(column, idOrSlug).maybeSingle()
+}
+
 export async function generateMetadata({ params }: ProjectDetailPageProps): Promise<Metadata> {
   const { id } = await params
-  const supabase = createSupabaseServerClient()
 
-  const { data: project, error } = await supabase
-    .from('projects')
-    .select('*')
-    .eq('id', id)
-    .single()
+  const { data: project, error } = await fetchProject(id)
 
   if (error || !project) {
     return {
@@ -80,13 +86,8 @@ export async function generateMetadata({ params }: ProjectDetailPageProps): Prom
 
 export default async function ProjectDetailPage({ params }: ProjectDetailPageProps) {
   const { id } = await params
-  const supabase = createSupabaseServerClient()
 
-  const { data: project, error } = await supabase
-    .from('projects')
-    .select('*')
-    .eq('id', id)
-    .single()
+  const { data: project, error } = await fetchProject(id)
 
   if (error || !project) {
     notFound()

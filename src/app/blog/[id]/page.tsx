@@ -25,19 +25,23 @@ interface BlogDetailPageProps {
   }>
 }
 
-// Generate metadata for blog detail page
-export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
-  const { id } = await params
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+// URL parametresi UUID veya slug olabilir
+async function fetchBlog(idOrSlug: string) {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
+  const isUuid = UUID_REGEX.test(idOrSlug)
+  const column = isUuid ? 'id' : 'slug'
+  return supabase.from('blogs').select('*').eq(column, idOrSlug).maybeSingle()
+}
 
-  const { data: blog, error } = await supabase
-    .from('blogs')
-    .select('*')
-    .eq('id', id)
-    .single()
+// Generate metadata for blog detail page
+export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
+  const { id } = await params
+  const { data: blog, error } = await fetchBlog(id)
 
   if (error || !blog) {
     return {
@@ -57,7 +61,7 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
       title: blog.title,
       description: description,
       type: 'article',
-      url: `https://www.muratsag.com/blog/${blog.id}`,
+      url: `https://www.muratsag.com/blog/${blog.slug || blog.id}`,
       siteName: 'Murat Sağ - Portfolio',
       authors: [blog.author || 'Murat Sağ'],
       publishedTime: blog.created_at,
@@ -77,20 +81,17 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { id } = await params
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
 
-  const { data: blog, error } = await supabase
-    .from('blogs')
-    .select('*')
-    .eq('id', id)
-    .single()
+  const { data: blog, error } = await fetchBlog(id)
 
   if (error || !blog) {
     notFound()
   }
+
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
 
   const { data: profile } = await supabase
     .from('profiles')
@@ -103,7 +104,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
       <ArticleSchema
         title={blog.title}
         description={blog.excerpt || blog.content?.substring(0, 160) || 'Blog yazısı'}
-        url={`https://www.muratsag.com/blog/${blog.id}`}
+        url={`https://www.muratsag.com/blog/${blog.slug || blog.id}`}
         author={blog.author || 'Murat Sağ'}
         publishedDate={blog.created_at}
         modifiedDate={blog.updated_at}
