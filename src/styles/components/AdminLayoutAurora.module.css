@@ -9,8 +9,6 @@
   background: #FAFAFA;
   color: #0A0A0A;
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: 260px 1fr;
 }
 
 :global(.dark) .root {
@@ -308,9 +306,6 @@
 }
 
 @media (max-width: 1023px) {
-  .root {
-    grid-template-columns: 1fr;
-  }
   .main {
     margin-left: 0;
   }
