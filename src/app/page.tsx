@@ -1,23 +1,9 @@
 // src/app/page.tsx
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
 import PublicLayout from '@/app/components/public/layout/PublicLayout'
-import HomeAurora from '@/app/components/public/sections/HomeAurora'
+import HomeModern from '@/app/components/public/sections/HomeModern'
 import type { Skill, Experience } from '@/lib/types'
-
-// Geist (Vercel) — modern, sharp, paired sans + mono
-const geist = Geist({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-})
-
-const geistMono = Geist_Mono({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-mono',
-})
 
 // Cache for 10 seconds to allow faster profile updates
 export const revalidate = 10
@@ -62,8 +48,8 @@ export default async function Home() {
     experiencesRes,
     projectsCountRes,
     blogsCountRes,
-    latestProjectRes,
-    latestBlogRes,
+    projectsListRes,
+    blogsListRes,
   ] = await Promise.all([
     supabase.from('profiles').select('*').limit(1).single(),
     supabase.from('skills').select('*').order('order_index', { ascending: true }),
@@ -77,18 +63,17 @@ export default async function Home() {
     supabase.from('blogs').select('id', { count: 'exact', head: true }).eq('published', true),
     supabase
       .from('projects')
-      .select('id, title, description, image_url, technologies, slug')
+      .select('id, title, slug, description, image_url, technologies, created_at')
       .eq('status', 'published')
+      .order('featured', { ascending: false })
       .order('created_at', { ascending: false })
-      .limit(1)
-      .maybeSingle(),
+      .limit(3),
     supabase
       .from('blogs')
-      .select('id, title, excerpt, image_url, tags, reading_time, created_at')
+      .select('id, title, excerpt, tags, reading_time, created_at')
       .eq('published', true)
       .order('created_at', { ascending: false })
-      .limit(1)
-      .maybeSingle(),
+      .limit(3),
   ])
 
   const profile = profileRes.data
@@ -96,22 +81,20 @@ export default async function Home() {
   const experiences: Experience[] = experiencesRes.data ?? []
   const projectCount = projectsCountRes.count ?? 0
   const blogCount = blogsCountRes.count ?? 0
-  const latestProject = latestProjectRes.data
-  const latestBlog = latestBlogRes.data
+  const projects = projectsListRes.data ?? []
+  const posts = blogsListRes.data ?? []
 
   return (
     <PublicLayout>
-      <div className={`${geist.variable} ${geistMono.variable}`}>
-        <HomeAurora
-          profile={profile || undefined}
-          skills={skills}
-          experiences={experiences}
-          projectCount={projectCount}
-          blogCount={blogCount}
-          latestProject={latestProject}
-          latestBlog={latestBlog}
-        />
-      </div>
+      <HomeModern
+        profile={profile || undefined}
+        skills={skills}
+        experiences={experiences}
+        projectCount={projectCount}
+        blogCount={blogCount}
+        projects={projects}
+        posts={posts}
+      />
     </PublicLayout>
   )
 }

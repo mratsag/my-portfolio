@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
   images: {
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60,
+    // Supabase storage görselleri için next/image izni (avatar, proje, blog)
+    remotePatterns: [
+      { protocol: 'https', hostname: '*.supabase.co' },
+    ],
   },
   
   // Compression

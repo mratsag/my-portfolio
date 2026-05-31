@@ -1,0 +1,11 @@
+{
+  // Tailwind v4 at-rule'larını (@theme, @custom-variant, @apply, @layer...) bilinmiyor
+  // diye kırmızı göstermesin. Bunlar geçerli; build temiz derliyor.
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore",
+  "less.lint.unknownAtRules": "ignore",
+  // CSS dosyalarını Tailwind dili olarak ele al (Tailwind CSS IntelliSense eklentisi varsa)
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
+}

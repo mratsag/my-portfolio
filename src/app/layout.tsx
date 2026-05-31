@@ -1,9 +1,23 @@
 import type { Metadata } from 'next'
+import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from 'next-themes'
 import CookieConsentWrapper from '../components/CookieConsentWrapper'
 import PersonSchema from '../components/JsonLd'
 import AnalyticsLoader from '../components/AnalyticsLoader'
+
+// Geist (Vercel) — keskin, modern; sans + mono. Tek yerde, tüm site için.
+const geist = Geist({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-geist',
+})
+
+const geistMono = Geist_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-geist-mono',
+})
 
 export const metadata: Metadata = {
   title: 'Murat Sağ - Software Developer & Computer Engineering Student | Portfolio',
@@ -87,7 +101,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="tr" suppressHydrationWarning data-scroll-behavior="smooth">
+    <html
+      lang="tr"
+      className={`${geist.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+    >
       <head>
         {/* Favicon */}
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

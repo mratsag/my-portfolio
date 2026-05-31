@@ -14,8 +14,8 @@
 
 .main {
   flex: 1;
-  padding-top: 70px; /* Header height */
-  min-height: calc(100vh - 70px);
+  /* Header artık sticky (akışta yer ayırıyor) — fazladan padding gerekmez */
+  min-height: calc(100vh - 64px);
 }
 
 /* Container utility */

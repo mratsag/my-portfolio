@@ -1,219 +1,129 @@
+/* Header — codedgar tarzı: logo SOL, nav SAĞ, tam genişlik. İzole (token'larla). */
 .header {
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  transition: background 0.3s ease, border-color 0.3s ease;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in oklab, var(--bg) 72%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  font-family: var(--font-sans);
 }
-
-.header[data-theme="dark"] {
-  background: rgba(10, 10, 10, 0.75);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
+.inner {
+  width: 100%;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 70px;
+  padding: 0 32px;
 }
 
+/* SOL: logo */
 .logo {
-  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
 }
-
-.logoLink {
-  text-decoration: none;
-  color: inherit;
-}
-
-.logoText {
-  font-size: 1.375rem;
+.logoMark {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  background: var(--accent);
+  color: var(--accent-fg);
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: -0.025em;
-  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
-.header[data-theme="dark"] .logoText {
-  background: linear-gradient(135deg, #60A5FA 0%, #A78BFA 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.nav {
+/* SAĞ: nav + aksiyonlar */
+.right {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 22px;
 }
-
-.navLink {
-  text-decoration: none;
-  color: #3F3F46;
-  font-weight: 500;
-  font-size: 0.9375rem;
-  letter-spacing: -0.005em;
-  transition: color 0.25s ease;
-  position: relative;
+.nav {
+  display: none;
+  align-items: center;
+  gap: 28px;
 }
-
-.navLink:hover {
-  color: #2563EB;
+@media (min-width: 768px) {
+  .nav {
+    display: flex;
+  }
 }
-
-.navLink::after {
-  content: '';
-  position: absolute;
-  bottom: -6px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #2563EB 0%, #7C3AED 100%);
-  border-radius: 2px;
-  transition: width 0.25s ease;
+.link {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--muted);
+  transition: color 0.2s ease;
 }
-
-.navLink:hover::after {
-  width: 100%;
+.link:hover {
+  color: var(--ink);
 }
-
+.linkActive {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 6px;
+}
 .actions {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 4px;
 }
-
-.themeToggle {
-  background: none;
-  border: 1px solid transparent;
-  padding: 0.5rem;
-  border-radius: 0.625rem;
-  cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-  color: #3F3F46;
-  display: inline-flex;
+.iconBtn {
+  display: flex;
+  width: 36px;
+  height: 36px;
   align-items: center;
   justify-content: center;
-}
-
-.themeToggle:hover {
-  background: rgba(37, 99, 235, 0.08);
-  border-color: rgba(37, 99, 235, 0.18);
-  color: #2563EB;
-}
-
-.themeIcon {
-  width: 1.125rem;
-  height: 1.125rem;
-}
-
-.mobileMenuButton {
-  display: none;
-  background: none;
-  border: 1px solid transparent;
-  padding: 0.5rem;
-  border-radius: 0.625rem;
+  border-radius: 6px;
+  color: var(--muted);
+  background: transparent;
+  border: none;
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-  color: #3F3F46;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
-
-.mobileMenuButton:hover {
-  background: rgba(37, 99, 235, 0.08);
-  border-color: rgba(37, 99, 235, 0.18);
-  color: #2563EB;
+.iconBtn:hover {
+  background: var(--surface-2);
+  color: var(--ink);
 }
-
-.menuIcon {
-  width: 1.5rem;
-  height: 1.5rem;
+.burger {
+  color: var(--ink);
 }
-
-/* Dark theme */
-.header[data-theme="dark"] .navLink {
-  color: #D4D4D8;
-}
-
-.header[data-theme="dark"] .navLink:hover {
-  color: #60A5FA;
-}
-
-.header[data-theme="dark"] .navLink::after {
-  background: linear-gradient(90deg, #60A5FA 0%, #A78BFA 100%);
-}
-
-.header[data-theme="dark"] .themeToggle,
-.header[data-theme="dark"] .mobileMenuButton {
-  color: #D4D4D8;
-}
-
-.header[data-theme="dark"] .themeToggle:hover,
-.header[data-theme="dark"] .mobileMenuButton:hover {
-  background: rgba(96, 165, 250, 0.10);
-  border-color: rgba(96, 165, 250, 0.22);
-  color: #60A5FA;
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  .nav {
-    position: fixed;
-    top: 70px;
-    left: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    flex-direction: column;
-    padding: 2rem;
-    gap: 1.5rem;
-    transform: translateY(-100%);
-    opacity: 0;
-    visibility: hidden;
-    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  }
-
-  .nav[data-theme="dark"] {
-    background: rgba(10, 10, 10, 0.95);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  }
-
-  .navOpen {
-    transform: translateY(0);
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .mobileMenuButton {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .navLink {
-    font-size: 1.0625rem;
-    padding: 0.5rem 0;
+/* hamburger yalnızca mobilde */
+@media (min-width: 768px) {
+  .burger {
+    display: none;
   }
 }
 
-@media (max-width: 480px) {
-  .container {
-    padding: 0 1rem;
+/* MOBİL nav */
+.mobileNav {
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+  padding: 8px 32px 12px;
+}
+@media (min-width: 768px) {
+  .mobileNav {
+    display: none;
   }
-
-  .logoText {
-    font-size: 1.25rem;
-  }
+}
+.mobileLink {
+  display: block;
+  padding: 8px 0;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+.mobileLink:hover {
+  color: var(--ink);
 }
