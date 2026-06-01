@@ -12,7 +12,7 @@ interface PublicLayoutProps {
 
 export default function PublicLayout({ children }: PublicLayoutProps) {
   const [mounted, setMounted] = useState(false)
-  const { theme } = useTheme()
+  const { resolvedTheme } = useTheme()
 
   useEffect(() => {
     setMounted(true)
@@ -23,7 +23,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
   }
 
   return (
-    <div className={styles.layout} data-theme={theme}>
+    <div className={styles.layout} data-theme={resolvedTheme}>
       <Header />
       <main className={styles.main}>
         {children}

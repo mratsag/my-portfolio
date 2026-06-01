@@ -8,7 +8,7 @@ import styles from '@/styles/public/Footer.module.css'
 
 export default function Footer() {
   const [mounted, setMounted] = useState(false)
-  const { theme } = useTheme()
+  const { resolvedTheme } = useTheme()
   const currentYear = new Date().getFullYear()
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className={styles.footer} data-theme={theme}>
+    <footer className={styles.footer} data-theme={resolvedTheme}>
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.section}>

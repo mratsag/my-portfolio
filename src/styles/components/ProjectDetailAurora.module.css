@@ -527,6 +527,26 @@
   border-top-color: #27272A;
 }
 
+/* Office/Word'den yapıştırılan içerik temizliği:
+   inline color/font/background'ı ez → light & dark modda okunabilir + tutarlı.
+   color: inherit, temalı .article rengini takip eder. */
+.article :global([style*='color']) {
+  color: inherit !important;
+}
+.article :global([style*='font-family']) {
+  font-family: inherit !important;
+}
+.article :global([style*='background']) {
+  background-color: transparent !important;
+}
+/* linkler vurgu renginde kalsın (inline stil olsa bile) */
+.article :global(a[style]) {
+  color: #2563EB !important;
+}
+:global(.dark) .article :global(a[style]) {
+  color: #60A5FA !important;
+}
+
 /* CTA / FOOTER NAV */
 .footerCard {
   margin: 2rem 0 2rem;

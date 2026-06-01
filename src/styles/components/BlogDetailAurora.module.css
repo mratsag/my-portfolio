@@ -365,6 +365,24 @@
   border-top-color: #27272A;
 }
 
+/* Office/Word'den yapıştırılan içerik temizliği:
+   inline color/font/background'ı ez → light & dark modda okunabilir + tutarlı. */
+.article :global([style*='color']) {
+  color: inherit !important;
+}
+.article :global([style*='font-family']) {
+  font-family: inherit !important;
+}
+.article :global([style*='background']) {
+  background-color: transparent !important;
+}
+.article :global(a[style]) {
+  color: #2563EB !important;
+}
+:global(.dark) .article :global(a[style]) {
+  color: #60A5FA !important;
+}
+
 .article :global(table) {
   width: 100%;
   margin: 1.5rem 0;
