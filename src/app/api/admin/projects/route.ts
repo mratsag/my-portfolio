@@ -2,6 +2,7 @@
 
 import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
+import { slugifyTr } from '@/lib/slugify'
 
 export const dynamic = 'force-dynamic'
 
@@ -97,13 +98,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create slug from title
-    const slug = title
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .trim()
+    // Create slug from title (Türkçe-duyarlı; bloglarla aynı slugifyTr)
+    const slug = slugifyTr(title)
 
     // Check if slug exists
     const { data: existingProject } = await supabase

@@ -1,6 +1,7 @@
 // src/app/api/admin/projects/[id]/route.ts
 import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
+import { slugifyTr } from '@/lib/slugify'
 
 export const dynamic = 'force-dynamic'
 
@@ -82,29 +83,19 @@ export async function PUT(
       return NextResponse.json({ error: 'Project not found' }, { status: 404 })
     }
 
-    // Create slug from title if title changed
+    // Slug'ı KORU — mevcut slug indeksli olabilir; başlık değişse bile URL sabit kalsın
+    // (SEO için kritik; bloglarla aynı davranış). Yalnızca slug hiç yoksa başlıktan üret.
     let finalSlug = currentProject.slug
-    if (title !== currentProject.title) {
-      const newSlug = title
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .trim()
-
-      // Check if new slug exists (excluding current project)
+    if (!finalSlug) {
+      const newSlug = slugifyTr(title)
       const { data: existingProject } = await supabase
         .from('projects')
         .select('id')
         .eq('slug', newSlug)
         .neq('id', id)
-        .single()
+        .maybeSingle()
 
-      if (existingProject) {
-        finalSlug = `${newSlug}-${Date.now()}`
-      } else {
-        finalSlug = newSlug
-      }
+      finalSlug = existingProject ? `${newSlug}-${Date.now()}` : newSlug
     }
 
     const updateData = {
