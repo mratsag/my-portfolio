@@ -59,10 +59,11 @@ export const metadata: Metadata = {
     siteName: 'Murat Sağ Portfolio',
     images: [
       {
-        url: '/og-image.svg',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Murat Sağ - Software Developer Portfolio',
+        type: 'image/png',
       },
     ],
     locale: 'tr_TR',
@@ -72,7 +73,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Murat Sağ - Software Developer & Computer Engineering Student',
     description: 'Yazılım geliştirici ve bilgisayar mühendisi. Web geliştirme ve mobil uygulamalar.',
-    images: ['/og-image.svg'],
+    images: ['/og-image.png'],
   },
   robots: {
     index: true,

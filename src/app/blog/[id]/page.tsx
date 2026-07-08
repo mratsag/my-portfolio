@@ -52,16 +52,20 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
 
   const tags = blog.tags?.join(', ') || ''
   const description = blog.excerpt || blog.content?.substring(0, 160) || 'Blog yazısı detayları'
+  const canonicalSlug = blog.slug || blog.id
 
   return {
     title: `${blog.title} - Murat Sağ`,
     description: description,
     keywords: `${tags}, blog, yazılım, teknoloji, murat sağ`,
+    alternates: {
+      canonical: `https://www.muratsag.com/blog/${canonicalSlug}`,
+    },
     openGraph: {
       title: blog.title,
       description: description,
       type: 'article',
-      url: `https://www.muratsag.com/blog/${blog.slug || blog.id}`,
+      url: `https://www.muratsag.com/blog/${canonicalSlug}`,
       siteName: 'Murat Sağ - Portfolio',
       authors: [blog.author || 'Murat Sağ'],
       publishedTime: blog.created_at,

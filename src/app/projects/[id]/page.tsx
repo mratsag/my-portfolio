@@ -50,6 +50,7 @@ export async function generateMetadata({ params }: ProjectDetailPageProps): Prom
 
   const technologies = project.technologies?.join(', ') || ''
   const description = project.description || project.content?.substring(0, 160) || 'Proje detayları'
+  const canonicalSlug = project.slug || project.id
 
   return {
     title: `${project.title} - Murat Sağ`,
@@ -59,7 +60,7 @@ export async function generateMetadata({ params }: ProjectDetailPageProps): Prom
       title: project.title,
       description,
       type: 'website',
-      url: `https://www.muratsag.com/projects/${project.id}`,
+      url: `https://www.muratsag.com/projects/${canonicalSlug}`,
       siteName: 'Murat Sağ - Portfolio',
       images: project.image_url
         ? [
@@ -79,7 +80,7 @@ export async function generateMetadata({ params }: ProjectDetailPageProps): Prom
       images: project.image_url ? [project.image_url] : undefined,
     },
     alternates: {
-      canonical: `https://www.muratsag.com/projects/${project.id}`,
+      canonical: `https://www.muratsag.com/projects/${canonicalSlug}`,
     },
   }
 }
@@ -93,12 +94,14 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
     notFound()
   }
 
+  // UUID → slug 308 yönlendirmesi middleware.ts'te yapılır (stream öncesi → gerçek HTTP 308).
+
   return (
     <PublicLayout>
       <ProjectSchema
         title={project.title}
         description={project.description || project.content?.substring(0, 160) || 'Proje detayları'}
-        url={`https://www.muratsag.com/projects/${project.id}`}
+        url={`https://www.muratsag.com/projects/${project.slug || project.id}`}
         technologies={project.technologies || []}
         image={project.image_url}
         githubUrl={project.github_url}

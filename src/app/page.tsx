@@ -1,5 +1,6 @@
 // src/app/page.tsx
 import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { createClient } from '@supabase/supabase-js'
 import { Metadata } from 'next'
 import PublicLayout from '@/app/components/public/layout/PublicLayout'
 import HomeModern from '@/app/components/public/sections/HomeModern'
@@ -19,10 +20,11 @@ export const metadata: Metadata = {
     siteName: 'Murat Sağ - Portfolio',
     images: [
       {
-        url: '/og-image.svg',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Murat Sağ Portfolio',
+        type: 'image/png',
       },
     ],
     locale: 'tr_TR',
@@ -32,7 +34,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Murat Sağ - Software Developer & Computer Engineering Student',
     description: 'Yazılım geliştirici ve bilgisayar mühendisi.',
-    images: ['/og-image.svg'],
+    images: ['/og-image.png'],
   },
   alternates: {
     canonical: 'https://www.muratsag.com',
@@ -41,6 +43,12 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const supabase = createSupabaseServerClient()
+  // blogs tablosunda public-read RLS politikası yok → blog sorguları service-role ile
+  // (sunucu tarafı, anahtar istemciye sızmaz). Blog liste sayfasıyla aynı yaklaşım.
+  const supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  )
 
   const [
     profileRes,
@@ -60,7 +68,7 @@ export default async function Home() {
       .order('start_date', { ascending: false })
       .limit(6),
     supabase.from('projects').select('id', { count: 'exact', head: true }),
-    supabase.from('blogs').select('id', { count: 'exact', head: true }).eq('published', true),
+    supabaseAdmin.from('blogs').select('id', { count: 'exact', head: true }).eq('published', true),
     supabase
       .from('projects')
       .select('id, title, slug, description, image_url, technologies, created_at')
@@ -68,9 +76,9 @@ export default async function Home() {
       .order('featured', { ascending: false })
       .order('created_at', { ascending: false })
       .limit(3),
-    supabase
+    supabaseAdmin
       .from('blogs')
-      .select('id, title, excerpt, tags, reading_time, created_at')
+      .select('*')
       .eq('published', true)
       .order('created_at', { ascending: false })
       .limit(3),

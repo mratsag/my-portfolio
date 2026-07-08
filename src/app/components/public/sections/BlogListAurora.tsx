@@ -204,7 +204,7 @@ export default function BlogListAurora({ blogs }: BlogListAuroraProps) {
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
-                href={`/blog/${featured.id}`}
+                href={`/blog/${featured.slug || featured.id}`}
                 className={styles.featuredCard}
               >
                 <div className={styles.featuredMedia}>
@@ -274,7 +274,7 @@ export default function BlogListAurora({ blogs }: BlogListAuroraProps) {
                   <motion.a
                     key={blog.id}
                     variants={fadeUp}
-                    href={`/blog/${blog.id}`}
+                    href={`/blog/${blog.slug || blog.id}`}
                     className={styles.card}
                   >
                     <div className={styles.cardMedia}>

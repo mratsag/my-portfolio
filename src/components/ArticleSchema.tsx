@@ -32,7 +32,7 @@ export default function ArticleSchema({
       name: 'Murat Sağ Portfolio',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://www.muratsag.com/og-image.svg'
+        url: 'https://www.muratsag.com/og-image.png'
       }
     },
     datePublished: publishedDate,

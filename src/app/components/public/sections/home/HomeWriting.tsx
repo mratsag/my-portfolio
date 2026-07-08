@@ -5,6 +5,7 @@ import styles from '@/styles/home/Home.module.css'
 interface WritingPost {
   id: string
   title: string
+  slug?: string | null
   excerpt: string
   tags?: string[] | null
   reading_time?: number | null
@@ -39,7 +40,7 @@ export function HomeWriting({ posts }: { posts: WritingPost[] }) {
               year: 'numeric',
             }).format(new Date(b.created_at))
             return (
-              <Link key={b.id} href={`/blog/${b.id}`} className={styles.writeItem}>
+              <Link key={b.id} href={`/blog/${b.slug || b.id}`} className={styles.writeItem}>
                 <div className={styles.writeInner}>
                   <span className={styles.writeDate}>
                     {date}

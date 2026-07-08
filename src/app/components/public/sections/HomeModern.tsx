@@ -21,6 +21,7 @@ interface WorkProject {
 interface WritingPost {
   id: string
   title: string
+  slug?: string | null
   excerpt: string
   tags?: string[] | null
   reading_time?: number | null
