@@ -63,15 +63,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   })) || []
 
-  // Dinamik blog sayfaları — blogs tablosunda slug kolonu YOK, id (UUID) kullanılır
+  // Dinamik blog sayfaları — canonical ile aynı olması için slug (yoksa id)
   const { data: blogs } = await supabase
     .from('blogs')
-    .select('id, updated_at')
+    .select('id, slug, updated_at')
     .eq('published', true)
     .order('updated_at', { ascending: false })
 
   const blogPages = blogs?.map((blog) => ({
-    url: `${baseUrl}/blog/${blog.id}`,
+    url: `${baseUrl}/blog/${blog.slug || blog.id}`,
     lastModified: blog.updated_at ? new Date(blog.updated_at) : new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.7,

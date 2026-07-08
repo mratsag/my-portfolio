@@ -3,16 +3,16 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
-// UUID ile gelen proje isteğini slug'a çevirir (varsa). Edge'de, stream başlamadan
+// UUID ile gelen detay isteğinin slug'ını döner (varsa). Edge'de, stream başlamadan
 // önce çalışır → gerçek HTTP 308 (meta-refresh değil). SEO için kritik: duplicate
-// içerik yerine tek canonical URL. (blogs tablosunda slug kolonu yok → sadece projeler.)
-async function lookupProjectSlug(id: string): Promise<string | null> {
+// içerik yerine tek canonical URL.
+async function lookupSlug(table: 'projects' | 'blogs', id: string): Promise<string | null> {
   const base = process.env.NEXT_PUBLIC_SUPABASE_URL
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY
   if (!base || !key) return null
   try {
     const res = await fetch(
-      `${base}/rest/v1/projects?id=eq.${id}&select=slug&limit=1`,
+      `${base}/rest/v1/${table}?id=eq.${id}&select=slug&limit=1`,
       {
         headers: { apikey: key, Authorization: `Bearer ${key}` },
         cache: 'no-store',
@@ -29,14 +29,16 @@ async function lookupProjectSlug(id: string): Promise<string | null> {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // 1) Proje detay: /projects/{uuid} → /projects/{slug} (308 kalıcı yönlendirme)
-  const projectMatch = pathname.match(/^\/projects\/([^/]+)\/?$/)
-  if (projectMatch) {
-    const idOrSlug = projectMatch[1]
+  // 1) Detay: /projects/{uuid} veya /blog/{uuid} → /.../{slug} (308 kalıcı yönlendirme)
+  const detailMatch = pathname.match(/^\/(projects|blog)\/([^/]+)\/?$/)
+  if (detailMatch) {
+    const routePrefix = detailMatch[1] // 'projects' | 'blog'
+    const idOrSlug = detailMatch[2]
     if (UUID_REGEX.test(idOrSlug)) {
-      const slug = await lookupProjectSlug(idOrSlug)
+      const table = routePrefix === 'projects' ? 'projects' : 'blogs'
+      const slug = await lookupSlug(table, idOrSlug)
       if (slug && slug !== idOrSlug) {
-        return NextResponse.redirect(new URL(`/projects/${slug}`, request.url), 308)
+        return NextResponse.redirect(new URL(`/${routePrefix}/${slug}`, request.url), 308)
       }
     }
     // slug isteği ya da slug yok → normal render (auth'a girme)
@@ -106,8 +108,9 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Proje detay sayfaları (UUID → slug 308 yönlendirme)
+    // Public detay sayfaları (UUID → slug 308 yönlendirme)
     '/projects/:path*',
+    '/blog/:path*',
     // Admin routes
     '/admin/:path*',
     // Auth routes

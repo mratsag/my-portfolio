@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { slugifyTr } from '@/lib/slugify'
 
 export async function GET(request: NextRequest) {
   try {
@@ -69,11 +70,24 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
+    // SEO slug'ını başlıktan üret (benzersizse doğrudan, çakışırsa zaman damgalı)
+    const baseSlug = slugifyTr(title)
+    let finalSlug: string | null = baseSlug || null
+    if (baseSlug) {
+      const { data: clash } = await supabase
+        .from('blogs')
+        .select('id')
+        .eq('slug', baseSlug)
+        .maybeSingle()
+      if (clash) finalSlug = `${baseSlug}-${Date.now()}`
+    }
+
     // Insert blog
     const { data: blog, error: insertError } = await supabase
       .from('blogs')
       .insert({
         title,
+        slug: finalSlug,
         excerpt: excerpt || null,
         content,
         author: author || null,

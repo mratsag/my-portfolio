@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { slugifyTr } from '@/lib/slugify'
 
 export async function GET(
   request: NextRequest,
@@ -54,11 +55,33 @@ export async function PUT(
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
+    // Slug: mevcut slug'ı DEĞİŞTİRME (indeksli URL'leri korur), yalnızca boşsa üret
+    const { data: current } = await supabase
+      .from('blogs')
+      .select('slug')
+      .eq('id', id)
+      .maybeSingle()
+
+    const slugPatch: { slug?: string } = {}
+    if (current && (!current.slug || current.slug === '')) {
+      const baseSlug = slugifyTr(title)
+      if (baseSlug) {
+        const { data: clash } = await supabase
+          .from('blogs')
+          .select('id')
+          .eq('slug', baseSlug)
+          .neq('id', id)
+          .maybeSingle()
+        slugPatch.slug = clash ? `${baseSlug}-${Date.now()}` : baseSlug
+      }
+    }
+
     // Update blog
     const { data: blog, error: updateError } = await supabase
       .from('blogs')
       .update({
         title,
+        ...slugPatch,
         excerpt: excerpt || null,
         content,
         author: author || null,
